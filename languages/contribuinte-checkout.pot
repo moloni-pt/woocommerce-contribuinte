@@ -1,0 +1,111 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Contribuinte Checkout\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-08 11:49+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.4.0; wp-5.4.2"
+
+#: src/Plugin.php:131 src/Plugin.php:156 src/Plugin.php:174 src/Plugin.php:209
+#: src/Plugin.php:238 src/Settings.php:61 src/Menus/Admin.php:31
+msgid "VAT"
+msgstr ""
+
+#: src/Plugin.php:132 src/Plugin.php:175 src/Settings.php:74
+msgid "VAT Number"
+msgstr ""
+
+#: src/Plugin.php:299 src/Plugin.php:302 src/Plugin.php:334 src/Plugin.php:337
+msgid "You have entered an invalid VAT."
+msgstr ""
+
+#: src/Settings.php:27
+msgid "No"
+msgstr ""
+
+#: src/Settings.php:28
+msgid "Yes"
+msgstr ""
+
+#: src/Settings.php:33
+msgid "Reject the order and show customer an error"
+msgstr ""
+
+#: src/Settings.php:34
+msgid "Only show customer an warning message"
+msgstr ""
+
+#: src/Settings.php:47
+msgid "Main Settings"
+msgstr ""
+
+#: src/Settings.php:55
+msgid "VAT field label"
+msgstr ""
+
+#: src/Settings.php:68
+msgid "VAT field description"
+msgstr ""
+
+#: src/Settings.php:81
+msgid "VAT is required"
+msgstr ""
+
+#: src/Settings.php:94
+msgid "Validate VAT"
+msgstr ""
+
+#: src/Settings.php:107
+msgid "Failed validation handling"
+msgstr ""
+
+#: src/Settings.php:122
+msgid "Show VIES information"
+msgstr ""
+
+#: src/Settings.php:139
+msgid "In the section bellow you can change the VAT input behaviour."
+msgstr ""
+
+#: src/Settings.php:183
+msgid "Changes saved."
+msgstr ""
+
+#. Name of the plugin
+#: src/Settings.php:198 src/Menus/Admin.php:31
+msgid "Contribuinte Checkout"
+msgstr ""
+
+#: src/Activators/Install.php:15
+msgid "Requires WooCommerce 3.0.0 or above."
+msgstr ""
+
+#: src/Vies/Vies.php:58 src/Vies/Vies.php:74 src/Vies/Vies.php:95
+#: src/Vies/Vies.php:111 src/Vies/Vies.php:131 src/Vies/Vies.php:147
+msgid "VIES information"
+msgstr ""
+
+#: src/Vies/Vies.php:59 src/Vies/Vies.php:96 src/Vies/Vies.php:132
+msgid "Error fetching VIES  information"
+msgstr ""
+
+#. Description of the plugin
+msgid "Add VAT information to your orders"
+msgstr ""
+
+#. Author of the plugin
+msgid "Moloni.com"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://moloni.pt"
+msgstr ""

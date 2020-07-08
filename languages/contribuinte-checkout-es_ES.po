@@ -1,0 +1,112 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Contribuinte Checkout\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-08 11:49+0000\n"
+"PO-Revision-Date: 2020-07-08 12:04+0000\n"
+"Last-Translator: \n"
+"Language-Team: Spanish (Spain)\n"
+"Language: es_ES\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.4.0; wp-5.4.2"
+
+#: src/Plugin.php:131 src/Plugin.php:156 src/Plugin.php:174 src/Plugin.php:209
+#: src/Plugin.php:238 src/Settings.php:61 src/Menus/Admin.php:31
+msgid "VAT"
+msgstr "NIF/DNI"
+
+#: src/Plugin.php:132 src/Plugin.php:175 src/Settings.php:74
+msgid "VAT Number"
+msgstr "Número NIF/DNI "
+
+#: src/Plugin.php:299 src/Plugin.php:302 src/Plugin.php:334 src/Plugin.php:337
+msgid "You have entered an invalid VAT."
+msgstr "Has introducido un NIF/DNI no válido."
+
+#: src/Settings.php:27
+msgid "No"
+msgstr "No"
+
+#: src/Settings.php:28
+msgid "Yes"
+msgstr "Si"
+
+#: src/Settings.php:33
+msgid "Reject the order and show customer an error"
+msgstr "Rechazar el pedido y mostrar al cliente un error"
+
+#: src/Settings.php:34
+msgid "Only show customer an warning message"
+msgstr "Mostrar solo al cliente un mensaje de advertencia"
+
+#: src/Settings.php:47
+msgid "Main Settings"
+msgstr "Ajustes principales"
+
+#: src/Settings.php:55
+msgid "VAT field label"
+msgstr "Etiqueta de campo de NIF/DNI "
+
+#: src/Settings.php:68
+msgid "VAT field description"
+msgstr "Descripción del campo de NIF/DNI "
+
+#: src/Settings.php:81
+msgid "VAT is required"
+msgstr "Se requiere NIF/DNI "
+
+#: src/Settings.php:94
+msgid "Validate VAT"
+msgstr "Validar NIF/DNI"
+
+#: src/Settings.php:107
+msgid "Failed validation handling"
+msgstr "Manejo de validación fallido"
+
+#: src/Settings.php:122
+msgid "Show VIES information"
+msgstr "Mostrar información VIES"
+
+#: src/Settings.php:139
+msgid "In the section bellow you can change the VAT input behaviour."
+msgstr ""
+"En la sección siguiente puede cambiar el comportamiento de entrada del "
+"NIF/DNI."
+
+#: src/Settings.php:183
+msgid "Changes saved."
+msgstr "Cambios guardados."
+
+#. Name of the plugin
+#: src/Settings.php:198 src/Menus/Admin.php:31
+msgid "Contribuinte Checkout"
+msgstr "Contribuinte Checkout"
+
+#: src/Activators/Install.php:15
+msgid "Requires WooCommerce 3.0.0 or above."
+msgstr "Requiere WooCommerce 3.0.0 o superior."
+
+#: src/Vies/Vies.php:58 src/Vies/Vies.php:74 src/Vies/Vies.php:95
+#: src/Vies/Vies.php:111 src/Vies/Vies.php:131 src/Vies/Vies.php:147
+msgid "VIES information"
+msgstr "Información VIES"
+
+#: src/Vies/Vies.php:59 src/Vies/Vies.php:96 src/Vies/Vies.php:132
+msgid "Error fetching VIES  information"
+msgstr "Error al obtener información VIES"
+
+#. Description of the plugin
+msgid "Add VAT information to your orders"
+msgstr "Agregue información de NIF/DNI a sus pedidos"
+
+#. Author of the plugin
+msgid "Moloni.com"
+msgstr "Moloni.com"
+
+#. Author URI of the plugin
+msgid "https://moloni.pt"
+msgstr "https://moloni.pt"
