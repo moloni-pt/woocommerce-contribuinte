@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contribuinte Checkout
 Contributors: Moloni
-Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA
+Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
 Stable tag: 1.0.0
 Tested up to: 5.4.2
 Requires PHP: 5.6
@@ -14,7 +14,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 With this plugin you can add VAT and VIES support to your WooCommerce store. The VAT field will be saved as '_billing_vat'.
 
 **Important:** this plugin requires WooCommerce 3.0.0 or higher.
-**Warning:** to enable and use VIES information you have to have SOAP extension enabled (SoapClient PHP class).
+**Warning:** to enable and use VIES information you need to have SOAP extension enabled (SoapClient PHP class).
 
 == Features ==
 
