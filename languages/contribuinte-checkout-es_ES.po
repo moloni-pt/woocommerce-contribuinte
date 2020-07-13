@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Contribuinte Checkout\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-08 11:49+0000\n"
-"PO-Revision-Date: 2020-07-08 12:04+0000\n"
+"POT-Creation-Date: 2020-07-13 16:28+0000\n"
+"PO-Revision-Date: 2020-07-13 16:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: Spanish (Spain)\n"
 "Language: es_ES\n"
@@ -14,16 +14,20 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.4.0; wp-5.4.2"
 
-#: src/Plugin.php:131 src/Plugin.php:156 src/Plugin.php:174 src/Plugin.php:209
-#: src/Plugin.php:238 src/Settings.php:61 src/Menus/Admin.php:31
+#: src/Plugin.php:96
+msgid "Settings"
+msgstr "Configuraciones"
+
+#: src/Plugin.php:144 src/Plugin.php:169 src/Plugin.php:187 src/Plugin.php:222
+#: src/Plugin.php:251 src/Settings.php:61 src/Menus/Admin.php:31
 msgid "VAT"
 msgstr "NIF/DNI"
 
-#: src/Plugin.php:132 src/Plugin.php:175 src/Settings.php:74
+#: src/Plugin.php:145 src/Plugin.php:188 src/Settings.php:74
 msgid "VAT Number"
 msgstr "Número NIF/DNI "
 
-#: src/Plugin.php:299 src/Plugin.php:302 src/Plugin.php:334 src/Plugin.php:337
+#: src/Plugin.php:312 src/Plugin.php:315 src/Plugin.php:347 src/Plugin.php:350
 msgid "You have entered an invalid VAT."
 msgstr "Has introducido un NIF/DNI no válido."
 
@@ -104,8 +108,8 @@ msgid "Add VAT information to your orders"
 msgstr "Agregue información de NIF/DNI a sus pedidos"
 
 #. Author of the plugin
-msgid "Moloni.com"
-msgstr "Moloni.com"
+msgid "moloni.pt"
+msgstr "moloni.pt"
 
 #. Author URI of the plugin
 msgid "https://moloni.pt"
