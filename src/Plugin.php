@@ -17,7 +17,7 @@ class Plugin
      * Plugin version
      * @var string
      */
-    private $version = '1.0.2';
+    private $version = '1.0.3';
 
     /**
      * Settings options name
