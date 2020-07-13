@@ -66,6 +66,7 @@ class Plugin
         add_filter('woocommerce_email_customer_details_fields', [$this, 'woocommerceEmailCustomerDetailsFields'], 10, 3); //FRONT END: Add vat field to the email template
         add_filter('woocommerce_api_order_response', [$this, 'woocommerceApiOrderResponse'], 11, 2); //ADMIN: Add field to order when requested via API
         add_filter('woocommerce_api_customer_response', [$this, 'woocommerceApiCustomerResponse'], 10, 2); //ADMIN: Add field to customer when requested via API
+        add_filter('plugin_action_links_' . plugin_basename(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE), [$this, 'addActionLinks']); //Show settings link in plugins list
 
         //actions needed
         add_action('woocommerce_order_details_after_customer_details', [$this, 'woocommerceOrderDetailsAfterCustomerDetails']); //FRONT END: Add VAT info to order report
@@ -83,6 +84,18 @@ class Plugin
     {
         $settings = new Settings();
         $settings->renderPage();
+    }
+
+    /**
+     * Show settings link in plugins list
+     * @param $links
+     * @return array
+     */
+    function addActionLinks($links)
+    {
+        $links[] = '<a href="' . admin_url('admin.php?page=contribuintecheckout') . '">' . __('Settings', 'contribuinte-checkout') . '</a>';
+
+        return $links;
     }
 
     /**
