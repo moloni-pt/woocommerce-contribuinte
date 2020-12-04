@@ -146,7 +146,7 @@ class Plugin
             'required' => (int)$settings['drop_down_is_required'],
             'autocomplete' => 'on',
             'priority' => 120,
-            'maxlength' => 9,
+            'maxlength' => 20,
             'validate' => false
         ];
 
