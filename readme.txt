@@ -2,8 +2,8 @@
 Contribuinte Checkout
 Contributors: Moloni
 Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
-Stable tag: 1.0.4
-Tested up to: 5.5.3
+Stable tag: 1.0.41
+Tested up to: 5.7
 Requires PHP: 5.6
 Requires at least: 5.0
 License: GPLv2 or later
@@ -52,6 +52,11 @@ Via FTP
  Released version 1.0.0.
 
 == Changelog ==
+= 1.0.41 =
+* Tested up to version 5.7 of Wordpress.
+* Tested up to version 5.1.0 of WooCommerce.
+* Tested up to version 8.0 of PHP.
+
 = 1.0.4 =
 * Increased max char number for foreign customers
 
