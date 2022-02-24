@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Contribuinte Checkout\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-13 16:28+0000\n"
-"PO-Revision-Date: 2020-07-13 16:30+0000\n"
+"PO-Revision-Date: 2022-02-24 14:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: Português\n"
 "Language: pt_PT\n"
@@ -14,102 +14,107 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.4.0; wp-5.4.2"
 
-#: src/Plugin.php:96
-msgid "Settings"
-msgstr "Configurações"
+#. Description of the plugin
+msgid "Add VAT information to your orders"
+msgstr "Adicione informações de contribuinte aos seus pedidos"
 
-#: src/Plugin.php:144 src/Plugin.php:169 src/Plugin.php:187 src/Plugin.php:222
-#: src/Plugin.php:251 src/Settings.php:61 src/Menus/Admin.php:31
-msgid "VAT"
-msgstr "Contribuinte"
+#: src/Settings.php:196
+msgid "Changes saved."
+msgstr "Alterações guardadas."
 
-#: src/Plugin.php:145 src/Plugin.php:188 src/Settings.php:74
-msgid "VAT Number"
-msgstr "Número de contribuinte"
+#. Name of the plugin
+#: src/Settings.php:211 src/Menus/Admin.php:31
+msgid "Contribuinte Checkout"
+msgstr "Contribuinte Checkout"
 
-#: src/Plugin.php:312 src/Plugin.php:315 src/Plugin.php:347 src/Plugin.php:350
-msgid "You have entered an invalid VAT."
-msgstr "Você inseriu um contribuinte inválido."
+#: src/Vies/Vies.php:59 src/Vies/Vies.php:96 src/Vies/Vies.php:132
+msgid "Error fetching VIES  information"
+msgstr "Erro ao obter informações VIES"
 
-#: src/Settings.php:27
-msgid "No"
-msgstr "Não"
+#: src/Settings.php:120
+msgid "Failed validation handling"
+msgstr "Ação na falha da validação"
 
-#: src/Settings.php:28
-msgid "Yes"
-msgstr "Sim"
+#. Author URI of the plugin
+msgid "https://moloni.pt"
+msgstr "https://moloni.pt"
 
-#: src/Settings.php:33
-msgid "Reject the order and show customer an error"
-msgstr "Rejeitar o pedido e mostrar um erro"
-
-#: src/Settings.php:34
-msgid "Only show customer an warning message"
-msgstr "Mostrar apenas ao cliente um aviso"
+#: src/Settings.php:152
+msgid "In the section bellow you can change the VAT input behaviour."
+msgstr ""
+"Na seção abaixo, você pode alterar o comportamento do campo contribuinte. "
 
 #: src/Settings.php:47
 msgid "Main Settings"
 msgstr "Configurações principais"
 
-#: src/Settings.php:55
-msgid "VAT field label"
-msgstr "Etiqueta do contribuinte"
+#. Author of the plugin
+msgid "moloni.pt"
+msgstr "moloni.pt"
+
+#: src/Settings.php:27
+msgid "No"
+msgstr "Não"
+
+#: src/Settings.php:34
+msgid "Only show customer an warning message"
+msgstr "Mostrar apenas ao cliente um aviso"
+
+#: src/Settings.php:33
+msgid "Reject the order and show customer an error"
+msgstr "Rejeitar o pedido e mostrar um erro"
+
+#: src/Activators/Install.php:15
+msgid "Requires WooCommerce 3.0.0 or above."
+msgstr "Requer WooCommerce 3.0.0 ou superior."
+
+#: src/Plugin.php:106
+msgid "Settings"
+msgstr "Configurações"
+
+#: src/Settings.php:135
+msgid "Show VIES information"
+msgstr "Mostrar informações VIES"
+
+#: src/Settings.php:107
+msgid "Validate VAT"
+msgstr "Validar contribuinte"
+
+#: src/Plugin.php:151 src/Plugin.php:186 src/Plugin.php:204 src/Plugin.php:278
+#: src/Plugin.php:409 src/Plugin.php:433 src/Settings.php:61
+#: src/Menus/Admin.php:31
+msgid "VAT"
+msgstr "Contribuinte"
 
 #: src/Settings.php:68
 msgid "VAT field description"
 msgstr "Descrição do contribuinte"
 
+#: src/Settings.php:55
+msgid "VAT field label"
+msgstr "Etiqueta do contribuinte"
+
 #: src/Settings.php:81
 msgid "VAT is required"
 msgstr "Contribuinte obrigatório"
 
+#: src/Plugin.php:152 src/Plugin.php:205 src/Settings.php:74
+msgid "VAT Number"
+msgstr "Número de contribuinte"
+
 #: src/Settings.php:94
-msgid "Validate VAT"
-msgstr "Validar contribuinte"
-
-#: src/Settings.php:107
-msgid "Failed validation handling"
-msgstr "Ação na falha da validação"
-
-#: src/Settings.php:122
-msgid "Show VIES information"
-msgstr "Mostrar informações VIES"
-
-#: src/Settings.php:139
-msgid "In the section bellow you can change the VAT input behaviour."
-msgstr ""
-"Na seção abaixo, você pode alterar o comportamento do campo contribuinte. "
-
-#: src/Settings.php:183
-msgid "Changes saved."
-msgstr "Alterações guardadas."
-
-#. Name of the plugin
-#: src/Settings.php:198 src/Menus/Admin.php:31
-msgid "Contribuinte Checkout"
-msgstr "Contribuinte Checkout"
-
-#: src/Activators/Install.php:15
-msgid "Requires WooCommerce 3.0.0 or above."
-msgstr "Requer WooCommerce 3.0.0 ou superior."
+msgid "VAT required on orders over 1000€"
+msgstr "Contribuinte obrigatório em vendas superiores a 1000€"
 
 #: src/Vies/Vies.php:58 src/Vies/Vies.php:74 src/Vies/Vies.php:95
 #: src/Vies/Vies.php:111 src/Vies/Vies.php:131 src/Vies/Vies.php:147
 msgid "VIES information"
 msgstr "Informação VIES"
 
-#: src/Vies/Vies.php:59 src/Vies/Vies.php:96 src/Vies/Vies.php:132
-msgid "Error fetching VIES  information"
-msgstr "Erro ao obter informações VIES"
+#: src/Settings.php:28
+msgid "Yes"
+msgstr "Sim"
 
-#. Description of the plugin
-msgid "Add VAT information to your orders"
-msgstr "Adicione informações de contribuinte aos seus pedidos"
-
-#. Author of the plugin
-msgid "moloni.pt"
-msgstr "moloni.pt"
-
-#. Author URI of the plugin
-msgid "https://moloni.pt"
-msgstr "https://moloni.pt"
+#: src/Plugin.php:307 src/Plugin.php:310 src/Plugin.php:342 src/Plugin.php:345
+msgid "You have entered an invalid VAT."
+msgstr "Você inseriu um contribuinte inválido."
