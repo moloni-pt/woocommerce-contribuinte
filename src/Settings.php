@@ -88,6 +88,19 @@ class Settings
             ]
         );
 
+        //Show option to make VAT required on sales over 1000€
+        add_settings_field(
+            'drop_down_required_over_limit_price',
+            __('VAT required on orders over 1000€', 'contribuinte-checkout'),
+            [$this, 'settingDropdownRender'],
+            $this->page,
+            'main_section',
+            [
+                'id' => 'drop_down_required_over_limit_price',
+                'items' => $itemsYesNo
+            ]
+        );
+
         //Show option to validade VAT
         add_settings_field(
             'drop_down_validate_vat',
