@@ -66,7 +66,7 @@ class Plugin
         add_filter('woocommerce_ajax_get_customer_details', [$this, 'woocommerceAjaxGetCustomerDetails'], 10, 2); //ADMIN:Add field to ajax billing get_customer_details
         add_filter('woocommerce_api_order_response', [$this, 'woocommerceApiOrderResponse'], 11, 2); //ADMIN: Add field to order when requested via API
         add_filter('woocommerce_api_customer_response', [$this, 'woocommerceApiCustomerResponse'], 10, 2); //ADMIN: Add field to customer when requested via API
-        add_filter( 'woocommerce_order_get_formatted_billing_address' ,  [$this, 'woocommerceOrderGetFormattedBillingAddress'], 10, 3 ); // Append vat field to billing address
+        add_filter('woocommerce_order_get_formatted_billing_address' ,  [$this, 'woocommerceOrderGetFormattedBillingAddress'], 10, 3 ); // Append vat field to billing address
         add_filter('plugin_action_links_' . plugin_basename(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE), [$this, 'addActionLinks']); //Show settings link in plugins list
 
         //actions needed
@@ -142,12 +142,25 @@ class Plugin
     public function woocommerceBillingFields($fields)
     {
         $settings = get_option($this->settingsOptionsName);
+        $label = empty($settings['text_box_vat_field_label']) ? __('VAT', 'contribuinte-checkout') : $settings['text_box_vat_field_label'];
+        $placeholder = empty($settings['text_box_vat_field_description']) ? __('VAT Number', 'contribuinte-checkout') : $settings['text_box_vat_field_description'];
+        $isRequired = (int)$settings['drop_down_is_required'];
+        $isRequiredOverLimit = (int)$settings['drop_down_required_over_limit_price'];
+
+        // If hook is called during checkout and is required over limit
+        if ($isRequiredOverLimit > 0 && is_checkout()) {
+            $orderValue = WC()->cart->get_total('hook');
+
+            if ($orderValue > 1000) {
+                $isRequired = 1;
+            }
+        }
 
         $fields['billing_vat'] = [
             'type' => 'text',
-            'label' => empty($settings['text_box_vat_field_label']) ? __('VAT', 'contribuinte-checkout') : $settings['text_box_vat_field_label'],
-            'placeholder' => empty($settings['text_box_vat_field_description']) ? __('VAT Number', 'contribuinte-checkout') : $settings['text_box_vat_field_description'],
-            'required' => (int)$settings['drop_down_is_required'],
+            'label' => $label,
+            'placeholder' => $placeholder,
+            'required' => $isRequired,
             'autocomplete' => 'on',
             'priority' => 120,
             'maxlength' => 20,
@@ -286,7 +299,7 @@ class Plugin
             $billingCountry = sanitize_text_field(WC()->customer->get_billing_country());
 
             if ($billingCountry === 'PT') {
-                if ($this->validateVat($billingVAT) || ($billingVAT === '' && $isRequired === false)) {
+                if (($billingVAT === '' && $isRequired === false) || $this->validateVat($billingVAT)) {
                     //Validation passed
                 } else {
                     if ((int)$validationFail === 0) {
