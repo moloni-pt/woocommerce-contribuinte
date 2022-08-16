@@ -180,10 +180,20 @@ class Plugin
         global $post;
         //if the 'post' being added is an order
         if ($post->post_type === 'shop_order' || $post->post_type === 'shop_subscription') {
-            $settingsLabel = get_option($this->settingsOptionsName)['text_box_vat_field_label'];
+            $settings = get_option($this->settingsOptionsName);
+
+            if (!empty($settings) && isset($settings['text_box_vat_field_label']) && !empty($settings['text_box_vat_field_label'])) {
+                $settingsLabel = $settings['text_box_vat_field_label'];
+            } else {
+                $settingsLabel = __('VAT', 'contribuinte-checkout');
+            }
+
+            if (empty($billingFields)) {
+                $billingFields = [];
+            }
 
             $billingFields['vat'] = [
-                'label' => empty($settingsLabel) ? __('VAT', 'contribuinte-checkout') : $settingsLabel
+                'label' => $settingsLabel
             ];
         }
 
@@ -267,7 +277,13 @@ class Plugin
     public function woocommerceOrderGetFormattedBillingAddress($address, $rawAddress, $order)
     {
         $vat = $order->get_meta('_billing_vat');
-        $settingsLabel = get_option($this->settingsOptionsName)['text_box_vat_field_label'];
+        $settings = get_option($this->settingsOptionsName);
+
+        if (!empty($settings) && isset($settings['text_box_vat_field_label']) && !empty($settings['text_box_vat_field_label'])) {
+            $settingsLabel = $settings['text_box_vat_field_label'];
+        } else {
+            $settingsLabel = __('VAT', 'contribuinte-checkout');
+        }
 
         if (!empty($vat)) {
             if (empty($address)) {
@@ -275,7 +291,7 @@ class Plugin
             }
 
             $address .= '<br>';
-            $address .= empty($settingsLabel) ? __('VAT', 'contribuinte-checkout') : $settingsLabel;
+            $address .= $settingsLabel;
             $address .= ': ';
             $address .= $vat;
         }
@@ -355,7 +371,14 @@ class Plugin
      */
     public function woocommerceAdminOrderDataAfterBillingAddress($order)
     {
-        $showVies = (bool)get_option($this->settingsOptionsName)['drop_down_show_vies'];
+        $settings = get_option($this->settingsOptionsName);
+
+        if (!empty($settings) && isset($settings['drop_down_show_vies'])) {
+            $showVies = (bool)$settings['drop_down_show_vies'];
+        } else {
+            $showVies = false;
+        }
+
         $vat = $order->get_meta('_billing_vat');
         $country = $order->get_billing_country();
 
