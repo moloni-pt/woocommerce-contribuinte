@@ -13,10 +13,18 @@ class Vies
     private $url = 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
 
     /**
-     * Vies params
-     * @var array
+     * Country code
+     *
+     * @var string
      */
-    private $params;
+    private $countryCode;
+
+    /**
+     * Vat number
+     *
+     * @var string
+     */
+    private $vatNumber;
 
     /**
      * Vies constructor.
@@ -25,7 +33,10 @@ class Vies
      */
     public function __construct($countryCode, $vatNumber)
     {
-        $this->params = ['countryCode' => $countryCode, 'vatNumber' => $vatNumber];
+        $this->countryCode = $countryCode;
+        $this->vatNumber = $vatNumber;
+
+        $this->validateVat();
     }
 
     /**
@@ -36,7 +47,12 @@ class Vies
     {
         try {
             $client = new SoapClient($this->url);
-            $result = $client->__soapCall('checkVat', [$this->params]);
+            $result = $client->__soapCall('checkVat', [
+                [
+                    'countryCode' => $this->countryCode,
+                    'vatNumber' => $this->vatNumber
+                ]
+            ]);
         } catch (\SoapFault $exception) {
             //error validating VAT
             $result = $exception->getMessage();
@@ -44,6 +60,27 @@ class Vies
 
         return $result;
     }
+
+    //        Privates        //
+
+    /**
+     * Removes unneeded prefix from VAT
+     *
+     * @return void
+     */
+    private function validateVat()
+    {
+        if (!empty($this->countryCode) && !empty($this->vatNumber)) {
+            $codeLength = strlen($this->countryCode);
+            $vatStart = substr($this->vatNumber, 0, $codeLength);
+
+            if (strtoupper($vatStart) === strtoupper($this->countryCode)) {
+                $this->vatNumber = substr($this->vatNumber, $codeLength);
+            }
+        }
+    }
+
+    //        Renders        //
 
     /**
      * Renders VIES information
