@@ -4,15 +4,17 @@
 ![WordPress Plugin: Required PHP Version](https://img.shields.io/badge/php-%3E%3D5.6-blue)
 ![WordPress Plugin: Tested PHP Version](https://img.shields.io/badge/php-8.1%20tested-blue)
 ![WordPress Plugin: Required WP Version](https://img.shields.io/badge/WordPress-%3E%3D%205.0-orange)
-![WordPress Plugin: Tested WP Version](https://img.shields.io/badge/WordPress-6.0%20tested-orange)
+![WordPress Plugin: Tested WP Version](https://img.shields.io/badge/WordPress-6.1.1%20tested-orange)
+![WooCommerce: Required Version](https://img.shields.io/badge/WooCommerce-%3E%3D%203.0.0-orange)
+![WooCommerce: Tested Version](https://img.shields.io/badge/WooCommerce-7.2.0%20tested-orange)
 
 **Contributors:**       [moloni-pt](https://github.com/moloni-pt)  
-**Tested up to:**       6.0.0  
+**Tested up to:**       6.1.1  
 **Requires at least:**  5.0  
 **Requires PHP:**       5.6  
 **PHP tested up to:**   8.1  
 **Tags:**               Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF  
-**Stable tag:**         1.0.43  
+**Stable tag:**         1.0.44  
 **License:**            GPLv2 or later    
 **License URI:**        [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)  
 
@@ -59,6 +61,12 @@ Via FTP
 Released version 1.0.0.
 
 ## Changelog
+### 1.0.44
+* Remove vat prefix from Vies verification.
+* Tested up to version 6.1.1 of Wordpress.
+* Tested up to version 7.2.0 of WooCommerce.
+* Tested up to version 8.1 of PHP.
+
 ### 1.0.43
 * New setting to make VAT field required on orders over 1000€
 * Tested up to version 5.9.1 of Wordpress.

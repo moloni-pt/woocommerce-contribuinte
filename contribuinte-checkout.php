@@ -3,7 +3,7 @@
  *
  *   Plugin Name:  Contribuinte Checkout
  *   Description:  Add VAT information to your orders
- *   Version:      1.0.42
+ *   Version:      1.0.44
  *   Author:       moloni.pt
  *   Author URI:   https://moloni.pt
  *   License:      GPL2
