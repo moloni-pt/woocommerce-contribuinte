@@ -4,6 +4,8 @@ Contributors: Moloni
 Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
 Stable tag: 1.0.44
 Tested up to: 6.1.1
+WC tested up to: 7.2.2
+
 Requires PHP: 5.6
 Requires at least: 5.0
 License: GPLv2 or later
@@ -53,6 +55,7 @@ Via FTP
 
 == Changelog ==
 = 1.0.44 =
+* Added HPOS compatibility.
 * Remove vat prefix from Vies verification.
 * Tested up to version 6.1.1 of Wordpress.
 * Tested up to version 7.2.0 of WooCommerce.

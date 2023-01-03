@@ -10,6 +10,7 @@
 
 **Contributors:**       [moloni-pt](https://github.com/moloni-pt)  
 **Tested up to:**       6.1.1  
+**WC tested up to**     7.2.2  
 **Requires at least:**  5.0  
 **Requires PHP:**       5.6  
 **PHP tested up to:**   8.1  
@@ -62,9 +63,10 @@ Released version 1.0.0.
 
 ## Changelog
 ### 1.0.44
+* Added HPOS compatibility.
 * Remove vat prefix from Vies verification.
 * Tested up to version 6.1.1 of Wordpress.
-* Tested up to version 7.2.0 of WooCommerce.
+* Tested up to version 7.2.2 of WooCommerce.
 * Tested up to version 8.1 of PHP.
 
 ### 1.0.43
