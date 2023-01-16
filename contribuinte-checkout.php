@@ -3,14 +3,16 @@
  *
  *   Plugin Name:  Contribuinte Checkout
  *   Description:  Add VAT information to your orders
- *   Version:      1.0.42
+ *   Version:      1.0.44
+ *   Tested up to: 6.1.1
+ *   WC tested up to: 7.2.2
+ *
  *   Author:       moloni.pt
  *   Author URI:   https://moloni.pt
  *   License:      GPL2
  *   License URI:  https://www.gnu.org/licenses/gpl-2.0.html
  *   Text Domain:  contribuinte-checkout
  *   Domain Path:  /languages
- *
  */
 
 namespace Checkout\Contribuinte;

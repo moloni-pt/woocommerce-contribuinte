@@ -2,9 +2,11 @@
 
 namespace Checkout\Contribuinte;
 
-use Checkout\Contribuinte\Menus\Admin;
-use Checkout\Contribuinte\Vies\Vies;
 use WC_Order;
+use Checkout\Contribuinte\Vies\Vies;
+use Checkout\Contribuinte\Menus\Admin;
+use Checkout\Contribuinte\Helpers\Context;
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 class Plugin
 {
@@ -18,7 +20,7 @@ class Plugin
      * Plugin version
      * @var string
      */
-    private $version = '1.0.42';
+    private $version = '1.0.44';
 
     /**
      * Settings options name
@@ -51,7 +53,7 @@ class Plugin
     public function actions()
     {
         new Translations(); //Loads translations
-        new Admin($this); //Add options page inside wordpress settings
+        new Admin($this); //Add options page inside WordPress settings
     }
 
     /**
@@ -70,6 +72,7 @@ class Plugin
         add_filter('plugin_action_links_' . plugin_basename(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE), [$this, 'addActionLinks']); //Show settings link in plugins list
 
         //actions needed
+        add_action('before_woocommerce_init', [$this, 'beforeWoocommerceInit']); // CORE: Confirm HPOS compatibility
         add_action('woocommerce_checkout_process', [$this, 'woocommerceCheckoutProcess']); //FRONT END: Verify VAT if set in settings
         add_action('woocommerce_after_save_address_validation', [$this, 'woocommerceAfterSaveAddressValidation'], 10, 3); //FRONT END: Verify VAT if set in settings
         add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'woocommerceAdminOrderDataAfterBillingAddress']); //ADMIN: Show  vies information on admin order page under billing address.
@@ -172,18 +175,32 @@ class Plugin
 
     /**
      * Add field to order page
+     *
      * @param $billingFields
+     *
      * @return array
      */
     public function woocommerceAdminBillingFields($billingFields)
     {
         global $post;
-        //if the 'post' being added is an order
-        if ($post->post_type === 'shop_order' || $post->post_type === 'shop_subscription') {
-            $settingsLabel = get_option($this->settingsOptionsName)['text_box_vat_field_label'];
+
+        $isLegacyOrderType = !empty($post) && ($post->post_type === 'shop_order' || $post->post_type === 'shop_subscription');
+
+        if (Context::isNewOrdersSystemEnabled() || $isLegacyOrderType) {
+            $settings = get_option($this->settingsOptionsName);
+
+            if (!empty($settings) && isset($settings['text_box_vat_field_label']) && !empty($settings['text_box_vat_field_label'])) {
+                $settingsLabel = $settings['text_box_vat_field_label'];
+            } else {
+                $settingsLabel = __('VAT', 'contribuinte-checkout');
+            }
+
+            if (empty($billingFields)) {
+                $billingFields = [];
+            }
 
             $billingFields['vat'] = [
-                'label' => empty($settingsLabel) ? __('VAT', 'contribuinte-checkout') : $settingsLabel
+                'label' => $settingsLabel
             ];
         }
 
@@ -267,7 +284,13 @@ class Plugin
     public function woocommerceOrderGetFormattedBillingAddress($address, $rawAddress, $order)
     {
         $vat = $order->get_meta('_billing_vat');
-        $settingsLabel = get_option($this->settingsOptionsName)['text_box_vat_field_label'];
+        $settings = get_option($this->settingsOptionsName);
+
+        if (!empty($settings) && isset($settings['text_box_vat_field_label']) && !empty($settings['text_box_vat_field_label'])) {
+            $settingsLabel = $settings['text_box_vat_field_label'];
+        } else {
+            $settingsLabel = __('VAT', 'contribuinte-checkout');
+        }
 
         if (!empty($vat)) {
             if (empty($address)) {
@@ -275,12 +298,26 @@ class Plugin
             }
 
             $address .= '<br>';
-            $address .= empty($settingsLabel) ? __('VAT', 'contribuinte-checkout') : $settingsLabel;
+            $address .= $settingsLabel;
             $address .= ': ';
             $address .= $vat;
         }
 
         return $address;
+    }
+
+    /**
+     * Set plugin as HPOS compatible
+     *
+     * @see https://github.com/woocommerce/woocommerce/wiki/High-Performance-Order-Storage-Upgrade-Recipe-Book#declaring-extension-incompatibility
+     *
+     * @return void
+     */
+    public function beforeWoocommerceInit()
+    {
+        if (class_exists(FeaturesUtil::class)) {
+            FeaturesUtil::declare_compatibility('custom_order_tables', CONTRIBUINTE_CHECKOUT_PLUGIN_FILE, true);
+        }
     }
 
     /**
@@ -351,11 +388,19 @@ class Plugin
 
     /**
      * Show VIES information under billing address in admin order page
+     *
      * @param $order
      */
     public function woocommerceAdminOrderDataAfterBillingAddress($order)
     {
-        $showVies = (bool)get_option($this->settingsOptionsName)['drop_down_show_vies'];
+        $settings = get_option($this->settingsOptionsName);
+
+        if (!empty($settings) && isset($settings['drop_down_show_vies'])) {
+            $showVies = (bool)$settings['drop_down_show_vies'];
+        } else {
+            $showVies = false;
+        }
+
         $vat = $order->get_meta('_billing_vat');
         $country = $order->get_billing_country();
 

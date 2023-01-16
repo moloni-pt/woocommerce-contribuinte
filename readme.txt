@@ -2,8 +2,10 @@
 Contribuinte Checkout
 Contributors: Moloni
 Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
-Stable tag: 1.0.43
-Tested up to: 5.9.1
+Stable tag: 1.0.44
+Tested up to: 6.1.1
+WC tested up to: 7.2.2
+
 Requires PHP: 5.6
 Requires at least: 5.0
 License: GPLv2 or later
@@ -52,6 +54,13 @@ Via FTP
  Released version 1.0.0.
 
 == Changelog ==
+= 1.0.44 =
+* Added HPOS compatibility.
+* Remove vat prefix from Vies verification.
+* Tested up to version 6.1.1 of Wordpress.
+* Tested up to version 7.2.0 of WooCommerce.
+* Tested up to version 8.1 of PHP.
+
 = 1.0.43 =
 * New setting to make VAT field required on orders over 1000€
 * Tested up to version 5.9.1 of Wordpress.
