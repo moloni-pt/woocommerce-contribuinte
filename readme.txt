@@ -2,7 +2,7 @@
 Contribuinte Checkout
 Contributors: Moloni
 Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
-Stable tag: 1.0.44
+Stable tag: 1.0.45
 Tested up to: 6.1.1
 WC tested up to: 7.2.2
 
@@ -54,6 +54,9 @@ Via FTP
  Released version 1.0.0.
 
 == Changelog ==
+= 1.0.45 =
+* Fix undefined settings warning.
+
 = 1.0.44 =
 * Added HPOS compatibility.
 * Remove vat prefix from Vies verification.

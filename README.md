@@ -15,7 +15,7 @@
 **Requires PHP:**       5.6  
 **PHP tested up to:**   8.1  
 **Tags:**               Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF  
-**Stable tag:**         1.0.44  
+**Stable tag:**         1.0.45  
 **License:**            GPLv2 or later    
 **License URI:**        [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)  
 
@@ -62,6 +62,9 @@ Via FTP
 Released version 1.0.0.
 
 ## Changelog
+### 1.0.45
+* Fix undefined settings warning.
+
 ### 1.0.44
 * Added HPOS compatibility.
 * Remove vat prefix from Vies verification.
