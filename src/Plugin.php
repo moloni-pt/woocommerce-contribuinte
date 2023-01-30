@@ -145,10 +145,19 @@ class Plugin
     public function woocommerceBillingFields($fields)
     {
         $settings = get_option($this->settingsOptionsName);
-        $label = empty($settings['text_box_vat_field_label']) ? __('VAT', 'contribuinte-checkout') : $settings['text_box_vat_field_label'];
-        $placeholder = empty($settings['text_box_vat_field_description']) ? __('VAT Number', 'contribuinte-checkout') : $settings['text_box_vat_field_description'];
-        $isRequired = (int)$settings['drop_down_is_required'];
-        $isRequiredOverLimit = (int)$settings['drop_down_required_over_limit_price'];
+
+        // We should only apply settings if settings are already defined
+        if (is_array($settings)) {
+            $label = empty($settings['text_box_vat_field_label']) ? __('VAT', 'contribuinte-checkout') : $settings['text_box_vat_field_label'];
+            $placeholder = empty($settings['text_box_vat_field_description']) ? __('VAT Number', 'contribuinte-checkout') : $settings['text_box_vat_field_description'];
+            $isRequired = (int)$settings['drop_down_is_required'];
+            $isRequiredOverLimit = (int)$settings['drop_down_required_over_limit_price'];
+        } else {
+            $label = __('VAT', 'contribuinte-checkout');
+            $placeholder = __('VAT Number', 'contribuinte-checkout');
+            $isRequired = 0;
+            $isRequiredOverLimit = 0;
+        }
 
         // If hook is called during checkout and is required over limit
         if ($isRequiredOverLimit > 0 && is_checkout()) {
