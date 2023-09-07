@@ -2,9 +2,9 @@
 Contribuinte Checkout
 Contributors: Moloni
 Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
-Stable tag: 1.0.46
-Tested up to: 6.2.0
-WC tested up to: 7.5.1
+Stable tag: 1.0.50
+Tested up to: 6.3.0
+WC tested up to: 8.0.2
 
 Requires PHP: 5.6
 Requires at least: 5.0
@@ -54,6 +54,11 @@ Via FTP
  Released version 1.0.0.
 
 == Changelog ==
+= 1.0.50 =
+* Added live VAT validation in checkout and billing address edit.
+* Tested up to version 6.3.0 of Wordpress.
+* Tested up to version 8.0.2 of WooCommerce.
+
 = 1.0.46 =
 * Updated image and banner.
 * Tested up to version 6.2.0 of Wordpress.
