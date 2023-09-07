@@ -460,6 +460,11 @@ class Plugin
         $vies->getViesForAfterEditAccountAddressForm($result);
     }
 
+    /**
+     * Draw in WordPress footer
+     *
+     * @return void
+     */
     public function wpFooter()
     {
         if (!$this->injectValidationInFooter) {
@@ -533,7 +538,9 @@ class Plugin
                         }
                     }
 
-                    $('body').on('change', 'input#billing_vat', onInputChange);
+                    vatInput.on('change validate', function () {
+                        setTimeout(onInputChange, 100);
+                    });
                 });
             }
         </script>
