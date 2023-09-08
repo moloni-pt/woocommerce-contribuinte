@@ -511,11 +511,7 @@ class Plugin
                     }
 
                     function onInputChange() {
-                        var value = vatInput.val().toString().trim().toLowerCase();
-
-                        if (value.lastIndexOf('pt', 0) === 0) {
-                            value = value.substring(2).trim();
-                        }
+                        var value = vatInput.val().toString().trim();
 
                         if (contryCode.val() !== 'PT' || value === '') {
                             wrapper.removeClass('woocommerce-validated');
