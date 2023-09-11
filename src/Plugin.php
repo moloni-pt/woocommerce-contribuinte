@@ -471,6 +471,10 @@ class Plugin
             return;
         }
 
+        if (!is_checkout()) {
+            return;
+        }
+
         ?>
         <script>
             if (jQuery) {
