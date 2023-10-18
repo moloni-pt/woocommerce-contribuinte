@@ -24,6 +24,7 @@ if (!defined('ABSPATH')) {
 
 //Starts autoloader, gets namespaces
 $composer_autoloader = __DIR__ . '/vendor/autoload.php';
+
 if (is_readable($composer_autoloader)) {
     /** @noinspection PhpIncludeInspection */
     require $composer_autoloader;
@@ -36,6 +37,9 @@ if (!defined('CONTRIBUINTE_CHECKOUT_PLUGIN_FILE')) {
 
 //Register installation hook to run Install class static method (run())
 register_activation_hook(__FILE__, 'Checkout\Contribuinte\Activators\Install::run');
+
+//Register scripts to enqueue
+add_action('admin_enqueue_scripts', 'Checkout\Contribuinte\Scripts\Enqueue::defines');
 
 //Start this plugin
 add_action('plugins_loaded', 'Checkout\Contribuinte\Plugin::init');

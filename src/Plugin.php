@@ -6,6 +6,7 @@ use WC_Order;
 use Checkout\Contribuinte\Vies\Vies;
 use Checkout\Contribuinte\Menus\Admin;
 use Checkout\Contribuinte\Helpers\Context;
+use Checkout\Contribuinte\Enums\VatIsRequired;
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 class Plugin
@@ -156,20 +157,48 @@ class Plugin
             $isRequired = (int)$settings['drop_down_is_required'];
             $isRequiredOverLimit = (int)$settings['drop_down_required_over_limit_price'];
             $validateVat = (bool)$settings['drop_down_validate_vat'];
+            $countriesRequired = empty($settings['drop_down_is_required_countries']) ? [] : json_decode($settings['drop_down_is_required_countries']);
         } else {
             $label = __('VAT', 'contribuinte-checkout');
             $placeholder = __('VAT Number', 'contribuinte-checkout');
-            $isRequired = 0;
+            $isRequired = VatIsRequired::NO;
             $isRequiredOverLimit = 0;
             $validateVat = false;
+            $countriesRequired = [];
         }
 
-        // If hook is called during checkout and is required over limit
-        if ($isRequiredOverLimit > 0 && is_checkout()) {
-            $orderValue = WC()->cart->get_total('hook');
+        switch ($isRequired) {
+            case VatIsRequired::YES:
+                $isFieldRequired = true;
+                break;
+            case VatIsRequired::IN_SELECTED_COUNTRIES:
+                $isFieldRequired = false;
 
-            if ($orderValue > 1000) {
-                $isRequired = 1;
+                if (isset($_POST['billing_country'])) {
+                    $orderBillingCountry = sanitize_text_field($_POST['billing_country']);
+                } else {
+                    $orderBillingCountry = WC()->customer->get_billing_country();
+                }
+
+                if (!empty($orderBillingCountry) && !empty($countriesRequired) && in_array($orderBillingCountry, $countriesRequired, true)) {
+                    $isFieldRequired = true;
+                }
+
+                break;
+            default:
+            case VatIsRequired::NO:
+                $isFieldRequired = false;
+                break;
+        }
+
+        // If hook is called during checkout
+        if (is_checkout()) {
+            if (!$isFieldRequired && !empty($isRequiredOverLimit)) {
+                $orderValue = WC()->cart->get_total('hook');
+
+                if ($orderValue > 1000) {
+                    $isFieldRequired = true;
+                }
             }
         }
 
@@ -181,7 +210,7 @@ class Plugin
             'type' => 'text',
             'label' => $label,
             'placeholder' => $placeholder,
-            'required' => $isRequired,
+            'required' => $isFieldRequired,
             'autocomplete' => 'on',
             'priority' => 120,
             'maxlength' => 20,
@@ -347,35 +376,57 @@ class Plugin
         $settings = get_option($this->settingsOptionsName);
 
         $validateVat = (bool)$settings['drop_down_validate_vat'];
-        $isRequired = (bool)$settings['drop_down_is_required'];
+        $isRequired = (int)$settings['drop_down_is_required'];
         $validationFail = (bool)$settings['drop_down_on_validation_fail'];
+        $countriesRequired = empty($settings['drop_down_is_required_countries']) ? [] : json_decode($settings['drop_down_is_required_countries']);
 
-        if ($validateVat) {
-            $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
-            $billingCountry = sanitize_text_field(WC()->customer->get_billing_country());
+        $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
+        $billingCountry = sanitize_text_field(WC()->customer->get_billing_country());
 
-            if ($billingCountry === 'PT') {
-                if (($billingVAT === '' && $isRequired === false) || $this->validateVat($billingVAT)) {
-                    //Validation passed
-                } else {
-                    $identifier = [
-                        'id' => 'billing_vat'
-                    ];
+        switch ($isRequired) {
+            case VatIsRequired::YES:
+                $isFieldRequired = true;
+                break;
+            case VatIsRequired::IN_SELECTED_COUNTRIES:
+                $isFieldRequired = false;
 
-                    if ((int)$validationFail === 0) {
-                        //add error
-                        wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'error', $identifier);
-                    } else {
-                        //ads notice
-                        wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'notice', $identifier);
-                    }
+                if (!empty($billingCountry) && !empty($countriesRequired) && in_array($billingCountry, $countriesRequired, true)) {
+                    $isFieldRequired = true;
                 }
+
+                break;
+            default:
+            case VatIsRequired::NO:
+                $isFieldRequired = false;
+                break;
+        }
+
+        if ($validateVat && $billingCountry === 'PT') {
+            if ($billingVAT === '' && $isFieldRequired === false) {
+                return;
+            }
+
+            if ($this->validateVat($billingVAT)) {
+                return;
+            }
+
+            $identifier = [
+                'id' => 'billing_vat'
+            ];
+
+            if ((int)$validationFail === 0) {
+                //add error
+                wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'error', $identifier);
+            } else {
+                //ads notice
+                wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'notice', $identifier);
             }
         }
     }
 
     /**
      * Verify VAT if set in settings adter saving the billing address
+     *
      * @param $userId
      * @param $loadAddress
      * @param $address
@@ -385,30 +436,50 @@ class Plugin
         $settings = get_option($this->settingsOptionsName);
 
         $validateVat = (bool)$settings['drop_down_validate_vat'];
-        $isRequired = (bool)$settings['drop_down_is_required'];
+        $isRequired = (int)$settings['drop_down_is_required'];
         $validationFail = (bool)$settings['drop_down_on_validation_fail'];
+        $countriesRequired = empty($settings['drop_down_is_required_countries']) ? [] : json_decode($settings['drop_down_is_required_countries']);
 
-        if (($loadAddress === 'billing') && $validateVat) {
+        $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
+        $billingCountry = sanitize_text_field(isset($_POST['billing_country']) ? $_POST['billing_country'] : '');
 
-            $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
-            $billingCountry = sanitize_text_field(isset($_POST['billing_country']) ? $_POST['billing_country'] : '');
+        switch ($isRequired) {
+            case VatIsRequired::YES:
+                $isFieldRequired = true;
+                break;
+            case VatIsRequired::IN_SELECTED_COUNTRIES:
+                $isFieldRequired = false;
 
-            if ($billingCountry === 'PT') {
-                if ($this->validateVat($billingVAT) || ($billingVAT === '' && $isRequired === false)) {
-                    //Validation passed
-                } else {
-                    $identifier = [
-                        'id' => 'billing_vat'
-                    ];
-
-                    if ((int)$validationFail === 0) {
-                        //adds error
-                        wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'error', $identifier);
-                    } else {
-                        //adds notice
-                        wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'notice', $identifier);
-                    }
+                if (!empty($billingCountry) && !empty($countriesRequired) && in_array($billingCountry, $countriesRequired, true)) {
+                    $isFieldRequired = true;
                 }
+
+                break;
+            default:
+            case VatIsRequired::NO:
+                $isFieldRequired = false;
+                break;
+        }
+
+        if ($validateVat && $loadAddress === 'billing' && $billingCountry === 'PT') {
+            if ($billingVAT === '' && $isFieldRequired === false) {
+                return;
+            }
+
+            if ($this->validateVat($billingVAT)) {
+                return;
+            }
+
+            $identifier = [
+                'id' => 'billing_vat'
+            ];
+
+            if ((int)$validationFail === 0) {
+                //adds error
+                wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'error', $identifier);
+            } else {
+                //adds notice
+                wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'notice', $identifier);
             }
         }
     }

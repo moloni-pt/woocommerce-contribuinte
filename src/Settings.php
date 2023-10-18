@@ -2,6 +2,8 @@
 
 namespace Checkout\Contribuinte;
 
+use Checkout\Contribuinte\Enums\VatIsRequired;
+
 class Settings
 {
     /**
@@ -32,6 +34,13 @@ class Settings
         $itemsErrorHandling = [
             '0' => __('Reject the order and show customer an error', 'contribuinte-checkout'),
             '1' => __('Only show customer an warning message', 'contribuinte-checkout')
+        ];
+
+        //DropdownList items for VAT requirement
+        $itemsIsRequired = [
+            VatIsRequired::NO => __('No', 'contribuinte-checkout'),
+            VatIsRequired::YES => __('Yes', 'contribuinte-checkout'),
+            VatIsRequired::IN_SELECTED_COUNTRIES => __('In selected countries', 'contribuinte-checkout'),
         ];
 
         //Add new settings
@@ -84,7 +93,20 @@ class Settings
             'main_section',
             [
                 'id' => 'drop_down_is_required',
-                'items' => $itemsYesNo
+                'items' => $itemsIsRequired
+            ]
+        );
+
+        //Show option to make VAT required for countries
+        add_settings_field(
+            'drop_down_is_required_countries',
+            __('Countries with VAT required', 'contribuinte-checkout'),
+            [$this, 'settingMultipleDropdownRender'],
+            $this->page,
+            'main_section',
+            [
+                'id' => 'drop_down_is_required_countries',
+                'items' => WC()->countries->get_countries()
             ]
         );
 
@@ -171,12 +193,38 @@ class Settings
     }
 
     /**
+     * Renders the dropdown field
+     * @param array $args array format: ['id' => 'field unique identifier']
+     */
+    public function settingMultipleDropdownRender($args)
+    {
+        $options = get_option($this->optionsName);
+
+        if (!isset($options[$args['id']])) {
+            $thisSettingValues = [];
+        } else {
+            $thisSettingValues = json_decode($options[$args['id']]);
+        }
+
+        echo "<select multiple='multiple' class='moloni-multiple-select' id='" . $args['id'] . "' name='" . $this->optionsName . "[" . $args['id'] . "][]' style='min-width: 330px;'>";
+
+        foreach ($args['items'] as $key => $value) {
+            $selected = (in_array($key, $thisSettingValues, true)) ? 'selected="selected"' : '';
+
+            echo "<option value='$key' $selected> $value </option>";
+        }
+
+        echo "</select>";
+    }
+
+    /**
      * Renders the textbox field
      * @param $args
      */
     public function settingTextBox($args)
     {
         $options = get_option($this->optionsName);
+
         if (!empty($options[$args['id']])) {
             $value = $options[$args['id']];
         } else {
@@ -195,10 +243,12 @@ class Settings
         if (isset($_POST[$this->optionsName])) {
             add_settings_error($this->optionsName, 'settings_updated', __('Changes saved.', 'contribuinte-checkout'), 'updated');
 
+            $sanitizedSettings = $this->sanitizeSettings($_POST[$this->optionsName]);
+
             if (get_option($this->optionsName) === false) {
-                add_option($this->optionsName, $this->sanitizeSettings($_POST[$this->optionsName]));
+                add_option($this->optionsName, $sanitizedSettings);
             } else {
-                update_option($this->optionsName, $this->sanitizeSettings($_POST[$this->optionsName]));
+                update_option($this->optionsName, $sanitizedSettings);
             }
         }
 
@@ -213,6 +263,11 @@ class Settings
                 <?php settings_fields($this->optionsName); ?>
                 <?php do_settings_sections($this->page); ?>
                 <?php submit_button(); ?>
+                <script>
+                    jQuery(document).ready(function() {
+                        Checkout.Settings.init();
+                    });
+                </script>
             </form>
         </div>
         <?php
@@ -228,6 +283,14 @@ class Settings
         foreach ($inputArray as $key => $value) {
             if (is_numeric($value)) {
                 $inputArray[$key] = (int)sanitize_text_field($value);
+            }elseif (is_array($value)){
+                $sanitizedArray = [];
+
+                foreach ($value as $val) {
+                    $sanitizedArray[] = sanitize_text_field($val);
+                }
+
+                $inputArray[$key] = json_encode($sanitizedArray);
             } else {
                 $inputArray[$key] = sanitize_text_field($value);
             }
