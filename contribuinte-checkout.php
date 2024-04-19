@@ -34,8 +34,15 @@ if (!defined('CONTRIBUINTE_CHECKOUT_PLUGIN_FILE')) {
     define('CONTRIBUINTE_CHECKOUT_PLUGIN_FILE', __FILE__);
 }
 
-//Register installation hook to run Install class static method (run())
+if (!defined('CONTRIBUINTE_CHECKOUT_DIR')) {
+    define('CONTRIBUINTE_CHECKOUT_DIR', __DIR__);
+}
+
+// Register installation hook to run Install class static method (run())
 register_activation_hook(__FILE__, 'Checkout\Contribuinte\Activators\Install::run');
 
-//Start this plugin
+// Start this plugin
 add_action('plugins_loaded', 'Checkout\Contribuinte\Plugin::init');
+
+// Registers the block
+add_action('init', 'Checkout\Contribuinte\Block::init');

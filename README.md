@@ -48,7 +48,7 @@ With this plugin you can add VAT and VIES support to your WooCommerce store. The
 This plugin can be installed via FTP or using the Wordpress plugin installer.
 
 Via FTP
-1. Upload the plugin files to the `/wp-content/plugins/woocommerce-contribuinte` directory
+1. Upload the plugin files to the `/wp-content/plugins/contribuinte-checkout` directory
 2. Activate the plugin through the `Plugins` option visible in WordPress
 
 ## Screenshots

@@ -1,7 +1,7 @@
 === Contribuinte Checkout ===
 Contributors: Moloni
 Requires Plugins: woocommerce
-Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
+Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF, block
 Stable tag: 1.0.50
 Tested up to: 6.3.0
 WC tested up to: 8.0.2
@@ -40,7 +40,7 @@ With this plugin you can add VAT and VIES support to your WooCommerce store. The
 This plugin can be installed via FTP or using the Wordpress plugin installer.
 
 Via FTP
-1. Upload the plugin files to the `/wp-content/plugins/woocommerce-contribuinte` directory
+1. Upload the plugin files to the `/wp-content/plugins/contribuinte-checkout` directory
 2. Activate the plugin through the `Plugins` option visible in WordPress
 
 == Screenshots ==
