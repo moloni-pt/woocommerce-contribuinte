@@ -11,18 +11,6 @@ use Automattic\WooCommerce\Utilities\FeaturesUtil;
 class Plugin
 {
     /**
-     * Plugin name
-     * @var string
-     */
-    private $pluginName = 'contribuinte-checkout';
-
-    /**
-     * Plugin version
-     * @var string
-     */
-    private $version = '1.0.45';
-
-    /**
      * Settings options name
      * @var string
      */

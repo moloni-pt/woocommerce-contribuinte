@@ -5,8 +5,8 @@
   "type": "wordpress-plugin",
   "authors": [
     {
-      "name": "Nuno Almeida",
-      "email": "nuno@moloni.com"
+      "name": "Moloni",
+      "email": "plugins@moloni.com"
     }
   ],
   "require": {

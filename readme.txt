@@ -1,6 +1,6 @@
-=== Plugin Name ===
-Contribuinte Checkout
+=== Contribuinte Checkout ===
 Contributors: Moloni
+Requires Plugins: woocommerce
 Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
 Stable tag: 1.0.50
 Tested up to: 6.3.0
