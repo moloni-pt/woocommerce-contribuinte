@@ -5,7 +5,6 @@
 	"version": "0.1.0",
 	"title": "Checkout block",
 	"category": "contribuinte-checkout-category",
-	"icon": "smiley",
 	"description": "Add fiscal section to checkout.",
 	"example": {},
 	"supports": {

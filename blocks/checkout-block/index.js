@@ -20,24 +20,32 @@ import './style.scss';
 import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
-import BlockIcon from "../common/BlockIcon";
+import BlockIcon from "../common/icons/BlockIcon";
+import setCategoryIcon from "../common/utils/setCategoryIcon"
+
+/**
+ * Set our category icon
+ *
+ * @see https://mediaron.com/adding-icons-for-your-gutenberg-categories/
+ */
+setCategoryIcon();
 
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( metadata.name, {
-	icon: {
-		src: BlockIcon
-	},
-	/**
-	 * @see ./edit.js
-	 */
-	edit: Edit,
+registerBlockType(metadata.name, {
+    icon: {
+        src: BlockIcon
+    },
+    /**
+     * @see ./edit.js
+     */
+    edit: Edit,
 
-	/**
-	 * @see ./save.js
-	 */
-	save,
-} );
+    /**
+     * @see ./save.js
+     */
+    save,
+});

@@ -2,8 +2,6 @@
 
 namespace Checkout\Contribuinte;
 
-use WP_Block_Editor_Context;
-
 class Block
 {
     public function __construct()
@@ -17,6 +15,13 @@ class Block
         return new (__CLASS__);
     }
 
+    /**
+     * Register blocks
+     *
+     * @see https://developer.wordpress.org/reference/functions/register_block_type/
+     *
+     * @return void
+     */
     private function registerBlock()
     {
         $blocks = [
@@ -28,13 +33,21 @@ class Block
         }
     }
 
+    /**
+     * Register category
+     *
+     * @see https://developer.wordpress.org/reference/hooks/block_categories/
+     * @see https://developer.wordpress.org/reference/hooks/block_categories_all/
+     *
+     * @return void
+     */
     private function registerCategory()
     {
         $callback = function ($block_categories) {
             $category = [
                 'slug' => 'contribuinte-checkout-category',
                 'title' => __('Contribuinte Checkout', 'contribuinte-checkout'),
-                'icon' => 'contribuinte-checkout-icon',
+                'icon' => null,
             ];
 
             if (is_array($block_categories)) {

@@ -29,7 +29,10 @@ if (is_readable($composer_autoloader)) {
     require $composer_autoloader;
 }
 
-//Define file variable to be used to load translations
+if (!defined('CONTRIBUINTE_CHECKOUT_VERSION')) {
+    define( 'CONTRIBUINTE_CHECKOUT_VERSION', '2.0.0' );
+}
+
 if (!defined('CONTRIBUINTE_CHECKOUT_PLUGIN_FILE')) {
     define('CONTRIBUINTE_CHECKOUT_PLUGIN_FILE', __FILE__);
 }
