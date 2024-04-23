@@ -68,10 +68,6 @@ class Plugin
         add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'woocommerceAdminOrderDataAfterBillingAddress']); // ADMIN: Show  vies information on admin order page under billing address.
         add_action('woocommerce_after_edit_account_address_form', [$this, 'woocommerceAfterEditAccountAddressForm']); // FRONT END: Show VIES information under addresses in my account page
         add_action('wp_footer', [$this, 'wpFooter']); // GENERAL: Draw in footer
-
-        //deprecated stuff
-        //add_filter('woocommerce_email_customer_details_fields', [$this, 'woocommerceEmailCustomerDetailsFields'], 10, 3); //FRONT END: Add vat field to the email template
-        //add_action('woocommerce_order_details_after_customer_details', [$this, 'woocommerceOrderDetailsAfterCustomerDetails']); //FRONT END: Add VAT info to order report
     }
 
     /**
@@ -324,6 +320,7 @@ class Plugin
     {
         if (class_exists(FeaturesUtil::class)) {
             FeaturesUtil::declare_compatibility('custom_order_tables', CONTRIBUINTE_CHECKOUT_PLUGIN_FILE, true);
+            FeaturesUtil::declare_compatibility('cart_checkout_blocks', CONTRIBUINTE_CHECKOUT_PLUGIN_FILE, true);
         }
     }
 
@@ -533,62 +530,5 @@ class Plugin
             }
         </script>
         <?php
-    }
-
-    //      deprecated      //
-
-    /**
-     * Add vat field to the email template
-     *
-     * @param $array
-     * @param $sendToAdmin
-     * @param $order
-     *
-     * @return array
-     */
-    public function woocommerceEmailCustomerDetailsFields($array, $sendToAdmin, $order)
-    {
-        $vat = $order->get_meta('_billing_vat');
-        $settingsLabel = get_option($this->settingsOptionsName)['text_box_vat_field_label'];
-
-        if (!empty($vat)) {
-            $array['billing']['billing_vat'] = [
-                'label' => empty($settingsLabel) ? __('VAT', 'contribuinte-checkout') : $settingsLabel,
-                'value' => $vat
-            ];
-        }
-
-        return $array;
-    }
-
-    /**
-     * Add VAT info to order report (thank you page)
-     *
-     * @param $order
-     *
-     * @return void
-     */
-    public function woocommerceOrderDetailsAfterCustomerDetails($order)
-    {
-        $settings = get_option($this->settingsOptionsName);
-
-        $vat = $order->get_meta('_billing_vat');
-        $settingsLabel = $settings['text_box_vat_field_label'];
-        $showVies = (bool)$settings['drop_down_show_vies'];
-
-        if (!empty($vat)) {
-            echo empty($settingsLabel) ? __('VAT', 'contribuinte-checkout') : esc_html($settingsLabel);
-            echo ': ' . esc_html($vat);
-        }
-
-        if ($showVies === false || empty($vat)) {
-            return;
-        }
-
-        $country = $order->get_billing_country();
-        $vies = new Vies($country, $vat);
-        $result = $vies->checkVat();
-
-        $vies->getViesForOrderDetailsAfterCustomerDetails($result);
     }
 }

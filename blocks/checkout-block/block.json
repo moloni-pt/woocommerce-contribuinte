@@ -13,7 +13,35 @@
 		"multiple": false,
 		"reusable": false
 	},
-	"attributes": {},
+	"parent": [
+		"woocommerce/checkout-fields-block"
+	],
+	"attributes": {
+		"text_box_vat_field_label": {
+			"type": "string"
+		},
+		"text_box_vat_field_description": {
+			"type": "string"
+		},
+		"drop_down_show_step_number": {
+			"type": "boolean"
+		},
+		"drop_down_is_required": {
+			"type": "boolean"
+		},
+		"drop_down_required_over_limit_price": {
+			"type": "boolean"
+		},
+		"drop_down_validate_vat": {
+			"type": "boolean"
+		},
+		"drop_down_on_validation_fail": {
+			"enum": [
+				0,
+				1
+			]
+		}
+	},
 	"textdomain": "contribuinte-checkout",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
