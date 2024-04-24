@@ -17,8 +17,24 @@
 		"woocommerce/checkout-fields-block"
 	],
 	"attributes": {
+		"lock": {
+			"type": "object",
+			"default": {
+				"remove": false,
+				"move": false
+			}
+		},
 		"showStepNumber": {
-			"type": "boolean"
+			"type": "boolean",
+			"default": true
+		},
+		"title": {
+			"type": "string",
+			"default": "Tax details"
+		},
+		"description": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"textdomain": "contribuinte-checkout",

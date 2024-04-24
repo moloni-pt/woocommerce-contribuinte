@@ -44,15 +44,17 @@ const FormStepBody = ({ description, content }) => (
 
 export default function Edit({ attributes, setAttributes }) {
     const {
-        showStepNumber,
-        title,
-        description,
         text_box_vat_field_label,
         text_box_vat_field_description,
         drop_down_is_required,
         drop_down_required_over_limit_price,
         drop_down_validate_vat,
         drop_down_on_validation_fail
+    } = data;
+    const {
+        showStepNumber,
+        title,
+        description,
     } = attributes;
 
     const blockProps = useBlockProps({
@@ -65,27 +67,6 @@ export default function Edit({ attributes, setAttributes }) {
     const onChange = (name, value) => {
         setAttributes({ ...attributes, [name]: value });
     }
-    const DescriptionInput = () => (
-        <PlainText
-            className={description ? '' : 'wc-block-components-checkout-step__description-placeholder'}
-            value={description}
-            placeholder={__('Optional text for this form step.', 'woocommerce')}
-            onChange={(value) => {
-                onChange('description', value);
-            }}
-            style={{ backgroundColor: 'transparent' }}
-        />
-    );
-    const ContentInput = () => (
-        <ValidatedTextInput
-            id="billing_vat"
-            type="text"
-            required={drop_down_is_required}
-            placeholder={text_box_vat_field_description || ''}
-            value={''}
-            disabled
-        />
-    );
 
     return (
         <div {...blockProps}>
@@ -167,8 +148,25 @@ export default function Edit({ attributes, setAttributes }) {
                 />
             </FormStepHead>
             <FormStepBody
-                description={<DescriptionInput/>}
-                content={<ContentInput/>}
+                description={
+                    <PlainText
+                        className={description ? '' : 'wc-block-components-checkout-step__description-placeholder'}
+                        value={description || ''}
+                        placeholder={__('Optional text for this form step.', 'woocommerce')}
+                        onChange={(value) => {
+                            onChange('description', value);
+                        }}
+                        style={{ backgroundColor: 'transparent' }}
+                    />
+                }
+                content={
+                    <ValidatedTextInput
+                        type="text"
+                        value={''}
+                        label={text_box_vat_field_label || ''}
+                        disabled
+                    />
+                }
             />
         </div>
     );
