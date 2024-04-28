@@ -13,7 +13,7 @@ import setCategoryIcon from "../common/helpers/setCategoryIcon"
 
 setCategoryIcon();
 
-registerBlockType(metadata.name, {
+registerBlockType(metadata, {
     icon: {
         src: BlockIcon
     },

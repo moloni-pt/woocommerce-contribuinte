@@ -46,6 +46,3 @@ register_activation_hook(__FILE__, 'Checkout\Contribuinte\Activators\Install::ru
 
 // Start this plugin
 add_action('plugins_loaded', 'Checkout\Contribuinte\Plugin::init');
-
-// Registers the block
-add_action('init', 'Checkout\Contribuinte\Block::init');

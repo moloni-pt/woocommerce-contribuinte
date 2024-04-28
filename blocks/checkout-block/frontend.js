@@ -1,14 +1,9 @@
-/**
- * External dependencies
- */
 import { registerCheckoutBlock } from '@woocommerce/blocks-checkout';
-/**
- * Internal dependencies
- */
-import Block from './block';
+
 import metadata from './block.json';
+import { lazy } from '@wordpress/element';
 
 registerCheckoutBlock({
     metadata,
-    component: Block,
+    component: lazy(() => import('./block')),
 });

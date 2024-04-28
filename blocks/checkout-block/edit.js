@@ -44,23 +44,22 @@ const FormStepBody = ({ description, content }) => (
 
 export default function Edit({ attributes, setAttributes }) {
     const {
+        drop_down_vat_section_show_step_number,
+        text_box_vat_section_title,
+        text_box_vat_section_description,
         text_box_vat_field_label,
         text_box_vat_field_description,
         drop_down_is_required,
         drop_down_required_over_limit_price,
         drop_down_validate_vat,
-        drop_down_on_validation_fail
-    } = data;
-    const {
-        showStepNumber,
-        title,
-        description,
+        drop_down_on_validation_fail,
+        drop_down_show_vies
     } = attributes;
 
     const blockProps = useBlockProps({
         className: classnames('wc-block-components-checkout-step', '', {
             'wc-block-components-checkout-step--with-step-number':
-            showStepNumber,
+            drop_down_vat_section_show_step_number,
         }),
     });
 
@@ -73,10 +72,10 @@ export default function Edit({ attributes, setAttributes }) {
             <InspectorControls>
                 <PanelBody title={__('Form Step Options', 'woocommerce')}>
                     <ToggleControl
-                        checked={showStepNumber}
+                        checked={drop_down_vat_section_show_step_number}
                         label={__('Show step number', 'woocommerce')}
                         onChange={(value) => {
-                            onChange('showStepNumber', value);
+                            onChange('drop_down_vat_section_show_step_number', value);
                         }}
                     />
                 </PanelBody>
@@ -86,13 +85,6 @@ export default function Edit({ attributes, setAttributes }) {
                         value={text_box_vat_field_label}
                         onChange={(value) => {
                             onChange('text_box_vat_field_label', value);
-                        }}
-                    />
-                    <TextControl
-                        label={__('VAT field description', 'contribuinte-checkout')}
-                        value={text_box_vat_field_description}
-                        onChange={(value) => {
-                            onChange('text_box_vat_field_description', value);
                         }}
                     />
                 </PanelBody>
@@ -140,9 +132,9 @@ export default function Edit({ attributes, setAttributes }) {
             <FormStepHead>
                 <PlainText
                     className={''}
-                    value={title}
+                    value={text_box_vat_section_title || ''}
                     onChange={(value) => {
-                        onChange('title', value);
+                        onChange('text_box_vat_section_title', value);
                     }}
                     style={{ backgroundColor: 'transparent' }}
                 />
@@ -150,11 +142,11 @@ export default function Edit({ attributes, setAttributes }) {
             <FormStepBody
                 description={
                     <PlainText
-                        className={description ? '' : 'wc-block-components-checkout-step__description-placeholder'}
-                        value={description || ''}
+                        className={text_box_vat_section_description ? '' : 'wc-block-components-checkout-step__description-placeholder'}
+                        value={text_box_vat_section_description || ''}
                         placeholder={__('Optional text for this form step.', 'woocommerce')}
                         onChange={(value) => {
-                            onChange('description', value);
+                            onChange('text_box_vat_section_description', value);
                         }}
                         style={{ backgroundColor: 'transparent' }}
                     />

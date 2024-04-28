@@ -1,42 +1,66 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "create-block/checkout-block",
+	"name": "contribuinte-checkout/checkout-block",
 	"version": "0.1.0",
 	"title": "Checkout block",
 	"category": "contribuinte-checkout-category",
 	"description": "Add fiscal section to checkout.",
-	"example": {},
 	"supports": {
 		"html": false,
 		"align": false,
 		"multiple": false,
 		"reusable": false
 	},
-	"parent": [
-		"woocommerce/checkout-fields-block"
-	],
+	"parent": ["woocommerce/checkout-fields-block"],
 	"attributes": {
 		"lock": {
 			"type": "object",
 			"default": {
-				"remove": false,
-				"move": false
+				"remove": true,
+				"move": true
 			}
 		},
-		"showStepNumber": {
+		"drop_down_vat_section_show_step_number": {
 			"type": "boolean",
 			"default": true
 		},
-		"title": {
+		"text_box_vat_section_title": {
 			"type": "string",
 			"default": "Tax details"
 		},
-		"description": {
+		"text_box_vat_section_description": {
 			"type": "string",
 			"default": ""
+		},
+		"text_box_vat_field_label": {
+			"type": "string",
+			"default": "VAT"
+		},
+		"text_box_vat_field_description": {
+			"type": "string",
+			"default": ""
+		},
+		"drop_down_is_required": {
+			"type": "boolean",
+			"default": false
+		},
+		"drop_down_required_over_limit_price": {
+			"type": "boolean",
+			"default": false
+		},
+		"drop_down_validate_vat": {
+			"type": "boolean",
+			"default": false
+		},
+		"drop_down_on_validation_fail": {
+			"type": "integer",
+			"default": 0
+		},
+		"drop_down_show_vies": {
+			"type": "boolean",
+			"default": false
 		}
 	},
-	"textdomain": "contribuinte-checkout",
-	"editorScript": "file:./index.js"
+	"textdomain": "contribuinte-checkout"
 }

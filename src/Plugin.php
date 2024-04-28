@@ -29,12 +29,12 @@ class Plugin
 
     /**
      * Starts this class
+     *
      * @return string
      */
     public static function init()
     {
-        $class = __CLASS__;
-        return new $class;
+        return new (__CLASS__);
     }
 
     /**
@@ -42,8 +42,9 @@ class Plugin
      */
     public function actions()
     {
-        new Translations(); //Loads translations
-        new Admin($this); //Add options page inside WordPress settings
+        new Translations(); // Loads translations
+        new Admin($this); // Add options page inside WordPress settings
+        new Blocks(); // Loads gutenberg block components
     }
 
     /**
