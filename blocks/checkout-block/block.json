@@ -18,48 +18,24 @@
 			"type": "object",
 			"default": {
 				"remove": true,
-				"move": true
+				"move": false
 			}
 		},
-		"drop_down_vat_section_show_step_number": {
+		"showStepNumber": {
 			"type": "boolean",
 			"default": true
 		},
-		"text_box_vat_section_title": {
+		"sectionTitle": {
 			"type": "string",
-			"default": "Tax details"
+			"default": "Fiscal details"
 		},
-		"text_box_vat_section_description": {
+		"sectionDescription": {
 			"type": "string",
 			"default": ""
 		},
-		"text_box_vat_field_label": {
+		"inputLabel": {
 			"type": "string",
 			"default": "VAT"
-		},
-		"text_box_vat_field_description": {
-			"type": "string",
-			"default": ""
-		},
-		"drop_down_is_required": {
-			"type": "boolean",
-			"default": false
-		},
-		"drop_down_required_over_limit_price": {
-			"type": "boolean",
-			"default": false
-		},
-		"drop_down_validate_vat": {
-			"type": "boolean",
-			"default": false
-		},
-		"drop_down_on_validation_fail": {
-			"type": "integer",
-			"default": 0
-		},
-		"drop_down_show_vies": {
-			"type": "boolean",
-			"default": false
 		}
 	},
 	"textdomain": "contribuinte-checkout"

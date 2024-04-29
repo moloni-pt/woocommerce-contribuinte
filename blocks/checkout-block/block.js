@@ -3,46 +3,60 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect, useState, useCallback } from '@wordpress/element';
 import { getSetting } from "@woocommerce/settings";
 import { FormStep } from '@woocommerce/blocks-components';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { CHECKOUT_STORE_KEY, VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
 
-const data = getSetting('contribuinte-checkout_data', '');
+const settings = getSetting('contribuinte-checkout_data', '');
 
-const Block = (fabio) => {
-    console.log(fabio);
+const Block = (data) => {
+    const {
+        extensions,
+        cart,
+        checkoutExtensionData,
+        validation,
+        showStepNumber,
+        sectionTitle,
+        sectionDescription,
+        inputLabel,
+    } = data;
 
-    const { extensions, cart, checkoutExtensionData, validation } = fabio;
+    const validationErrorId = 'billing_vat';
 
+    const { setValidationErrors, clearValidationError } = validation;
     const { setExtensionData } = checkoutExtensionData;
 
+    const [vatValue, setVatValue] = useState('');
     const checkoutIsProcessing = useSelect((select) =>
-        select(CHECKOUT_STORE_KEY).isProcessing()
-    );
-
-    const debouncedSetExtensionData = useCallback(
-        (namespace, key, value) => {
-            setExtensionData(namespace, key, value);
-        },
-        [setExtensionData]
-    );
+            select(CHECKOUT_STORE_KEY).isProcessing()
+        , []);
 
     useEffect(() => {
-        console.log('oii');
-    }, []);
+        setExtensionData('contribuinte-checkout', 'billingVat', vatValue);
+
+        setValidationErrors({
+            [validationErrorId]: {
+                message: __('Please add some text', 'shipping-workshop'),
+                hidden: false,
+            }
+        });
+    }, [setExtensionData, vatValue, setValidationErrors]);
 
     return (
         <FormStep
             id="fiscal-details"
             disabled={checkoutIsProcessing}
-            title={'TEst'}
-            description={'ssss'}
-            showStepNumber={true}
+            title={__(sectionTitle || 'Fiscal details', 'contribuinte-checkout')}
+            description={__(sectionDescription || '', 'contribuinte-checkout')}
+            showStepNumber={!showStepNumber || showStepNumber === 'true'}
         >
             <ValidatedTextInput
                 id="billing_vat"
+                errorId="billing_vat"
                 type="text"
-                value={''}
-                label={'asd'}
+                showError={true}
+                value={vatValue}
+                onChange={setVatValue}
+                label={__(inputLabel || 'VAT', 'contribuinte-checkout')}
             />
         </FormStep>
     );

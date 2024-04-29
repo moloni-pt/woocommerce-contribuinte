@@ -50,13 +50,17 @@ class Contribuinte_Checkout_Blocks_Integration implements IntegrationInterface
 
     public function get_script_data()
     {
+        $settings = get_option('contribuinte-checkout-options');
+
+        if (empty($settings)) {
+            $settings = [];
+        }
+
         return [
-            'text_box_vat_field_label' => '',
-            'text_box_vat_field_description' => '',
-            'drop_down_is_required' => '',
-            'drop_down_required_over_limit_price' => '',
-            'drop_down_validate_vat' => '',
-            'drop_down_on_validation_fail' => ''
+            'drop_down_is_required' => isset($settings['drop_down_is_required']) ? $settings['drop_down_is_required']: '',
+            'drop_down_required_over_limit_price' => isset($settings['drop_down_required_over_limit_price']) ? $settings['drop_down_required_over_limit_price']: '',
+            'drop_down_validate_vat' => isset($settings['drop_down_validate_vat']) ? $settings['drop_down_validate_vat']: '',
+            'drop_down_on_validation_fail' => isset($settings['drop_down_on_validation_fail']) ? $settings['drop_down_on_validation_fail']: '',
         ];
     }
 

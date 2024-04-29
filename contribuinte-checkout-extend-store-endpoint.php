@@ -34,48 +34,30 @@ class Contribuinte_Checkout_Extend_Store_Endpoint
                 ]
             );
         }
-
-        if (is_callable([self::$extend, 'register_update_callback'])) {
-            self::$extend->register_update_callback(
-                [
-                    'namespace' => self::IDENTIFIER,
-                    'callback' => [self::class, 'store_api_update_callback'],
-                ]
-            );
-        }
-    }
-
-    public static function store_api_update_callback($data)
-    {
-        if (!(isset(wc()->session) && wc()->session->has_session())) {
-            wc()->session->set_customer_session_cookie(true);
-        }
-
-        wc()->session->set(self::IDENTIFIER, $data);
-    }
-
-    public static function extend_checkout_schema()
-    {
-        return array(
-            'billingVat' => [
-                'field' => 'data',
-            ],
-        );
     }
 
     public static function store_api_data_callback()
     {
-        $data = array(
-            'billingVat' => '',
-            'isValid' => true,
-        );
+        $data = wc()->session->get(self::IDENTIFIER);
 
-        return $data;
+        $billingVat = isset($data['billingVat']) ? $data['billingVat'] : null;
+
+        if (null === $billingVat) {
+            $customer = wc()->customer;
+
+            if ($customer instanceof \WC_Customer) {
+                $billingVat = $customer->get_meta('billing_vat');
+            }
+        }
+
+        return [
+            'billingVat' => empty($billingVat) ? '' : $billingVat
+        ];
     }
 
     public static function store_api_schema_callback()
     {
-        return array(
+        return [
             'billingVat' => [
                 'description' => __('VAT number', 'contribuinte-checkout'),
                 'type' => 'string',
@@ -83,6 +65,6 @@ class Contribuinte_Checkout_Extend_Store_Endpoint
                 'readonly' => true,
                 'optional' => true,
             ],
-        );
+        ];
     }
 }

@@ -11,12 +11,10 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useBlockProps, PlainText, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl, TextControl, SelectControl } from '@wordpress/components';
-import { getSetting } from '@woocommerce/settings';
+import { PanelBody, ToggleControl, TextControl, ExternalLink } from '@wordpress/components';
+import { ADMIN_URL } from '@woocommerce/settings';
 import { Title } from '@woocommerce/blocks-components';
 import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
-
-const data = getSetting('contribuinte-checkout_data', '');
 
 const FormStepHead = ({ children }) => (
     <div className="wc-block-components-checkout-step__heading">
@@ -44,22 +42,16 @@ const FormStepBody = ({ description, content }) => (
 
 export default function Edit({ attributes, setAttributes }) {
     const {
-        drop_down_vat_section_show_step_number,
-        text_box_vat_section_title,
-        text_box_vat_section_description,
-        text_box_vat_field_label,
-        text_box_vat_field_description,
-        drop_down_is_required,
-        drop_down_required_over_limit_price,
-        drop_down_validate_vat,
-        drop_down_on_validation_fail,
-        drop_down_show_vies
+        showStepNumber,
+        sectionTitle,
+        sectionDescription,
+        inputLabel,
     } = attributes;
 
     const blockProps = useBlockProps({
         className: classnames('wc-block-components-checkout-step', '', {
             'wc-block-components-checkout-step--with-step-number':
-            drop_down_vat_section_show_step_number,
+            showStepNumber,
         }),
     });
 
@@ -72,69 +64,56 @@ export default function Edit({ attributes, setAttributes }) {
             <InspectorControls>
                 <PanelBody title={__('Form Step Options', 'woocommerce')}>
                     <ToggleControl
-                        checked={drop_down_vat_section_show_step_number}
+                        checked={showStepNumber}
                         label={__('Show step number', 'woocommerce')}
                         onChange={(value) => {
-                            onChange('drop_down_vat_section_show_step_number', value);
+                            onChange('showStepNumber', value);
                         }}
                     />
                 </PanelBody>
-                <PanelBody title={__('Visual', 'contribuinte-checkout')}>
+                <PanelBody title={__('Visual Options', 'contribuinte-checkout')}>
                     <TextControl
-                        label={__('VAT field label', 'contribuinte-checkout')}
-                        value={text_box_vat_field_label}
+                        label={__('Section title', 'contribuinte-checkout')}
+                        value={sectionTitle}
                         onChange={(value) => {
-                            onChange('text_box_vat_field_label', value);
+                            onChange('sectionTitle', value);
+                        }}
+                    />
+                    <TextControl
+                        label={__('Section description', 'contribuinte-checkout')}
+                        value={sectionDescription}
+                        onChange={(value) => {
+                            onChange('sectionDescription', value);
+                        }}
+                    />
+                    <TextControl
+                        label={__('Field label', 'contribuinte-checkout')}
+                        value={inputLabel}
+                        onChange={(value) => {
+                            onChange('inputLabel', value);
                         }}
                     />
                 </PanelBody>
-                <PanelBody title={__('Behaviour', 'contribuinte-checkout')}>
-                    <ToggleControl
-                        checked={drop_down_is_required === true}
-                        label={__('VAT is required', 'contribuinte-checkout')}
-                        onChange={(value) => {
-                            onChange('drop_down_is_required', value);
-                        }}
-                    />
-                    <ToggleControl
-                        checked={drop_down_required_over_limit_price === true}
-                        label={__('VAT required on orders over 1000€', 'contribuinte-checkout')}
-                        onChange={(value) => {
-                            onChange('drop_down_required_over_limit_price', value);
-                        }}
-                    />
-                    <ToggleControl
-                        checked={drop_down_validate_vat === true}
-                        label={__('Validate VAT', 'contribuinte-checkout')}
-                        onChange={(value) => {
-                            onChange('drop_down_validate_vat', value);
-                        }}
-                    />
-                    <SelectControl
-                        label={__('Failed validation handling', 'contribuinte-checkout')}
-                        value={drop_down_on_validation_fail}
-                        onChange={(value) => {
-                            onChange('drop_down_on_validation_fail', value);
-                        }}
-                        options={[
-                            {
-                                label: __('Reject the order and show customer an error', 'contribuinte-checkout'),
-                                value: 0
-                            },
-                            {
-                                label: __('Only show customer an warning message', 'contribuinte-checkout'),
-                                value: 1
-                            }
-                        ]}
-                    />
+                <PanelBody title={__('Behaviour Options', 'contribuinte-checkout')}>
+                    <p className="wc-block-checkout__controls-text">
+                        {__(
+                            'Options that control this section can be managed in the plugin settings page.',
+                            'contribuinte-checkout'
+                        )}
+                    </p>
+                    <ExternalLink
+                        href={`${ADMIN_URL}admin.php?page=contribuintecheckout`}
+                    >
+                        {__('Manage field settings', 'contribuinte-checkout')}
+                    </ExternalLink>
                 </PanelBody>
             </InspectorControls>
             <FormStepHead>
                 <PlainText
                     className={''}
-                    value={text_box_vat_section_title || ''}
+                    value={sectionTitle || ''}
                     onChange={(value) => {
-                        onChange('text_box_vat_section_title', value);
+                        onChange('sectionTitle', value);
                     }}
                     style={{ backgroundColor: 'transparent' }}
                 />
@@ -142,11 +121,11 @@ export default function Edit({ attributes, setAttributes }) {
             <FormStepBody
                 description={
                     <PlainText
-                        className={text_box_vat_section_description ? '' : 'wc-block-components-checkout-step__description-placeholder'}
-                        value={text_box_vat_section_description || ''}
+                        className={sectionDescription ? '' : 'wc-block-components-checkout-step__description-placeholder'}
+                        value={sectionDescription || ''}
                         placeholder={__('Optional text for this form step.', 'woocommerce')}
                         onChange={(value) => {
-                            onChange('text_box_vat_section_description', value);
+                            onChange('sectionDescription', value);
                         }}
                         style={{ backgroundColor: 'transparent' }}
                     />
@@ -155,7 +134,7 @@ export default function Edit({ attributes, setAttributes }) {
                     <ValidatedTextInput
                         type="text"
                         value={''}
-                        label={text_box_vat_field_label || ''}
+                        label={inputLabel || ''}
                         disabled
                     />
                 }

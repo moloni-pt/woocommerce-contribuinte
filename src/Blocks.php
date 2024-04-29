@@ -10,7 +10,6 @@ class Blocks
     public function __construct()
     {
         $this->registerAddAttributesToBlock();
-        $this->registerCheckoutEditorSave();
         $this->registerBlockIntegration();
         $this->registerCategory();
     }
@@ -26,91 +25,11 @@ class Blocks
     {
         $callback = function ($whitelisted_blocks) {
             $whitelisted_blocks[] = 'contribuinte-checkout/checkout-block';
+
             return $whitelisted_blocks;
         };
 
         add_action('__experimental_woocommerce_blocks_add_data_attributes_to_block', $callback);
-    }
-
-    /**
-     * Save page hook
-     *
-     * @see https://gist.github.com/Bradley-D/7287723
-     * @see https://www.billerickson.net/access-gutenberg-block-data/
-     * @see https://developer.wordpress.org/reference/functions/parse_blocks/
-     *
-     * @return void
-     */
-    private function registerCheckoutEditorSave()
-    {
-        $callback = function ($postId, WP_Post $post) {
-            if (!function_exists('parse_blocks')) {
-                return; // WordPress version does not support this function
-            }
-
-            if (wp_is_post_revision($postId)) {
-                return; // It's a revision, do not bother
-            }
-
-            $checkoutPageId = get_option('woocommerce_checkout_page_id');
-
-            if ($postId !== $checkoutPageId) {
-                return; // Page is not checkout
-            }
-
-            $allPageBlocks = parse_blocks(get_post($checkoutPageId)->post_content);
-
-            if (empty($allPageBlocks)) {
-                return; // no blocks found
-            }
-
-            $checkoutBlock = [];
-            $checkoutFieldsBlock = [];
-            $checkoutFieldsVatBlock = [];
-
-            foreach ($allPageBlocks as $block) {
-                if ('woocommerce/checkout' === $block['blockName']) {
-                    $checkoutBlock = $block;
-                    break;
-                }
-            }
-
-            if (empty($checkoutBlock)) {
-                return; // no checkout block found
-            }
-
-            foreach ($checkoutBlock['innerBlocks'] as $innerBlock) {
-                if ('woocommerce/checkout-fields-block' === $innerBlock['blockName']) {
-                    $checkoutFieldsBlock = $innerBlock;
-                    break;
-                }
-            }
-
-            if (empty($checkoutFieldsBlock)) {
-                return; // no checkout fields block found
-            }
-
-            foreach ($checkoutFieldsBlock['innerBlocks'] as $innerBlock) {
-                if ('contribuinte-checkout/checkout-block' === $innerBlock['blockName']) {
-                    $checkoutFieldsVatBlock = $innerBlock;
-                    break;
-                }
-            }
-
-            if (empty($checkoutFieldsVatBlock)) {
-                return; // no vat field block found
-            }
-
-            $data = $checkoutFieldsVatBlock['attrs'];
-
-            foreach ($data as $key => $value) {
-
-            }
-
-            // todo: save settings data !!
-        };
-
-        add_action( 'save_post_page', $callback, 10, 2);
     }
 
     /**

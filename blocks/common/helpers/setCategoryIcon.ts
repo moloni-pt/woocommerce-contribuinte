@@ -1,4 +1,5 @@
 import BlockIcon from "../icons/BlockIcon";
+import { updateCategory } from '@wordpress/blocks';
 
 /**
  * Set our category icon
@@ -6,6 +7,5 @@ import BlockIcon from "../icons/BlockIcon";
  * @see https://mediaron.com/adding-icons-for-your-gutenberg-categories/
  */
 export default function setCategoryIcon(): void {
-    // @ts-ignore
-    wp.blocks.updateCategory('contribuinte-checkout-category', { icon: BlockIcon });
+    updateCategory('contribuinte-checkout-category', { icon: BlockIcon });
 };
