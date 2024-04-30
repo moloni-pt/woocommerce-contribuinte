@@ -1,9 +1,5 @@
 <?php
 
-use Automattic\WooCommerce\StoreApi\StoreApi;
-use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
-use Automattic\WooCommerce\StoreApi\Schemas\V1\CartSchema;
-
 class Contribuinte_Checkout_Extend_Woo_Core
 {
     /**

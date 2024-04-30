@@ -6,7 +6,7 @@ use Automattic\WooCommerce\StoreApi\Schemas\V1\CheckoutSchema;
 
 class Contribuinte_Checkout_Extend_Store_Endpoint
 {
-    private static $extend;
+    private $extend;
 
     /**
      * Plugin Identifier, unique to each plugin.
@@ -15,27 +15,27 @@ class Contribuinte_Checkout_Extend_Store_Endpoint
      */
     const IDENTIFIER = 'contribuinte-checkout';
 
-    public static function init()
+    public function init()
     {
-        self::$extend = StoreApi::container()->get(ExtendSchema::class);
-        self::extend_store();
+        $this->extend = StoreApi::container()->get(ExtendSchema::class);
+        $this->extend_store();
     }
 
-    public static function extend_store()
+    public function extend_store()
     {
-        if (is_callable([self::$extend, 'register_endpoint_data'])) {
-            self::$extend->register_endpoint_data(
+        if (is_callable([$this->extend, 'register_endpoint_data'])) {
+            $this->extend->register_endpoint_data(
                 [
                     'endpoint' => CheckoutSchema::IDENTIFIER,
                     'namespace' => self::IDENTIFIER,
-                    'schema_callback' => [self::class, 'store_api_schema_callback'],
+                    'schema_callback' => [$this, 'store_api_schema_callback'],
                     'schema_type' => ARRAY_A,
                 ]
             );
         }
     }
 
-    public static function store_api_data_callback()
+    public function store_api_data_callback()
     {
         $data = wc()->session->get(self::IDENTIFIER);
 
@@ -54,7 +54,7 @@ class Contribuinte_Checkout_Extend_Store_Endpoint
         ];
     }
 
-    public static function store_api_schema_callback()
+    public function store_api_schema_callback()
     {
         return [
             'billingVat' => [
@@ -62,12 +62,7 @@ class Contribuinte_Checkout_Extend_Store_Endpoint
                 'type' => 'string',
                 'context' => ['view', 'edit'],
                 'readonly' => true,
-                'optional' => true,
-                'arg_options' => [
-                    'validate_callback' => function ($value) {
-                        return is_string($value);
-                    },
-                ],
+                'optional' => true
             ],
         ];
     }

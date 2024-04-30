@@ -2,21 +2,17 @@
 
 namespace Checkout\Contribuinte;
 
-use Contribuinte_Checkout_Extend_Store_Endpoint;
 use Contribuinte_Checkout_Blocks_Integration;
+use Contribuinte_Checkout_Extend_Woo_Core;
+use Contribuinte_Checkout_Extend_Store_Endpoint;
 
 class Blocks
 {
     public function __construct()
     {
-        $this->registerCategory();
+        $this->registerBlockCategory();
         $this->registerBlockIntegration();
         $this->registerAddAttributesToBlock();
-    }
-
-    private function extend_store_api()
-    {
-        Contribuinte_Checkout_Extend_Store_Endpoint::init();
     }
 
     /**
@@ -44,7 +40,28 @@ class Blocks
      */
     private function registerBlockIntegration()
     {
+        $callback = function () {
+            require_once CONTRIBUINTE_CHECKOUT_DIR . '/contribuinte-checkout-extend-store-endpoint.php';
+            require_once CONTRIBUINTE_CHECKOUT_DIR . '/contribuinte-checkout-extend-woo-core.php';
+            require_once CONTRIBUINTE_CHECKOUT_DIR . '/contribuinte-checkout-blocks-integration.php';
 
+            // Add hooks relevant to extending the Woo core experience.
+            $extend_api = new Contribuinte_Checkout_Extend_Store_Endpoint();
+            $extend_api->init();
+
+            // Add hooks relevant to extending the Woo core experience.
+            $extend_core = new Contribuinte_Checkout_Extend_Woo_Core();
+            $extend_core->init();
+
+            add_action(
+                'woocommerce_blocks_checkout_block_registration',
+                function ($integration_registry) {
+                    $integration_registry->register(new Contribuinte_Checkout_Blocks_Integration());
+                }
+            );
+        };
+
+        add_action('woocommerce_blocks_loaded', $callback);
     }
 
     /**
@@ -55,7 +72,7 @@ class Blocks
      *
      * @return void
      */
-    private function registerCategory()
+    private function registerBlockCategory()
     {
         $callback = function ($block_categories) {
             $category = [

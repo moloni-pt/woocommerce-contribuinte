@@ -23,8 +23,8 @@ class Plugin
      */
     public function __construct()
     {
-        $this->actions(); //Loads some needed classes
-        $this->setHooks(); //Sets all needed hooks
+        $this->actions(); // Loads some needed classes
+        $this->setHooks(); // Sets all needed hooks
     }
 
     /**
@@ -43,7 +43,8 @@ class Plugin
     public function actions()
     {
         new Translations(); // Loads translations
-        new Admin($this); // Add options page inside WordPress settings
+        new Admin(); // Add options page inside WordPress settings
+        new Blocks();
     }
 
     /**
@@ -68,16 +69,6 @@ class Plugin
         add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'woocommerceAdminOrderDataAfterBillingAddress']); // ADMIN: Show  vies information on admin order page under billing address.
         add_action('woocommerce_after_edit_account_address_form', [$this, 'woocommerceAfterEditAccountAddressForm']); // FRONT END: Show VIES information under addresses in my account page
         add_action('wp_footer', [$this, 'wpFooter']); // GENERAL: Draw in footer
-    }
-
-    /**
-     * Renders the settings page
-     * This method will be called when opening WooCommerce Contribuinte page under the tab Options
-     */
-    public function settingsPage()
-    {
-        $settings = new Settings();
-        $settings->renderPage();
     }
 
     /**
@@ -514,12 +505,12 @@ class Plugin
 
                         if (validateVatPT(value)) {
                             wrapper
-                                .removeClass('woocommerce-invalid')
-                                .addClass('woocommerce-validated');
+                            .removeClass('woocommerce-invalid')
+                            .addClass('woocommerce-validated');
                         } else {
                             wrapper
-                                .removeClass('woocommerce-validated')
-                                .addClass('woocommerce-invalid');
+                            .removeClass('woocommerce-validated')
+                            .addClass('woocommerce-invalid');
                         }
                     }
 
