@@ -1,18 +1,35 @@
 <?php
 
-namespace Checkout\Contribuinte;
+namespace Checkout\Contribuinte\Blocks;
 
-use Contribuinte_Checkout_Blocks_Integration;
-use Contribuinte_Checkout_Extend_Woo_Core;
-use Contribuinte_Checkout_Extend_Store_Endpoint;
-
-class Blocks
+class ExtendWooCore
 {
-    public function __construct()
+    /**
+     * Plugin Identifier, unique to each plugin.
+     *
+     * @var string
+     */
+    private $name = 'contribuinte-checkout';
+
+    public function init()
     {
+        $this->registerCheckoutHook();
         $this->registerBlockCategory();
-        $this->registerBlockIntegration();
         $this->registerAddAttributesToBlock();
+    }
+
+    private function registerCheckoutHook()
+    {
+        $callback = function (\WC_Order $order, \WP_REST_Request $request) {
+            $thisData = $request['extensions'][$this->name];
+
+            $vatValue = isset($thisData['billingVat']) ? $thisData['billingVat'] : '';
+
+            $order->update_meta_data('_billing_vat', $vatValue);
+            $order->save();
+        };
+
+        add_action('woocommerce_store_api_checkout_update_order_from_request', $callback, 10, 2);
     }
 
     /**
@@ -31,37 +48,6 @@ class Blocks
         };
 
         add_action('__experimental_woocommerce_blocks_add_data_attributes_to_block', $callback);
-    }
-
-    /**
-     * Resgister checkout block
-     *
-     * @return void
-     */
-    private function registerBlockIntegration()
-    {
-        $callback = function () {
-            require_once CONTRIBUINTE_CHECKOUT_DIR . '/contribuinte-checkout-extend-store-endpoint.php';
-            require_once CONTRIBUINTE_CHECKOUT_DIR . '/contribuinte-checkout-extend-woo-core.php';
-            require_once CONTRIBUINTE_CHECKOUT_DIR . '/contribuinte-checkout-blocks-integration.php';
-
-            // Add hooks relevant to extending the Woo core experience.
-            $extend_api = new Contribuinte_Checkout_Extend_Store_Endpoint();
-            $extend_api->init();
-
-            // Add hooks relevant to extending the Woo core experience.
-            $extend_core = new Contribuinte_Checkout_Extend_Woo_Core();
-            $extend_core->init();
-
-            add_action(
-                'woocommerce_blocks_checkout_block_registration',
-                function ($integration_registry) {
-                    $integration_registry->register(new Contribuinte_Checkout_Blocks_Integration());
-                }
-            );
-        };
-
-        add_action('woocommerce_blocks_loaded', $callback);
     }
 
     /**

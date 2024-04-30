@@ -6,6 +6,9 @@ use WC_Order;
 use Checkout\Contribuinte\Vies\Vies;
 use Checkout\Contribuinte\Menus\Admin;
 use Checkout\Contribuinte\Helpers\Context;
+use Checkout\Contribuinte\Blocks\ExtendWooCore;
+use Checkout\Contribuinte\Blocks\BlocksIntegration;
+use Checkout\Contribuinte\Blocks\ExtendStoreEndpoint;
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 class Plugin
@@ -44,7 +47,6 @@ class Plugin
     {
         new Translations(); // Loads translations
         new Admin(); // Add options page inside WordPress settings
-        new Blocks();
     }
 
     /**
@@ -69,6 +71,7 @@ class Plugin
         add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'woocommerceAdminOrderDataAfterBillingAddress']); // ADMIN: Show  vies information on admin order page under billing address.
         add_action('woocommerce_after_edit_account_address_form', [$this, 'woocommerceAfterEditAccountAddressForm']); // FRONT END: Show VIES information under addresses in my account page
         add_action('wp_footer', [$this, 'wpFooter']); // GENERAL: Draw in footer
+        add_action('woocommerce_blocks_loaded', [$this, 'woocommerceBlocksLoaded']); // GENERAL: Start WC blocks
     }
 
     /**
@@ -521,5 +524,28 @@ class Plugin
             }
         </script>
         <?php
+    }
+
+    /**
+     * Draw in WordPress footer
+     *
+     * @return void
+     */
+    public function woocommerceBlocksLoaded()
+    {
+        // Add hooks relevant to extending the Woo core experience.
+        $extend_api = new ExtendStoreEndpoint();
+        $extend_api->init();
+
+        // Add hooks relevant to extending the Woo core experience.
+        $extend_core = new ExtendWooCore();
+        $extend_core->init();
+
+        add_action(
+            'woocommerce_blocks_checkout_block_registration',
+            function ($integration_registry) {
+                $integration_registry->register(new BlocksIntegration());
+            }
+        );
     }
 }

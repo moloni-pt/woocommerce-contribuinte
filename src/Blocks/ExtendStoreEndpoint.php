@@ -1,10 +1,12 @@
 <?php
 
+namespace Checkout\Contribuinte\Blocks;
+
 use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\CheckoutSchema;
 
-class Contribuinte_Checkout_Extend_Store_Endpoint
+class ExtendStoreEndpoint
 {
     private $extend;
 

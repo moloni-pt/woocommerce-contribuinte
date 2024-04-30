@@ -1,13 +1,14 @@
 <?php
 
+namespace Checkout\Contribuinte\Blocks;
+
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 /**
  * Class for integrating with WooCommerce Blocks
  */
-class Contribuinte_Checkout_Blocks_Integration implements IntegrationInterface
+class BlocksIntegration implements IntegrationInterface
 {
-
     /**
      * The name of the integration.
      *
