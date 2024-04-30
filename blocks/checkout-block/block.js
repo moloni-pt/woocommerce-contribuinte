@@ -33,12 +33,12 @@ const Block = (data) => {
     useEffect(() => {
         setExtensionData('contribuinte-checkout', 'billingVat', vatValue);
 
-        setValidationErrors({
+     /*   setValidationErrors({
             [validationErrorId]: {
                 message: __('Please add some text', 'shipping-workshop'),
                 hidden: false,
             }
-        });
+        });*/
     }, [setExtensionData, vatValue, setValidationErrors]);
 
     return (

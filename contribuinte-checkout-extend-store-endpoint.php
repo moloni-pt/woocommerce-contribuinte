@@ -63,7 +63,7 @@ class Contribuinte_Checkout_Extend_Store_Endpoint
                 'type' => 'string',
                 'context' => ['view', 'edit'],
                 'readonly' => true,
-                'optional' => true,
+                'optional' => true
             ],
         ];
     }
