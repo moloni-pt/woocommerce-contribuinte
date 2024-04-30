@@ -44,7 +44,6 @@ class Plugin
     {
         new Translations(); // Loads translations
         new Admin($this); // Add options page inside WordPress settings
-        new Blocks(); // Loads gutenberg block components
     }
 
     /**

@@ -2,7 +2,7 @@
 
 use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
-use Automattic\WooCommerce\StoreApi\Schemas\V1\CartSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\V1\CheckoutSchema;
 
 class Contribuinte_Checkout_Extend_Store_Endpoint
 {
@@ -26,11 +26,10 @@ class Contribuinte_Checkout_Extend_Store_Endpoint
         if (is_callable([self::$extend, 'register_endpoint_data'])) {
             self::$extend->register_endpoint_data(
                 [
-                    'endpoint' => CartSchema::IDENTIFIER,
+                    'endpoint' => CheckoutSchema::IDENTIFIER,
                     'namespace' => self::IDENTIFIER,
                     'schema_callback' => [self::class, 'store_api_schema_callback'],
                     'schema_type' => ARRAY_A,
-                    'data_callback' => [self::class, 'store_api_data_callback'],
                 ]
             );
         }
@@ -63,7 +62,12 @@ class Contribuinte_Checkout_Extend_Store_Endpoint
                 'type' => 'string',
                 'context' => ['view', 'edit'],
                 'readonly' => true,
-                'optional' => true
+                'optional' => true,
+                'arg_options' => [
+                    'validate_callback' => function ($value) {
+                        return is_string($value);
+                    },
+                ],
             ],
         ];
     }

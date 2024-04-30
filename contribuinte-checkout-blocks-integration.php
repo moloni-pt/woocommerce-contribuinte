@@ -26,32 +26,7 @@ class Contribuinte_Checkout_Blocks_Integration implements IntegrationInterface
         $this->register_block_frontend_scripts();
         $this->register_block_editor_scripts();
         $this->register_main_integration();
-
-        $this->extend_store_api();
-        $this->save_vat_field();
     }
-
-    private function extend_store_api()
-    {
-        require_once __DIR__ . '/contribuinte-checkout-extend-store-endpoint.php';
-
-        Contribuinte_Checkout_Extend_Store_Endpoint::init();
-    }
-
-    private function save_vat_field()
-    {
-        $callback = function (\WC_Order $order, \WP_REST_Request $request) {
-            $thisData = $request['extensions'][$this->get_name()];
-
-            $vatValue = isset($thisData['billingVat']) ? $thisData['billingVat'] : '';
-
-            $order->update_meta_data('_billing_vat', $vatValue);
-            $order->save();
-        };
-
-        add_action('woocommerce_store_api_checkout_update_order_from_request', $callback, 10, 2);
-    }
-
 
     public function get_script_handles()
     {

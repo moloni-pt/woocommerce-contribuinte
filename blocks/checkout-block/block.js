@@ -11,35 +11,32 @@ const settings = getSetting('contribuinte-checkout_data', '');
 const Block = (data) => {
     const {
         extensions,
-        cart,
         checkoutExtensionData,
-        validation,
         showStepNumber,
         sectionTitle,
         sectionDescription,
         inputLabel,
     } = data;
-
+console.log(data);
     const validationErrorId = 'billing_vat';
 
-    const { setValidationErrors, clearValidationError } = validation;
+    const { setValidationErrors, clearValidationError } = useDispatch(VALIDATION_STORE_KEY);
+    const validationError = useSelect((select) => {
+        const store = select('wc/store/validation');
+        return store.getValidationError(validationErrorId);
+    }, []);
     const { setExtensionData } = checkoutExtensionData;
+    const checkoutIsProcessing = useSelect((select) =>
+            select(CHECKOUT_STORE_KEY)?.isProcessing()
+        , []);
 
     const [vatValue, setVatValue] = useState('');
-    const checkoutIsProcessing = useSelect((select) =>
-            select(CHECKOUT_STORE_KEY).isProcessing()
-        , []);
 
     useEffect(() => {
         setExtensionData('contribuinte-checkout', 'billingVat', vatValue);
 
-     /*   setValidationErrors({
-            [validationErrorId]: {
-                message: __('Please add some text', 'shipping-workshop'),
-                hidden: false,
-            }
-        });*/
-    }, [setExtensionData, vatValue, setValidationErrors]);
+        // todo: do some verifications
+    }, [setExtensionData, vatValue, setVatValue]);
 
     return (
         <FormStep

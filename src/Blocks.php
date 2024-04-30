@@ -2,16 +2,21 @@
 
 namespace Checkout\Contribuinte;
 
-use WP_Post;
+use Contribuinte_Checkout_Extend_Store_Endpoint;
 use Contribuinte_Checkout_Blocks_Integration;
 
 class Blocks
 {
     public function __construct()
     {
-        $this->registerAddAttributesToBlock();
-        $this->registerBlockIntegration();
         $this->registerCategory();
+        $this->registerBlockIntegration();
+        $this->registerAddAttributesToBlock();
+    }
+
+    private function extend_store_api()
+    {
+        Contribuinte_Checkout_Extend_Store_Endpoint::init();
     }
 
     /**
@@ -39,18 +44,7 @@ class Blocks
      */
     private function registerBlockIntegration()
     {
-        $callback = function () {
-            require_once CONTRIBUINTE_CHECKOUT_DIR . '/contribuinte-checkout-blocks-integration.php';
 
-            add_action(
-                'woocommerce_blocks_checkout_block_registration',
-                function ($integration_registry) {
-                    $integration_registry->register(new Contribuinte_Checkout_Blocks_Integration());
-                }
-            );
-        };
-
-        add_action('woocommerce_blocks_loaded', $callback);
     }
 
     /**
