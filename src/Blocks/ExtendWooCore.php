@@ -21,9 +21,8 @@ class ExtendWooCore
     private function registerCheckoutHook()
     {
         $callback = function (\WC_Order $order, \WP_REST_Request $request) {
-            $thisData = $request['extensions'][$this->name];
-
-            $vatValue = isset($thisData['billingVat']) ? $thisData['billingVat'] : '';
+            $extensions = $request->get_param('extensions');
+            $vatValue = isset($extensions[$this->name]['billingVat']) ? $extensions[$this->name]['billingVat'] : '';
 
             $order->update_meta_data('_billing_vat', $vatValue);
             $order->save();

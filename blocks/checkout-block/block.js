@@ -1,12 +1,18 @@
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
-import { useEffect, useState, useCallback } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import { useEffect, useMemo, useState, useCallback } from '@wordpress/element';
 import { getSetting } from "@woocommerce/settings";
 import { FormStep } from '@woocommerce/blocks-components';
-import { CHECKOUT_STORE_KEY, VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
+import { validateVatPT } from '../common/helpers/validations';
 
-const settings = getSetting('contribuinte-checkout_data', '');
+const {
+    drop_down_is_required: shouldRequireVat,
+    drop_down_required_over_limit_price: shouldRequireVatOverLimit,
+    drop_down_validate_vat: shouldValidateVat,
+    drop_down_on_validation_fail: shouldOnlyShowWarningOnFail
+} = getSetting('contribuinte-checkout_data', '');
 
 const Block = (data) => {
     const {
@@ -17,26 +23,81 @@ const Block = (data) => {
         sectionDescription,
         inputLabel,
     } = data;
-console.log(data);
-    const validationErrorId = 'billing_vat';
 
-    const { setValidationErrors, clearValidationError } = useDispatch(VALIDATION_STORE_KEY);
-    const validationError = useSelect((select) => {
-        const store = select('wc/store/validation');
-        return store.getValidationError(validationErrorId);
-    }, []);
     const { setExtensionData } = checkoutExtensionData;
-    const checkoutIsProcessing = useSelect((select) =>
-            select(CHECKOUT_STORE_KEY)?.isProcessing()
-        , []);
 
-    const [vatValue, setVatValue] = useState('');
+    const checkoutIsProcessing = useSelect((select) => {
+        return select(CHECKOUT_STORE_KEY)?.isProcessing();
+    }, []);
+    const checkoutTotals = useSelect((select) => {
+        return select(CART_STORE_KEY)?.getCartTotals();
+    }, []);
+    const checkoutAddresses = useSelect((select) => {
+        return select(CART_STORE_KEY)?.getCustomerData();
+    }, []);
+
+    const initialVatValue = useMemo(() => {
+        try {
+            return extensions['contribuinte-checkout']['billingVat'] || '';
+        } catch (exception) {
+            return '';
+        }
+    }, []);
+
+    const [vatValue, setVatValue] = useState(initialVatValue);
+
+    const isVatRequired = useMemo(() => {
+        if (shouldRequireVat) {
+            return true;
+        }
+
+        if (!shouldRequireVatOverLimit) {
+            return false;
+        }
+
+        let total = 0;
+
+        try {
+            total = checkoutTotals?.total_price || 0;
+        } catch (exception) {}
+
+        return total > 100000;
+    }, [checkoutTotals]);
+    const isVatValid = useMemo(() => {
+        let countryCode = '';
+
+        try {
+            countryCode = checkoutAddresses?.billingAddress?.country || '';
+        } catch (exception) {}
+
+        let valueToTest = vatValue.toString().trim()
+
+        if (countryCode === 'PT') {
+            return validateVatPT(valueToTest);
+        }
+
+        return true;
+    }, [vatValue, checkoutAddresses]);
+    const validateVatCallback = useCallback((inputObject) => {
+        if (!shouldValidateVat || isVatValid || shouldOnlyShowWarningOnFail) {
+            return true;
+        }
+
+        inputObject.setCustomValidity(
+            __('Please enter a valid VAT number', 'contribuinte-checkout')
+        );
+
+        return false;
+    }, [isVatValid]);
+
+    console.log(isVatRequired, isVatValid);
 
     useEffect(() => {
         setExtensionData('contribuinte-checkout', 'billingVat', vatValue);
-
-        // todo: do some verifications
-    }, [setExtensionData, vatValue, setVatValue]);
+    }, [
+        vatValue,
+        setExtensionData,
+    ]);
 
     return (
         <FormStep
@@ -50,10 +111,13 @@ console.log(data);
                 id="billing_vat"
                 errorId="billing_vat"
                 type="text"
-                showError={true}
                 value={vatValue}
+                showError={true}
+                validateOnMount={true}
                 onChange={setVatValue}
-                label={__(inputLabel || 'VAT', 'contribuinte-checkout')}
+                customValidation={validateVatCallback}
+                required={isVatRequired}
+                label={`${__(inputLabel || 'VAT', 'contribuinte-checkout')} ${isVatRequired ? '' : __('(Optional)', 'contribuinte-checkout')}`}
             />
         </FormStep>
     );

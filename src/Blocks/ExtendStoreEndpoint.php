@@ -5,6 +5,7 @@ namespace Checkout\Contribuinte\Blocks;
 use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\CheckoutSchema;
+use Automattic\WooCommerce\StoreApi\Schemas\V1\CartSchema;
 
 class ExtendStoreEndpoint
 {
@@ -30,14 +31,24 @@ class ExtendStoreEndpoint
                 [
                     'endpoint' => CheckoutSchema::IDENTIFIER,
                     'namespace' => self::IDENTIFIER,
-                    'schema_callback' => [$this, 'store_api_schema_callback'],
+                    'schema_callback' => [$this, 'storeApiSchemaCallback'],
+                    'schema_type' => ARRAY_A,
+                ]
+            );
+
+            $this->extend->register_endpoint_data(
+                [
+                    'endpoint' => CartSchema::IDENTIFIER,
+                    'namespace' => self::IDENTIFIER,
+                    'schema_callback' => [$this, 'storeApiSchemaCallback'],
+                    'data_callback' => [$this, 'storeApiDataCallback'],
                     'schema_type' => ARRAY_A,
                 ]
             );
         }
     }
 
-    public function store_api_data_callback()
+    public function storeApiDataCallback()
     {
         $data = wc()->session->get(self::IDENTIFIER);
 
@@ -56,7 +67,7 @@ class ExtendStoreEndpoint
         ];
     }
 
-    public function store_api_schema_callback()
+    public function storeApiSchemaCallback()
     {
         return [
             'billingVat' => [
@@ -64,7 +75,18 @@ class ExtendStoreEndpoint
                 'type' => 'string',
                 'context' => ['view', 'edit'],
                 'readonly' => true,
-                'optional' => true
+                'optional' => true,
+                'arg_options' => [
+                    'validate_callback' => function( $value ) {
+                        // todo: check errors here?
+                        /*return new \WP_Error(
+                            'rest_invalid_param',
+                            'asdasdas'
+                        );
+
+                        return false;*/
+                    },
+                ],
             ],
         ];
     }
