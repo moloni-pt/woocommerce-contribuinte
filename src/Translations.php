@@ -14,7 +14,7 @@ class Translations
      * Language files folder
      * @var string
      */
-    private $folder = '/languages/';
+    private $folder = '/languages';
 
     /**
      * Translations constructor.

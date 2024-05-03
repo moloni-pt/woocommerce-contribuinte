@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Contribuinte Checkout\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-13 16:28+0000\n"
-"PO-Revision-Date: 2024-05-03 08:41+0000\n"
+"PO-Revision-Date: 2024-05-03 08:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: Português\n"
 "Language: pt_PT\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.6.7; wp-6.5"
+"X-Loco-Version: 2.4.0; wp-5.4.2"
 
 #. Description of the plugin
 msgid "Add VAT information to your orders"
@@ -127,7 +127,7 @@ msgstr "Número de contribuinte"
 
 #: bitnami/wordpress/wp-content/plugins/woocommerce-contribuinte/src/Blocks/ExtendStoreEndpoint.php:74
 msgid "VAT number"
-msgstr "NIF"
+msgstr ""
 
 #: bitnami/wordpress/wp-content/plugins/woocommerce-contribuinte/src/Settings.php:94
 msgid "VAT required on orders over 1000€"

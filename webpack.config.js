@@ -21,7 +21,7 @@ module.exports = {
             process.cwd(),
             'blocks',
             'checkout-block',
-            'frontend.js'
+            'frontend.tsx'
         ),
     },
     module: {

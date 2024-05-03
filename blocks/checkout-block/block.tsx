@@ -1,11 +1,13 @@
-import { useSelect } from '@wordpress/data';
-import { useEffect, useMemo, useState, useCallback } from '@wordpress/element';
-import { getSetting } from "@woocommerce/settings";
-import { FormStep } from '@woocommerce/blocks-components';
-import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
-import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
-import { validateVatPT } from '../common/helpers/validations';
-import { phrases } from '../common/translations'
+import {useSelect} from '@wordpress/data';
+import {useEffect, useMemo, useState, useCallback} from '@wordpress/element';
+import {getSetting} from "@woocommerce/settings";
+import {FormStep} from '@woocommerce/blocks-components';
+import {CART_STORE_KEY, CHECKOUT_STORE_KEY} from '@woocommerce/block-data';
+import {ValidatedTextInput} from '@woocommerce/blocks-checkout';
+import {validateVatPT} from '../common/helpers/validations';
+import {phrases} from '../common/translations'
+import React, {FC} from 'react';
+import {BlockViewAttributes} from "../common/interfaces";
 
 const {
     drop_down_is_required: shouldRequireVat,
@@ -14,7 +16,7 @@ const {
     drop_down_on_validation_fail: shouldOnlyShowWarningOnFail
 } = getSetting('contribuinte-checkout_data', '');
 
-const Block = (data) => {
+const Block: FC<BlockViewAttributes> = (data) => {
     const {
         extensions,
         checkoutExtensionData,
@@ -24,15 +26,18 @@ const Block = (data) => {
         inputLabel,
     } = data;
 
-    const { setExtensionData } = checkoutExtensionData;
+    const {setExtensionData} = checkoutExtensionData;
 
     const checkoutIsProcessing = useSelect((select) => {
+        // @ts-ignore
         return select(CHECKOUT_STORE_KEY)?.isProcessing();
     }, []);
     const checkoutTotals = useSelect((select) => {
+        // @ts-ignore
         return select(CART_STORE_KEY)?.getCartTotals();
     }, []);
     const checkoutAddresses = useSelect((select) => {
+        // @ts-ignore
         return select(CART_STORE_KEY)?.getCustomerData();
     }, []);
 
@@ -80,7 +85,7 @@ const Block = (data) => {
 
         return true;
     }, [vatValue, checkoutAddresses]);
-    const validateVatCallback = useCallback((inputObject) => {
+    const validateVatCallback = useCallback((inputObject: HTMLInputElement) => {
         if (!shouldValidateVat || isVatValid || shouldOnlyShowWarningOnFail) {
             return true;
         }

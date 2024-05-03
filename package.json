@@ -15,6 +15,7 @@
 		"start": "wp-scripts start"
 	},
 	"devDependencies": {
+		"@types/wordpress__block-editor": "^11.5.14",
 		"@woocommerce/dependency-extraction-webpack-plugin": "^2.4.0",
 		"@woocommerce/eslint-plugin": "^2.2.0",
 		"@woocommerce/settings": "^1.0.0",

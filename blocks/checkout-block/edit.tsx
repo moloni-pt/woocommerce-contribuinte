@@ -9,14 +9,18 @@
  */
 
 import classnames from 'classnames';
-import { useBlockProps, PlainText, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl, TextControl, ExternalLink } from '@wordpress/components';
-import { ADMIN_URL } from '@woocommerce/settings';
-import { Title } from '@woocommerce/blocks-components';
-import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
-import { phrases } from '../common/translations'
+import {useBlockProps, PlainText, InspectorControls} from '@wordpress/block-editor';
+import {PanelBody, ToggleControl, TextControl, ExternalLink} from '@wordpress/components';
+import {ADMIN_URL} from '@woocommerce/settings';
+import {Title} from '@woocommerce/blocks-components';
+import {ValidatedTextInput} from '@woocommerce/blocks-checkout';
+import {phrases} from '../common/translations'
+import React from "react";
+import type {FC, ReactNode} from 'react';
+import {BlockEditAttributes} from "../common/interfaces";
+import type {BlockEditProps} from "@wordpress/blocks";
 
-const FormStepHead = ({ children }) => (
+const FormStepHead: FC<{ children: ReactNode }> = ({children}) => (
     <div className="wc-block-components-checkout-step__heading">
         <Title
             aria-hidden="true"
@@ -28,7 +32,7 @@ const FormStepHead = ({ children }) => (
     </div>
 );
 
-const FormStepBody = ({ description, content }) => (
+const FormStepBody: FC<{ description: ReactNode, content: ReactNode }> = ({description, content}) => (
     <div className="wc-block-components-checkout-step__container">
         <p className="wc-block-components-checkout-step__description">
             {description}
@@ -40,7 +44,7 @@ const FormStepBody = ({ description, content }) => (
     </div>
 );
 
-export default function Edit({ attributes, setAttributes }) {
+const Edit: FC<BlockEditProps<BlockEditAttributes>> = ({attributes, setAttributes}) => {
     const {
         showStepNumber,
         sectionTitle,
@@ -55,8 +59,8 @@ export default function Edit({ attributes, setAttributes }) {
         }),
     });
 
-    const onChange = (name, value) => {
-        setAttributes({ ...attributes, [name]: value });
+    const onChange = (name: string, value: string | number | boolean) => {
+        setAttributes({...attributes, [name]: value});
     }
 
     return (
@@ -66,7 +70,7 @@ export default function Edit({ attributes, setAttributes }) {
                     <ToggleControl
                         checked={showStepNumber}
                         label={phrases.showStepNumber}
-                        onChange={(value) => {
+                        onChange={(value: boolean) => {
                             onChange('showStepNumber', value);
                         }}
                     />
@@ -74,22 +78,22 @@ export default function Edit({ attributes, setAttributes }) {
                 <PanelBody title={phrases.visualOptions}>
                     <TextControl
                         label={phrases.sectionTitle}
-                        value={sectionTitle}
-                        onChange={(value) => {
+                        value={sectionTitle || ''}
+                        onChange={(value: string) => {
                             onChange('sectionTitle', value);
                         }}
                     />
                     <TextControl
                         label={phrases.sectionDescription}
-                        value={sectionDescription}
-                        onChange={(value) => {
+                        value={sectionDescription || ''}
+                        onChange={(value: string) => {
                             onChange('sectionDescription', value);
                         }}
                     />
                     <TextControl
                         label={phrases.fieldLabel}
-                        value={inputLabel}
-                        onChange={(value) => {
+                        value={inputLabel || ''}
+                        onChange={(value: string) => {
                             onChange('inputLabel', value);
                         }}
                     />
@@ -109,10 +113,10 @@ export default function Edit({ attributes, setAttributes }) {
                 <PlainText
                     className={''}
                     value={sectionTitle || ''}
-                    onChange={(value) => {
+                    onChange={(value: string) => {
                         onChange('sectionTitle', value);
                     }}
-                    style={{ backgroundColor: 'transparent' }}
+                    style={{backgroundColor: 'transparent'}}
                 />
             </FormStepHead>
             <FormStepBody
@@ -121,10 +125,10 @@ export default function Edit({ attributes, setAttributes }) {
                         className={sectionDescription ? '' : 'wc-block-components-checkout-step__description-placeholder'}
                         value={sectionDescription || ''}
                         placeholder={phrases.optionalTextFormStep}
-                        onChange={(value) => {
+                        onChange={(value: string) => {
                             onChange('sectionDescription', value);
                         }}
-                        style={{ backgroundColor: 'transparent' }}
+                        style={{backgroundColor: 'transparent'}}
                     />
                 }
                 content={
@@ -139,3 +143,5 @@ export default function Edit({ attributes, setAttributes }) {
         </div>
     );
 }
+
+export default Edit;

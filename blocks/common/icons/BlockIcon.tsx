@@ -1,5 +1,6 @@
-import { SVG } from '@wordpress/components';
+import React from "react";
 import {IconProps} from "../types";
+import { SVG } from '@wordpress/components';
 
 const BlockIcon = ({ className = '' }: IconProps) => {
     return (
