@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2024-05-03T14:53:18+02:00\n"
-"PO-Revision-Date: 2024-05-03 13:32+0000\n"
+"PO-Revision-Date: 2024-05-03 13:23+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: contribuinte-checkout\n"
 "Language: pt_PT\n"
@@ -27,7 +27,7 @@ msgstr "Contribuinte Checkout"
 #. Description of the plugin
 #: C:\_trabalho\plugin_pt\wordpress_pt\site\wp-content\plugins\woocommerce-contribuinte\contribuinte-checkout.php
 msgid "Add VAT information to your orders"
-msgstr "Adicione informações fiscais às suas encomendas"
+msgstr "Add VAT information to your orders"
 
 #. Author of the plugin
 #: C:\_trabalho\plugin_pt\wordpress_pt\site\wp-content\plugins\woocommerce-contribuinte\contribuinte-checkout.php
@@ -60,7 +60,7 @@ msgstr "Configurações"
 
 #: src/Plugin.php:346 src/Plugin.php:349 src/Plugin.php:385 src/Plugin.php:388
 msgid "You have entered an invalid VAT."
-msgstr "Inseriu um NIF inválido."
+msgstr "Inseriu um contribuinte inválido."
 
 #: src/Settings.php:27
 msgid "No"
@@ -84,19 +84,19 @@ msgstr "Configurações principais"
 
 #: src/Settings.php:55
 msgid "VAT field label"
-msgstr "Etiqueta do NIF"
+msgstr "Etiqueta do contribuinte"
 
 #: src/Settings.php:68
 msgid "VAT field description"
-msgstr "Descrição do NIF"
+msgstr "Descrição do contribuinte"
 
 #: src/Settings.php:81
 msgid "VAT is required"
-msgstr "NIF obrigatório"
+msgstr "Número de contribuinte obrigatório"
 
 #: src/Settings.php:94
 msgid "VAT required on orders over 1000€"
-msgstr "NIF obrigatório em vendas superiores a 1000€"
+msgstr "Número de contribuinte obrigatório em vendas superiores a 1000€"
 
 #: src/Settings.php:107
 msgid "Validate VAT"
@@ -112,7 +112,8 @@ msgstr "Mostrar informações VIES"
 
 #: src/Settings.php:152
 msgid "In the section bellow you can change the VAT input behaviour."
-msgstr "Na seção abaixo, você pode alterar o comportamento do campo NIF."
+msgstr ""
+"Na seção abaixo, você pode alterar o comportamento do campo contribuinte."
 
 #: src/Settings.php:196
 msgid "Changes saved."

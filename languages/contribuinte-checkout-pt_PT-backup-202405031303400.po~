@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2024-05-03T14:53:18+02:00\n"
-"PO-Revision-Date: 2024-05-03 13:32+0000\n"
+"PO-Revision-Date: 2024-05-03 13:00+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: contribuinte-checkout\n"
 "Language: pt_PT\n"
@@ -22,149 +22,147 @@ msgstr ""
 #: C:\_trabalho\plugin_pt\wordpress_pt\site\wp-content\plugins\woocommerce-contribuinte\contribuinte-checkout.php
 #: src/Blocks/ExtendWooCore.php:65 src/Menus/Admin.php:30 src/Settings.php:211
 msgid "Contribuinte Checkout"
-msgstr "Contribuinte Checkout"
+msgstr ""
 
 #. Description of the plugin
 #: C:\_trabalho\plugin_pt\wordpress_pt\site\wp-content\plugins\woocommerce-contribuinte\contribuinte-checkout.php
 msgid "Add VAT information to your orders"
-msgstr "Adicione informações fiscais às suas encomendas"
+msgstr ""
 
 #. Author of the plugin
 #: C:\_trabalho\plugin_pt\wordpress_pt\site\wp-content\plugins\woocommerce-contribuinte\contribuinte-checkout.php
 msgid "moloni.pt"
-msgstr "moloni.pt"
+msgstr ""
 
 #. Author URI of the plugin
 #: C:\_trabalho\plugin_pt\wordpress_pt\site\wp-content\plugins\woocommerce-contribuinte\contribuinte-checkout.php
 msgid "https://moloni.pt"
-msgstr "https://moloni.pt"
+msgstr ""
 
 #: src/Activators/Install.php:15
 msgid "Requires WooCommerce 3.0.0 or above."
-msgstr "Requer WooCommerce 3.0.0 ou superior."
+msgstr ""
 
 #: src/Blocks/ExtendStoreEndpoint.php:62 src/Plugin.php:133 src/Plugin.php:139
 #: src/Plugin.php:219 src/Settings.php:74
 msgid "VAT number"
-msgstr "Número de contribuinte"
+msgstr ""
 
 #: src/Menus/Admin.php:30 src/Plugin.php:132 src/Plugin.php:138
 #: src/Plugin.php:192 src/Plugin.php:218 src/Plugin.php:289 src/Settings.php:61
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid "VAT"
-msgstr "NIF"
+msgstr ""
 
 #: src/Plugin.php:84
 msgid "Settings"
-msgstr "Configurações"
+msgstr ""
 
 #: src/Plugin.php:346 src/Plugin.php:349 src/Plugin.php:385 src/Plugin.php:388
 msgid "You have entered an invalid VAT."
-msgstr "Inseriu um NIF inválido."
+msgstr ""
 
 #: src/Settings.php:27
 msgid "No"
-msgstr "Não"
+msgstr ""
 
 #: src/Settings.php:28
 msgid "Yes"
-msgstr "Sim"
+msgstr ""
 
 #: src/Settings.php:33
 msgid "Reject the order and show customer an error"
-msgstr "Rejeitar o pedido e mostrar um erro"
+msgstr ""
 
 #: src/Settings.php:34
 msgid "Only show customer an warning message"
-msgstr "Mostrar apenas ao cliente um aviso"
+msgstr ""
 
 #: src/Settings.php:47
 msgid "Main Settings"
-msgstr "Configurações principais"
+msgstr ""
 
 #: src/Settings.php:55
 msgid "VAT field label"
-msgstr "Etiqueta do NIF"
+msgstr ""
 
 #: src/Settings.php:68
 msgid "VAT field description"
-msgstr "Descrição do NIF"
+msgstr ""
 
 #: src/Settings.php:81
 msgid "VAT is required"
-msgstr "NIF obrigatório"
+msgstr "Número de contribuinte obrigatório"
 
 #: src/Settings.php:94
 msgid "VAT required on orders over 1000€"
-msgstr "NIF obrigatório em vendas superiores a 1000€"
+msgstr ""
 
 #: src/Settings.php:107
 msgid "Validate VAT"
-msgstr "Validar NIF"
+msgstr ""
 
 #: src/Settings.php:120
 msgid "Failed validation handling"
-msgstr "Ação na falha da validação"
+msgstr ""
 
 #: src/Settings.php:135
 msgid "Show VIES information"
-msgstr "Mostrar informações VIES"
+msgstr ""
 
 #: src/Settings.php:152
 msgid "In the section bellow you can change the VAT input behaviour."
-msgstr "Na seção abaixo, você pode alterar o comportamento do campo NIF."
+msgstr ""
 
 #: src/Settings.php:196
 msgid "Changes saved."
-msgstr "Alterações guardadas."
+msgstr ""
 
 #: src/Vies/Vies.php:95 src/Vies/Vies.php:111 src/Vies/Vies.php:132
 #: src/Vies/Vies.php:148 src/Vies/Vies.php:168 src/Vies/Vies.php:184
 msgid "VIES information"
-msgstr "Informação VIES"
+msgstr ""
 
 #: src/Vies/Vies.php:96 src/Vies/Vies.php:133 src/Vies/Vies.php:169
 msgid "Error fetching VIES  information"
-msgstr "Erro ao obter informações VIES"
+msgstr ""
 
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid "(Optional)"
-msgstr "(Opcional)"
+msgstr ""
 
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid "Fiscal details"
-msgstr "Detalhes fiscais"
+msgstr ""
 
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid "Please enter a valid VAT number"
-msgstr "Por favor insira um número de contribuinte válido"
+msgstr ""
 
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid "Manage field settings"
-msgstr "Alterar configurações do campo"
+msgstr ""
 
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid ""
 "Options that control this section can be managed in the plugin settings page."
 msgstr ""
-"As opções que controlam esta secção podem ser administradas na página de "
-"configurações do plugin."
 
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid "Behaviour Options"
-msgstr "Opções de comportamento"
+msgstr ""
 
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid "Field label"
-msgstr "Título do campo"
+msgstr ""
 
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid "Section description"
-msgstr "Descrição da seção"
+msgstr ""
 
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid "Section title"
-msgstr "Título da seção"
+msgstr ""
 
 #: build/829.js:1 build/contribuinte-checkout-block.js:1
 msgid "Visual Options"
@@ -173,9 +171,9 @@ msgstr "Opções visuais"
 #: blocks/checkout-block/block.json build/checkout-block/block.json
 msgctxt "block title"
 msgid "Checkout block"
-msgstr "Bloco checkout"
+msgstr ""
 
 #: blocks/checkout-block/block.json build/checkout-block/block.json
 msgctxt "block description"
 msgid "Add fiscal section to checkout."
-msgstr "Adicione secção fiscal ao checkout."
+msgstr ""

@@ -76,7 +76,7 @@ class BlocksIntegration implements IntegrationInterface
             true
         );
 
-        wp_set_script_translations('contribuinte-checkout-integration', 'contribuinte-checkout');
+        wp_set_script_translations('contribuinte-checkout-integration', 'contribuinte-checkout', dirname( CONTRIBUINTE_CHECKOUT_PLUGIN_FILE ) . '/languages');
         wp_set_script_translations('contribuinte-checkout-integration', 'woocommerce');
     }
 
@@ -100,7 +100,7 @@ class BlocksIntegration implements IntegrationInterface
             true
         );
 
-        wp_set_script_translations('contribuinte-checkout-block-editor', 'contribuinte-checkout');
+        wp_set_script_translations('contribuinte-checkout-block-editor', 'contribuinte-checkout', dirname( CONTRIBUINTE_CHECKOUT_PLUGIN_FILE ) . '/languages');
         wp_set_script_translations('contribuinte-checkout-block-editor', 'woocommerce');
     }
 
@@ -123,7 +123,7 @@ class BlocksIntegration implements IntegrationInterface
             $script_asset['version'],
             true
         );
-        wp_set_script_translations('contribuinte-checkout-block-frontend', 'contribuinte-checkout');
+        wp_set_script_translations('contribuinte-checkout-block-frontend', 'contribuinte-checkout', dirname( CONTRIBUINTE_CHECKOUT_PLUGIN_FILE ) . '/languages');
         wp_set_script_translations('contribuinte-checkout-block-frontend', 'woocommerce');
     }
 

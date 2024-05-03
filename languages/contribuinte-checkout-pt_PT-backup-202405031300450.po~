@@ -102,7 +102,7 @@ msgstr ""
 
 #: src/Settings.php:81
 msgid "VAT is required"
-msgstr ""
+msgstr "Número de contribuinte obrigatório"
 
 #: src/Settings.php:94
 msgid "VAT required on orders over 1000€"
@@ -191,7 +191,7 @@ msgstr ""
 #: build/829.js:1
 #: build/contribuinte-checkout-block.js:1
 msgid "Visual Options"
-msgstr ""
+msgstr "Opções visuais"
 
 #: blocks/checkout-block/block.json
 #: build/checkout-block/block.json
