@@ -71,7 +71,7 @@ class Settings
             'main_section',
             [
                 'id' => 'text_box_vat_field_description',
-                'default' => __('VAT Number', 'contribuinte-checkout')
+                'default' => __('VAT number', 'contribuinte-checkout')
             ]
         );
 

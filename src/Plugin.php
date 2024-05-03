@@ -130,13 +130,13 @@ class Plugin
         // We should only apply settings if settings are already defined
         if (is_array($settings)) {
             $label = empty($settings['text_box_vat_field_label']) ? __('VAT', 'contribuinte-checkout') : $settings['text_box_vat_field_label'];
-            $placeholder = empty($settings['text_box_vat_field_description']) ? __('VAT Number', 'contribuinte-checkout') : $settings['text_box_vat_field_description'];
+            $placeholder = empty($settings['text_box_vat_field_description']) ? __('VAT number', 'contribuinte-checkout') : $settings['text_box_vat_field_description'];
             $isRequired = (int)$settings['drop_down_is_required'];
             $isRequiredOverLimit = (int)$settings['drop_down_required_over_limit_price'];
             $validateVat = (bool)$settings['drop_down_validate_vat'];
         } else {
             $label = __('VAT', 'contribuinte-checkout');
-            $placeholder = __('VAT Number', 'contribuinte-checkout');
+            $placeholder = __('VAT number', 'contribuinte-checkout');
             $isRequired = 0;
             $isRequiredOverLimit = 0;
             $validateVat = false;
@@ -216,7 +216,7 @@ class Plugin
         if (isset($profileFields['billing']) && is_array($profileFields['billing']['fields'])) {
             $profileFields['billing']['fields']['billing_vat'] = [
                 'label' => empty($settings['text_box_vat_field_label']) ? __('VAT', 'contribuinte-checkout') : $settings['text_box_vat_field_label'],
-                'description' => empty($settings['text_box_vat_field_description']) ? __('VAT Number', 'contribuinte-checkout') : $settings['text_box_vat_field_description']
+                'description' => empty($settings['text_box_vat_field_description']) ? __('VAT number', 'contribuinte-checkout') : $settings['text_box_vat_field_description']
             ];
         }
         return $profileFields;
