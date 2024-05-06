@@ -13,6 +13,7 @@ import setCategoryIcon from "../common/helpers/setCategoryIcon"
 
 setCategoryIcon();
 
+// @ts-ignore
 registerBlockType(metadata, {
     icon: {
         src: BlockIcon

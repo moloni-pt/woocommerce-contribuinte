@@ -15,7 +15,7 @@ module.exports = {
             process.cwd(),
             'blocks',
             'checkout-block',
-            'index.js'
+            'index.tsx'
         ),
         'contribuinte-checkout-block-frontend': path.resolve(
             process.cwd(),
