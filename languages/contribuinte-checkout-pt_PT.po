@@ -1,26 +1,23 @@
-# Copyright (C) 2024 moloni.pt
-# This file is distributed under the GPL2.
 msgid ""
 msgstr ""
 "Project-Id-Version: Contribuinte Checkout 2.0.00\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce-"
-"contribuinte\n"
-"Last-Translator: \n"
-"Language-Team: Português\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce-contribuinte\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-03T14:53:18+02:00\n"
-"PO-Revision-Date: 2024-05-03 13:32+0000\n"
-"X-Generator: Loco https://localise.biz/\n"
+"POT-Creation-Date: 2024-05-09T19:35:56+02:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language: \n"
+"X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: contribuinte-checkout\n"
-"Language: pt_PT\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Loco-Version: 2.6.7; wp-6.5"
 
 #. Plugin Name of the plugin
 #: C:\_trabalho\plugin_pt\wordpress_pt\site\wp-content\plugins\woocommerce-contribuinte\contribuinte-checkout.php
-#: src/Blocks/ExtendWooCore.php:65 src/Menus/Admin.php:30 src/Settings.php:211
+#: src/Blocks/ExtendWooCore.php:65
+#: src/Menus/Admin.php:30
+#: src/Settings.php:211
 msgid "Contribuinte Checkout"
 msgstr "Contribuinte Checkout"
 
@@ -43,14 +40,22 @@ msgstr "https://moloni.pt"
 msgid "Requires WooCommerce 3.0.0 or above."
 msgstr "Requer WooCommerce 3.0.0 ou superior."
 
-#: src/Blocks/ExtendStoreEndpoint.php:62 src/Plugin.php:133 src/Plugin.php:139
-#: src/Plugin.php:219 src/Settings.php:74
+#: src/Blocks/ExtendStoreEndpoint.php:62
+#: src/Plugin.php:133
+#: src/Plugin.php:139
+#: src/Plugin.php:219
+#: src/Settings.php:74
 msgid "VAT number"
 msgstr "Número de contribuinte"
 
-#: src/Menus/Admin.php:30 src/Plugin.php:132 src/Plugin.php:138
-#: src/Plugin.php:192 src/Plugin.php:218 src/Plugin.php:289 src/Settings.php:61
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
+#: src/Menus/Admin.php:30
+#: src/Plugin.php:132
+#: src/Plugin.php:138
+#: src/Plugin.php:192
+#: src/Plugin.php:218
+#: src/Plugin.php:289
+#: src/Settings.php:61
+#: build/contribuinte-checkout-block.js:1
 msgid "VAT"
 msgstr "NIF"
 
@@ -58,7 +63,10 @@ msgstr "NIF"
 msgid "Settings"
 msgstr "Configurações"
 
-#: src/Plugin.php:346 src/Plugin.php:349 src/Plugin.php:385 src/Plugin.php:388
+#: src/Plugin.php:346
+#: src/Plugin.php:349
+#: src/Plugin.php:385
+#: src/Plugin.php:388
 msgid "You have entered an invalid VAT."
 msgstr "Inseriu um NIF inválido."
 
@@ -118,64 +126,29 @@ msgstr "Na seção abaixo, você pode alterar o comportamento do campo NIF."
 msgid "Changes saved."
 msgstr "Alterações guardadas."
 
-#: src/Vies/Vies.php:95 src/Vies/Vies.php:111 src/Vies/Vies.php:132
-#: src/Vies/Vies.php:148 src/Vies/Vies.php:168 src/Vies/Vies.php:184
+#: src/Vies/Vies.php:95
+#: src/Vies/Vies.php:111
+#: src/Vies/Vies.php:132
+#: src/Vies/Vies.php:148
+#: src/Vies/Vies.php:168
+#: src/Vies/Vies.php:184
 msgid "VIES information"
 msgstr "Informação VIES"
 
-#: src/Vies/Vies.php:96 src/Vies/Vies.php:133 src/Vies/Vies.php:169
+#: src/Vies/Vies.php:96
+#: src/Vies/Vies.php:133
+#: src/Vies/Vies.php:169
 msgid "Error fetching VIES  information"
 msgstr "Erro ao obter informações VIES"
 
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
-msgid "(Optional)"
-msgstr "(Opcional)"
-
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
-msgid "Fiscal details"
-msgstr "Detalhes fiscais"
-
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
-msgid "Please enter a valid VAT number"
-msgstr "Por favor insira um número de contribuinte válido"
-
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
-msgid "Manage field settings"
-msgstr "Alterar configurações do campo"
-
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
-msgid ""
-"Options that control this section can be managed in the plugin settings page."
-msgstr ""
-"As opções que controlam esta secção podem ser administradas na página de "
-"configurações do plugin."
-
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
-msgid "Behaviour Options"
-msgstr "Opções de comportamento"
-
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
-msgid "Field label"
-msgstr "Título do campo"
-
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
-msgid "Section description"
-msgstr "Descrição da seção"
-
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
-msgid "Section title"
-msgstr "Título da seção"
-
-#: build/829.js:1 build/contribuinte-checkout-block.js:1
-msgid "Visual Options"
-msgstr "Opções visuais"
-
-#: blocks/checkout-block/block.json build/checkout-block/block.json
+#: blocks/checkout-block/block.json
+#: build/checkout-block/block.json
 msgctxt "block title"
 msgid "Checkout block"
 msgstr "Bloco checkout"
 
-#: blocks/checkout-block/block.json build/checkout-block/block.json
+#: blocks/checkout-block/block.json
+#: build/checkout-block/block.json
 msgctxt "block description"
 msgid "Add fiscal section to checkout."
 msgstr "Adicione secção fiscal ao checkout."

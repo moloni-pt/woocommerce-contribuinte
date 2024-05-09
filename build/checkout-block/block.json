@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "contribuinte-checkout/checkout-block",
+  "version": "0.1.0",
+  "title": "Checkout block",
+  "category": "contribuinte-checkout-category",
+  "description": "Add fiscal section to checkout.",
+  "supports": {
+    "html": false,
+    "align": false,
+    "multiple": false,
+    "reusable": false
+  },
+  "parent": [
+    "woocommerce/checkout-fields-block"
+  ],
+  "attributes": {
+    "lock": {
+      "type": "object"
+    },
+    "showStepNumber": {
+      "type": "boolean"
+    },
+    "sectionTitle": {
+      "type": "string"
+    },
+    "sectionDescription": {
+      "type": "string"
+    },
+    "inputLabel": {
+      "type": "string"
+    }
+  },
+  "textdomain": "contribuinte-checkout"
+}
