@@ -454,6 +454,10 @@ class Plugin
             return;
         }
 
+        if (has_block('woocommerce/checkout')) {
+            return;
+        }
+
         ?>
         <script>
             if (jQuery) {
