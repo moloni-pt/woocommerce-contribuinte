@@ -75,8 +75,11 @@ class BlocksIntegration implements IntegrationInterface
             $script_asset['version'],
             true
         );
-
-        wp_set_script_translations('contribuinte-checkout-blocks-integration', 'contribuinte-checkout');
+        wp_set_script_translations(
+            'contribuinte-checkout-blocks-integration',
+            'contribuinte-checkout',
+            plugin_dir_path(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE) . 'languages'
+        );
     }
 
     public function register_block_editor_scripts()
@@ -98,8 +101,11 @@ class BlocksIntegration implements IntegrationInterface
             $script_asset['version'],
             true
         );
-
-        wp_set_script_translations('contribuinte-checkout-block-editor', 'contribuinte-checkout');
+        wp_set_script_translations(
+            'contribuinte-checkout-block-editor',
+            'contribuinte-checkout',
+            plugin_dir_path(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE) . 'languages'
+        );
     }
 
     public function register_block_frontend_scripts()
@@ -121,7 +127,11 @@ class BlocksIntegration implements IntegrationInterface
             $script_asset['version'],
             true
         );
-        wp_set_script_translations('contribuinte-checkout-block-frontend', 'contribuinte-checkout');
+        wp_set_script_translations(
+            'contribuinte-checkout-block-frontend',
+            'contribuinte-checkout',
+            plugin_dir_path(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE) . 'languages'
+        );
     }
 
     protected function get_file_version($file)
