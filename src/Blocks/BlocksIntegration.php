@@ -64,7 +64,7 @@ class BlocksIntegration implements IntegrationInterface
         $script_asset = file_exists($script_asset_path)
             ? require $script_asset_path
             : [
-                'dependencies' => [],
+                'dependencies' => ['wp-i18n'],
                 'version' => $this->get_file_version($script_path),
             ];
 
@@ -76,8 +76,7 @@ class BlocksIntegration implements IntegrationInterface
             true
         );
 
-        wp_set_script_translations('contribuinte-checkout-integration', 'contribuinte-checkout', dirname( CONTRIBUINTE_CHECKOUT_PLUGIN_FILE ) . '/languages');
-        wp_set_script_translations('contribuinte-checkout-integration', 'woocommerce');
+        wp_set_script_translations('contribuinte-checkout-blocks-integration', 'contribuinte-checkout');
     }
 
     public function register_block_editor_scripts()
@@ -88,7 +87,7 @@ class BlocksIntegration implements IntegrationInterface
         $script_asset = file_exists($script_asset_path)
             ? require $script_asset_path
             : [
-                'dependencies' => [],
+                'dependencies' => ['wp-i18n'],
                 'version' => $this->get_file_version($script_asset_path),
             ];
 
@@ -100,8 +99,7 @@ class BlocksIntegration implements IntegrationInterface
             true
         );
 
-        wp_set_script_translations('contribuinte-checkout-block-editor', 'contribuinte-checkout', dirname( CONTRIBUINTE_CHECKOUT_PLUGIN_FILE ) . '/languages');
-        wp_set_script_translations('contribuinte-checkout-block-editor', 'woocommerce');
+        wp_set_script_translations('contribuinte-checkout-block-editor', 'contribuinte-checkout');
     }
 
     public function register_block_frontend_scripts()
@@ -112,7 +110,7 @@ class BlocksIntegration implements IntegrationInterface
         $script_asset = file_exists($script_asset_path)
             ? require $script_asset_path
             : [
-                'dependencies' => [],
+                'dependencies' => ['wp-i18n'],
                 'version' => $this->get_file_version($script_asset_path),
             ];
 
@@ -123,8 +121,7 @@ class BlocksIntegration implements IntegrationInterface
             $script_asset['version'],
             true
         );
-        wp_set_script_translations('contribuinte-checkout-block-frontend', 'contribuinte-checkout', dirname( CONTRIBUINTE_CHECKOUT_PLUGIN_FILE ) . '/languages');
-        wp_set_script_translations('contribuinte-checkout-block-frontend', 'woocommerce');
+        wp_set_script_translations('contribuinte-checkout-block-frontend', 'contribuinte-checkout');
     }
 
     protected function get_file_version($file)

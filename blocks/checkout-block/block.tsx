@@ -5,9 +5,9 @@ import {FormStep} from '@woocommerce/blocks-components';
 import {CART_STORE_KEY, CHECKOUT_STORE_KEY} from '@woocommerce/block-data';
 import {ValidatedTextInput} from '@woocommerce/blocks-checkout';
 import {validateVatPT} from '../common/helpers/validations';
-import {phrases} from '../common/translations'
 import React, {FC} from 'react';
 import {BlockViewAttributes} from "../common/interfaces";
+import {__} from "@wordpress/i18n";
 
 const {
     drop_down_is_required: shouldRequireVat,
@@ -90,7 +90,7 @@ const Block: FC<BlockViewAttributes> = (data) => {
             return true;
         }
 
-        inputObject.setCustomValidity(phrases.enterValidVat);
+        inputObject.setCustomValidity(__('Please enter a valid VAT number', 'contribuinte-checkout'));
 
         return false;
     }, [isVatValid]);
@@ -107,7 +107,7 @@ const Block: FC<BlockViewAttributes> = (data) => {
             id="fiscal-details"
             disabled={checkoutIsProcessing}
             title={
-                sectionTitle && sectionTitle !== '' ? sectionTitle : phrases.fiscalDetails
+                sectionTitle && sectionTitle !== '' ? sectionTitle : __('Fiscal details', 'contribuinte-checkout')
             }
             description={
                 sectionDescription ? sectionDescription : ''
@@ -125,10 +125,10 @@ const Block: FC<BlockViewAttributes> = (data) => {
                 customValidation={validateVatCallback}
                 required={isVatRequired}
                 errorMessage={
-                    shouldOnlyShowWarningOnFail && !isVatValid && vatValue !== '' ? phrases.enterValidVat : ''
+                    shouldOnlyShowWarningOnFail && !isVatValid && vatValue !== '' ? __('Please enter a valid VAT number', 'contribuinte-checkout') : ''
                 }
                 label={
-                    `${inputLabel && inputLabel !== '' ? inputLabel : phrases.vat} ${isVatRequired ? '' : phrases.optional}`
+                    `${inputLabel && inputLabel !== '' ? inputLabel : __('VAT', 'contribuinte-checkout')} ${isVatRequired ? '' : __('(Optional)', 'contribuinte-checkout')}`
                 }
             />
         </FormStep>

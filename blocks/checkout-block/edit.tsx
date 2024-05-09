@@ -14,11 +14,11 @@ import {PanelBody, ToggleControl, TextControl, ExternalLink} from '@wordpress/co
 import {ADMIN_URL} from '@woocommerce/settings';
 import {Title} from '@woocommerce/blocks-components';
 import {ValidatedTextInput} from '@woocommerce/blocks-checkout';
-import {phrases} from '../common/translations'
 import React from "react";
 import type {FC, ReactNode} from 'react';
 import {BlockEditAttributes} from "../common/interfaces";
 import type {BlockEditProps} from "@wordpress/blocks";
+import {__} from "@wordpress/i18n";
 
 const FormStepHead: FC<{ children: ReactNode }> = ({children}) => (
     <div className="wc-block-components-checkout-step__heading">
@@ -62,50 +62,50 @@ const Edit: FC<BlockEditProps<BlockEditAttributes>> = ({attributes, setAttribute
     const onChange = (name: string, value: string | number | boolean) => {
         setAttributes({...attributes, [name]: value});
     }
-
+    
     return (
         <div {...blockProps}>
             <InspectorControls>
-                <PanelBody title={phrases.formStepOptions}>
+                <PanelBody title={__('Form Step Options', 'woocommerce')}>
                     <ToggleControl
                         checked={showStepNumber}
-                        label={phrases.showStepNumber}
+                        label={__('Show step number', 'woocommerce')}
                         onChange={(value: boolean) => {
                             onChange('showStepNumber', value);
                         }}
                     />
                 </PanelBody>
-                <PanelBody title={phrases.visualOptions}>
+                <PanelBody title={__('Visual Options', 'contribuinte-checkout')}>
                     <TextControl
-                        label={phrases.sectionTitle}
+                        label={__('Section title', 'contribuinte-checkout')}
                         value={sectionTitle || ''}
                         onChange={(value: string) => {
                             onChange('sectionTitle', value);
                         }}
                     />
                     <TextControl
-                        label={phrases.sectionDescription}
+                        label={__('Section description', 'contribuinte-checkout')}
                         value={sectionDescription || ''}
                         onChange={(value: string) => {
                             onChange('sectionDescription', value);
                         }}
                     />
                     <TextControl
-                        label={phrases.fieldLabel}
+                        label={__('Field label', 'contribuinte-checkout')}
                         value={inputLabel || ''}
                         onChange={(value: string) => {
                             onChange('inputLabel', value);
                         }}
                     />
                 </PanelBody>
-                <PanelBody title={phrases.behaviourOptions}>
+                <PanelBody title={__('Behaviour Options', 'contribuinte-checkout')}>
                     <p className="wc-block-checkout__controls-text">
-                        {phrases.manageSettingsDescription}
+                        {__('Options that control this section can be managed in the plugin settings page.', 'contribuinte-checkout')}
                     </p>
                     <ExternalLink
                         href={`${ADMIN_URL}admin.php?page=contribuintecheckout`}
                     >
-                        {phrases.manageSettings}
+                        {__('Manage field settings', 'contribuinte-checkout')}
                     </ExternalLink>
                 </PanelBody>
             </InspectorControls>
@@ -124,7 +124,7 @@ const Edit: FC<BlockEditProps<BlockEditAttributes>> = ({attributes, setAttribute
                     <PlainText
                         className={sectionDescription ? '' : 'wc-block-components-checkout-step__description-placeholder'}
                         value={sectionDescription || ''}
-                        placeholder={phrases.optionalTextFormStep}
+                        placeholder={__('Optional text for this form step.', 'woocommerce')}
                         onChange={(value: string) => {
                             onChange('sectionDescription', value);
                         }}

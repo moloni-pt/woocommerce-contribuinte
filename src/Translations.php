@@ -34,11 +34,5 @@ class Translations
             FALSE,
             basename(dirname(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE)) . $this->folder
         );
-
-        load_script_textdomain(
-            $this->domain,
-            FALSE,
-            basename(dirname(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE)) . $this->folder
-        );
     }
 }
