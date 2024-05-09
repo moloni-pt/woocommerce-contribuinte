@@ -1,3 +1,5 @@
+# Copyright (C) 2024 moloni.pt
+# This file is distributed under the GPL2.
 msgid ""
 msgstr ""
 "Project-Id-Version: Contribuinte Checkout 2.0.00\n"
@@ -9,7 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2024-05-09T20:10:08+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Language: \n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: contribuinte-checkout\n"
 
@@ -140,6 +141,61 @@ msgstr "Informação VIES"
 #: src/Vies/Vies.php:169
 msgid "Error fetching VIES  information"
 msgstr "Erro ao obter informações VIES"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "(Optional)"
+msgstr "(Opcional)"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Fiscal details"
+msgstr "Detalhes fiscais"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Please enter a valid VAT number"
+msgstr "Por favor insira um número de contribuinte válido"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Manage field settings"
+msgstr "Alterar configurações do campo"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Options that control this section can be managed in the plugin settings page."
+msgstr "As opções que controlam esta secção podem ser administradas na página de configurações do plugin."
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Behaviour Options"
+msgstr "Opções de comportamento"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Field label"
+msgstr "Título do campo"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Section description"
+msgstr "Descrição da seção"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Section title"
+msgstr "Título da seção"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Visual Options"
+msgstr "Opções visuais"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Debug"
+msgstr "Debug"
 
 #: blocks/checkout-block/block.json
 #: build/checkout-block/block.json

@@ -1,9 +1,9 @@
 import { registerCheckoutBlock } from '@woocommerce/blocks-checkout';
 
 import metadata from './block.json';
-import { lazy } from '@wordpress/element';
+import Block from "./block";
 
 registerCheckoutBlock({
     metadata,
-    component: lazy(() => import('./block')),
+    component: Block,
 });

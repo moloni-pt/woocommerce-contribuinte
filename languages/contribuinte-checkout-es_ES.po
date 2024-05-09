@@ -1,3 +1,5 @@
+# Copyright (C) 2024 moloni.pt
+# This file is distributed under the GPL2.
 msgid ""
 msgstr ""
 "Project-Id-Version: Contribuinte Checkout 2.0.00\n"
@@ -9,7 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2024-05-09T19:35:56+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Language: \n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: contribuinte-checkout\n"
 
@@ -140,6 +141,61 @@ msgstr "Información VIES"
 #: src/Vies/Vies.php:169
 msgid "Error fetching VIES  information"
 msgstr "Error al obtener información VIES"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "(Optional)"
+msgstr "(Opcional)"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Fiscal details"
+msgstr "Detalles fiscales"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Please enter a valid VAT number"
+msgstr "Por favor introduzca un número de NIF/DNI válido"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Manage field settings"
+msgstr "Administrar la configuración del campo"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Options that control this section can be managed in the plugin settings page."
+msgstr "Las opciones que controlan esta sección se pueden administrar en la página de configuración del plugin."
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Behaviour Options"
+msgstr "Opciones de comportamiento"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Field label"
+msgstr "Etiqueta de campo"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Section description"
+msgstr "Descripción de la sección"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Section title"
+msgstr "Título de la sección"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Visual Options"
+msgstr "Opciones visuales"
+
+#: build/239.js:1
+#: build/contribuinte-checkout-block.js:1
+msgid "Debug"
+msgstr "Debug"
 
 #: blocks/checkout-block/block.json
 #: build/checkout-block/block.json
