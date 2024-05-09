@@ -10,6 +10,7 @@
 
 import classnames from 'classnames';
 import {useBlockProps, PlainText, InspectorControls} from '@wordpress/block-editor';
+import {useEffect} from '@wordpress/element';
 import {PanelBody, ToggleControl, TextControl, ExternalLink} from '@wordpress/components';
 import {ADMIN_URL} from '@woocommerce/settings';
 import {Title} from '@woocommerce/blocks-components';
@@ -19,6 +20,8 @@ import type {FC, ReactNode} from 'react';
 import {BlockEditAttributes} from "../common/interfaces";
 import type {BlockEditProps} from "@wordpress/blocks";
 import {__} from "@wordpress/i18n";
+import {defaultAttributes} from "./attributes";
+import {phrases} from "../common/translations";
 
 const FormStepHead: FC<{ children: ReactNode }> = ({children}) => (
     <div className="wc-block-components-checkout-step__heading">
@@ -52,6 +55,12 @@ const Edit: FC<BlockEditProps<BlockEditAttributes>> = ({attributes, setAttribute
         inputLabel,
     } = attributes;
 
+    useEffect(() => {
+        if (Object.keys(attributes).length === 0) {
+            setAttributes(defaultAttributes);
+        }
+    }, []);
+
     const blockProps = useBlockProps({
         className: classnames('wc-block-components-checkout-step', '', {
             'wc-block-components-checkout-step--with-step-number':
@@ -62,7 +71,7 @@ const Edit: FC<BlockEditProps<BlockEditAttributes>> = ({attributes, setAttribute
     const onChange = (name: string, value: string | number | boolean) => {
         setAttributes({...attributes, [name]: value});
     }
-    
+
     return (
         <div {...blockProps}>
             <InspectorControls>
@@ -75,37 +84,37 @@ const Edit: FC<BlockEditProps<BlockEditAttributes>> = ({attributes, setAttribute
                         }}
                     />
                 </PanelBody>
-                <PanelBody title={__('Visual Options', 'contribuinte-checkout')}>
+                <PanelBody title={phrases.visualOptions}>
                     <TextControl
-                        label={__('Section title', 'contribuinte-checkout')}
+                        label={phrases.sectionTitle}
                         value={sectionTitle || ''}
                         onChange={(value: string) => {
                             onChange('sectionTitle', value);
                         }}
                     />
                     <TextControl
-                        label={__('Section description', 'contribuinte-checkout')}
+                        label={phrases.sectionDescription}
                         value={sectionDescription || ''}
                         onChange={(value: string) => {
                             onChange('sectionDescription', value);
                         }}
                     />
                     <TextControl
-                        label={__('Field label', 'contribuinte-checkout')}
+                        label={phrases.fieldLabel}
                         value={inputLabel || ''}
                         onChange={(value: string) => {
                             onChange('inputLabel', value);
                         }}
                     />
                 </PanelBody>
-                <PanelBody title={__('Behaviour Options', 'contribuinte-checkout')}>
+                <PanelBody title={phrases.behaviourOptions}>
                     <p className="wc-block-checkout__controls-text">
-                        {__('Options that control this section can be managed in the plugin settings page.', 'contribuinte-checkout')}
+                        {phrases.manageSettingsDescription}
                     </p>
                     <ExternalLink
                         href={`${ADMIN_URL}admin.php?page=contribuintecheckout`}
                     >
-                        {__('Manage field settings', 'contribuinte-checkout')}
+                        {phrases.manageSettings}
                     </ExternalLink>
                 </PanelBody>
             </InspectorControls>

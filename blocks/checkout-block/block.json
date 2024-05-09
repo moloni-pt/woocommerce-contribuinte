@@ -15,27 +15,19 @@
 	"parent": ["woocommerce/checkout-fields-block"],
 	"attributes": {
 		"lock": {
-			"type": "object",
-			"default": {
-				"remove": false,
-				"move": false
-			}
+			"type": "object"
 		},
 		"showStepNumber": {
-			"type": "boolean",
-			"default": true
+			"type": "boolean"
 		},
 		"sectionTitle": {
-			"type": "string",
-			"default": "Fiscal details"
+			"type": "string"
 		},
 		"sectionDescription": {
-			"type": "string",
-			"default": ""
+			"type": "string"
 		},
 		"inputLabel": {
-			"type": "string",
-			"default": "VAT"
+			"type": "string"
 		}
 	},
 	"textdomain": "contribuinte-checkout"

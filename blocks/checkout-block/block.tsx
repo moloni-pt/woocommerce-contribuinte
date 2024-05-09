@@ -7,7 +7,8 @@ import {ValidatedTextInput} from '@woocommerce/blocks-checkout';
 import {validateVatPT} from '../common/helpers/validations';
 import React, {FC} from 'react';
 import {BlockViewAttributes} from "../common/interfaces";
-import {__} from "@wordpress/i18n";
+import {defaultAttributes} from "./attributes";
+import {phrases} from "../common/translations";
 
 const {
     drop_down_is_required: shouldRequireVat,
@@ -90,7 +91,7 @@ const Block: FC<BlockViewAttributes> = (data) => {
             return true;
         }
 
-        inputObject.setCustomValidity(__('Please enter a valid VAT number', 'contribuinte-checkout'));
+        inputObject.setCustomValidity(phrases.enterValidVat);
 
         return false;
     }, [isVatValid]);
@@ -107,12 +108,14 @@ const Block: FC<BlockViewAttributes> = (data) => {
             id="fiscal-details"
             disabled={checkoutIsProcessing}
             title={
-                sectionTitle && sectionTitle !== '' ? sectionTitle : __('Fiscal details', 'contribuinte-checkout')
+                sectionTitle && sectionTitle !== '' ? sectionTitle : defaultAttributes.sectionTitle
             }
             description={
-                sectionDescription ? sectionDescription : ''
+                sectionDescription ? sectionDescription : defaultAttributes.sectionDescription
             }
-            showStepNumber={!showStepNumber || showStepNumber === 'true'}
+            showStepNumber={
+                (showStepNumber || defaultAttributes.showStepNumber || 'true').toString() === 'true'
+            }
         >
             <ValidatedTextInput
                 id="billing_vat"
@@ -125,10 +128,10 @@ const Block: FC<BlockViewAttributes> = (data) => {
                 customValidation={validateVatCallback}
                 required={isVatRequired}
                 errorMessage={
-                    shouldOnlyShowWarningOnFail && !isVatValid && vatValue !== '' ? __('Please enter a valid VAT number', 'contribuinte-checkout') : ''
+                    shouldOnlyShowWarningOnFail && !isVatValid && vatValue !== '' ? phrases.enterValidVat : ''
                 }
                 label={
-                    `${inputLabel && inputLabel !== '' ? inputLabel : __('VAT', 'contribuinte-checkout')} ${isVatRequired ? '' : __('(Optional)', 'contribuinte-checkout')}`
+                    `${inputLabel && inputLabel !== '' ? inputLabel : defaultAttributes.inputLabel} ${isVatRequired ? '' : phrases.optional}`
                 }
             />
         </FormStep>
