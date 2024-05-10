@@ -121,7 +121,7 @@ msgstr "Mostrar informações VIES"
 
 #: src/Settings.php:152
 msgid "In the section bellow you can change the VAT input behaviour."
-msgstr "Na seção abaixo, você pode alterar o comportamento do campo NIF."
+msgstr "Na secção abaixo, você pode alterar o comportamento do campo NIF."
 
 #: src/Settings.php:196
 msgid "Changes saved."
@@ -180,12 +180,12 @@ msgstr "Título do campo"
 #: build/239.js:1
 #: build/contribuinte-checkout-block.js:1
 msgid "Section description"
-msgstr "Descrição da seção"
+msgstr "Descrição da secção"
 
 #: build/239.js:1
 #: build/contribuinte-checkout-block.js:1
 msgid "Section title"
-msgstr "Título da seção"
+msgstr "Título da secção"
 
 #: build/239.js:1
 #: build/contribuinte-checkout-block.js:1
