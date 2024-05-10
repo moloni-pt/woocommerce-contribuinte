@@ -75,11 +75,6 @@ class BlocksIntegration implements IntegrationInterface
             $script_asset['version'],
             true
         );
-        wp_set_script_translations(
-            'contribuinte-checkout-blocks-integration',
-            'contribuinte-checkout',
-            plugin_dir_path(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE) . 'languages'
-        );
     }
 
     public function register_block_editor_scripts()
