@@ -65,7 +65,6 @@ class Plugin
         //actions needed
         add_action('before_woocommerce_init', [$this, 'beforeWoocommerceInit']); // CORE: Confirm HPOS compatibility
         add_action('woocommerce_checkout_process', [$this, 'woocommerceCheckoutProcess']); // FRONT END: Verify VAT if set in settings
-        add_action('woocommerce_after_save_address_validation', [$this, 'woocommerceAfterSaveAddressValidation'], 10, 3); // FRONT END: Verify VAT if set in settings
         add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'woocommerceAdminOrderDataAfterBillingAddress']); // ADMIN: Show  vies information on admin order page under billing address.
         add_action('woocommerce_after_edit_account_address_form', [$this, 'woocommerceAfterEditAccountAddressForm']); // FRONT END: Show VIES information under addresses in my account page
         add_action('wp_footer', [$this, 'wpFooter']); // GENERAL: Draw in footer
@@ -78,6 +77,7 @@ class Plugin
             add_filter("woocommerce_get_default_value_for_contribuinte-checkout/billing_vat", [$this, 'woocommerceGetDefaultValueFor'], 10, 3);
         } else {
             add_filter('woocommerce_billing_fields', [$this, 'woocommerceBillingFields'], 10, 1); // GENERAL: Add field to billing address fields
+            add_action('woocommerce_after_save_address_validation', [$this, 'woocommerceAfterSaveAddressValidation'], 10, 3); // FRONT END: Verify VAT if set in settings
         }
     }
 
@@ -293,24 +293,6 @@ class Plugin
     }
 
     /**
-     * Verify VAT if set in settings adter saving the billing address
-     * @param $userId
-     * @param $loadAddress
-     * @param $address
-     */
-    public function woocommerceAfterSaveAddressValidation($userId, $loadAddress, $address)
-    {
-        if ($loadAddress !== 'billing') {
-            return;
-        }
-
-        $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
-        $billingCountry = sanitize_text_field(isset($_POST['billing_country']) ? $_POST['billing_country'] : '');
-
-        $this->runFormValidations($billingVAT, $billingCountry);
-    }
-
-    /**
      * Show VIES information under billing address in admin order page
      *
      * @param $order
@@ -475,18 +457,43 @@ class Plugin
         return $fields;
     }
 
+    /**
+     * Verify VAT if set in settings adter saving the billing address
+     * @param $userId
+     * @param $loadAddress
+     * @param $address
+     */
+    public function woocommerceAfterSaveAddressValidation($userId, $loadAddress, $address)
+    {
+        if ($loadAddress !== 'billing') {
+            return;
+        }
+
+        if (isset($_POST['billing_vat'])) {
+            $billingVAT = sanitize_text_field($_POST['billing_vat']);
+        } elseif (isset($_POST['_wc_billing/contribuinte-checkout/billing_vat'])) {
+            $billingVAT = sanitize_text_field($_POST['_wc_billing/contribuinte-checkout/billing_vat']);
+        } else {
+            $billingVAT = '';
+        }
+
+        $billingCountry = sanitize_text_field(isset($_POST['billing_country']) ? $_POST['billing_country'] : '');
+
+        $this->runFormValidations($billingVAT, $billingCountry);
+    }
+
     //      Blocks checkout      //
 
     public function woocommerceBlocksLoaded()
     {
         list($label, $placeholder, $isRequired) = $this->getPropsForInput();
-
         try {
             woocommerce_register_additional_checkout_field(
                 [
                     'id' => 'contribuinte-checkout/billing_vat',
                     'label' => $label,
                     'location' => 'address',
+                    'group' => 'billing',
                     'required' => (bool)$isRequired,
                     "attributes" => [
                         "title" => $placeholder,
@@ -511,7 +518,14 @@ class Plugin
             return;
         }
 
-        $billingCountry = $fields['country'];
+        if (isset($fields['country'])) {
+            $billingCountry = $fields['country'];
+        } elseif (isset($_POST['billing_country'])) {
+            $billingCountry = sanitize_text_field($_POST['billing_country']);
+        } else {
+            $billingCountry = '';
+        }
+
         $billingVAT = $fields['contribuinte-checkout/billing_vat'];
 
         $this->runFormValidations($billingVAT, $billingCountry, $errors);
