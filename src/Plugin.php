@@ -530,11 +530,6 @@ class Plugin
         $wc_object->update_meta_data('billing_vat', $value, true);
     }
 
-    public function woocommerce_validate_additional_field(WP_Error $errors, $field_key, $field_value)
-    {
-        var_dump(WC()->session->get_session_data());die;
-    }
-
     public function woocommerceGetDefaultValueFor($value, $group, $wc_object)
     {
         if (empty($value)) {
