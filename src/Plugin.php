@@ -286,34 +286,10 @@ class Plugin
      */
     public function woocommerceCheckoutProcess()
     {
-        $settings = get_option($this->settingsOptionsName);
+        $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
+        $billingCountry = sanitize_text_field(WC()->customer->get_billing_country());
 
-        $validateVat = (bool)$settings['drop_down_validate_vat'];
-        $isRequired = (bool)$settings['drop_down_is_required'];
-        $validationFail = (bool)$settings['drop_down_on_validation_fail'];
-
-        if ($validateVat) {
-            $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
-            $billingCountry = sanitize_text_field(WC()->customer->get_billing_country());
-
-            if ($billingCountry === 'PT') {
-                if (($billingVAT === '' && $isRequired === false) || $this->validateVat($billingVAT)) {
-                    //Validation passed
-                } else {
-                    $identifier = [
-                        'id' => 'billing_vat'
-                    ];
-
-                    if ((int)$validationFail === 0) {
-                        //add error
-                        wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'error', $identifier);
-                    } else {
-                        //ads notice
-                        wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'notice', $identifier);
-                    }
-                }
-            }
-        }
+        $this->runFormValidations($billingVAT, $billingCountry);
     }
 
     /**
@@ -324,35 +300,14 @@ class Plugin
      */
     public function woocommerceAfterSaveAddressValidation($userId, $loadAddress, $address)
     {
-        $settings = get_option($this->settingsOptionsName);
-
-        $validateVat = (bool)$settings['drop_down_validate_vat'];
-        $isRequired = (bool)$settings['drop_down_is_required'];
-        $validationFail = (bool)$settings['drop_down_on_validation_fail'];
-
-        if (($loadAddress === 'billing') && $validateVat) {
-
-            $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
-            $billingCountry = sanitize_text_field(isset($_POST['billing_country']) ? $_POST['billing_country'] : '');
-
-            if ($billingCountry === 'PT') {
-                if ($this->validateVat($billingVAT) || ($billingVAT === '' && $isRequired === false)) {
-                    //Validation passed
-                } else {
-                    $identifier = [
-                        'id' => 'billing_vat'
-                    ];
-
-                    if ((int)$validationFail === 0) {
-                        //adds error
-                        wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'error', $identifier);
-                    } else {
-                        //adds notice
-                        wc_add_notice(__('You have entered an invalid VAT.', 'contribuinte-checkout'), 'notice', $identifier);
-                    }
-                }
-            }
+        if ($loadAddress !== 'billing') {
+            return;
         }
+
+        $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
+        $billingCountry = sanitize_text_field(isset($_POST['billing_country']) ? $_POST['billing_country'] : '');
+
+        $this->runFormValidations($billingVAT, $billingCountry);
     }
 
     /**
@@ -591,7 +546,7 @@ class Plugin
 
     //      Auxiliary      //
 
-    public function runFormValidations($billingVAT, $billingCountry, $errorObject)
+    public function runFormValidations($billingVAT, $billingCountry, $errorObject = null)
     {
         $settings = get_option($this->settingsOptionsName);
 
