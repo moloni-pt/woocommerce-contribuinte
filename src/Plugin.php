@@ -64,7 +64,6 @@ class Plugin
 
         //actions needed
         add_action('before_woocommerce_init', [$this, 'beforeWoocommerceInit']); // CORE: Confirm HPOS compatibility
-        add_action('woocommerce_checkout_process', [$this, 'woocommerceCheckoutProcess']); // FRONT END: Verify VAT if set in settings
         add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'woocommerceAdminOrderDataAfterBillingAddress']); // ADMIN: Show  vies information on admin order page under billing address.
         add_action('woocommerce_after_edit_account_address_form', [$this, 'woocommerceAfterEditAccountAddressForm']); // FRONT END: Show VIES information under addresses in my account page
         add_action('wp_footer', [$this, 'wpFooter']); // GENERAL: Draw in footer
@@ -78,6 +77,7 @@ class Plugin
         } else {
             add_filter('woocommerce_billing_fields', [$this, 'woocommerceBillingFields'], 10, 1); // GENERAL: Add field to billing address fields
             add_action('woocommerce_after_save_address_validation', [$this, 'woocommerceAfterSaveAddressValidation'], 10, 3); // FRONT END: Verify VAT if set in settings
+            add_action('woocommerce_checkout_process', [$this, 'woocommerceCheckoutProcess']); // FRONT END: Verify VAT if set in settings
         }
     }
 
@@ -282,17 +282,6 @@ class Plugin
     }
 
     /**
-     * Verify VAT if set in settings when order is in checkout
-     */
-    public function woocommerceCheckoutProcess()
-    {
-        $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
-        $billingCountry = sanitize_text_field(WC()->customer->get_billing_country());
-
-        $this->runFormValidations($billingVAT, $billingCountry);
-    }
-
-    /**
      * Show VIES information under billing address in admin order page
      *
      * @param $order
@@ -478,6 +467,17 @@ class Plugin
         }
 
         $billingCountry = sanitize_text_field(isset($_POST['billing_country']) ? $_POST['billing_country'] : '');
+
+        $this->runFormValidations($billingVAT, $billingCountry);
+    }
+
+    /**
+     * Verify VAT if set in settings when order is in checkout
+     */
+    public function woocommerceCheckoutProcess()
+    {
+        $billingVAT = sanitize_text_field(isset($_POST['billing_vat']) ? $_POST['billing_vat'] : '');
+        $billingCountry = sanitize_text_field(WC()->customer->get_billing_country());
 
         $this->runFormValidations($billingVAT, $billingCountry);
     }
