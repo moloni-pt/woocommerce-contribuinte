@@ -547,17 +547,36 @@ class Plugin
 
         $validateVat = (bool)$settings['drop_down_validate_vat'];
         $isRequired = (bool)$settings['drop_down_is_required'];
+        $isRequiredOverLimit = (bool)$settings['drop_down_required_over_limit_price'];
         $validationFail = (bool)$settings['drop_down_on_validation_fail'];
+
+        if ($isRequiredOverLimit && is_checkout() && !empty(WC()->cart)) {
+            $orderValue = WC()->cart->get_total('hook');
+
+            if ($orderValue > 1000) {
+                $isRequired = true;
+            }
+        }
+
+        if (empty($billingVAT)) {
+            if ($isRequired) {
+                $message = __('A vat number is required.', 'contribuinte-checkout');
+
+                if ($errorObject instanceof WP_Error) {
+                    $errorObject->add("invalid_billing_vat", $message);
+                } else {
+                    wc_add_notice($message, 'error');
+                }
+            }
+
+            return;
+        }
 
         if (!$validateVat) {
             return;
         }
 
         if ($billingCountry !== 'PT') {
-            return;
-        }
-
-        if ($billingVAT === '' && $isRequired === false) {
             return;
         }
 
@@ -599,7 +618,7 @@ class Plugin
         }
 
         // If hook is called during checkout and is required over limit
-        if ($isRequiredOverLimit > 0 && is_checkout()) {
+        if ($isRequiredOverLimit > 0 && is_checkout() && !empty(WC()->cart)) {
             $orderValue = WC()->cart->get_total('hook');
 
             if ($orderValue > 1000) {
