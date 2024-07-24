@@ -562,11 +562,7 @@ class Plugin
             if ($isRequired) {
                 $message = __('A vat number is required.', 'contribuinte-checkout');
 
-                if ($errorObject instanceof WP_Error) {
-                    $errorObject->add("invalid_billing_vat", $message);
-                } else {
-                    wc_add_notice($message, 'error');
-                }
+                $this->addFormError($message, "missing_billing_vat", $errorObject);
             }
 
             return;
@@ -592,8 +588,13 @@ class Plugin
             return;
         }
 
+        $this->addFormError($message, "invalid_billing_vat", $errorObject);
+    }
+
+    public function addFormError($message, $code = '', $errorObject = null)
+    {
         if ($errorObject instanceof WP_Error) {
-            $errorObject->add("invalid_billing_vat", $message);
+            $errorObject->add($code, $message);
         } else {
             wc_add_notice($message, 'error');
         }
