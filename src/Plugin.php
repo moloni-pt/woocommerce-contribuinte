@@ -2,6 +2,8 @@
 
 namespace Checkout\Contribuinte;
 
+use Exception;
+use WP_Error;
 use WC_Order;
 use Checkout\Contribuinte\Vies\Vies;
 use Checkout\Contribuinte\Menus\Admin;
@@ -10,18 +12,6 @@ use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 class Plugin
 {
-    /**
-     * Plugin name
-     * @var string
-     */
-    private $pluginName = 'contribuinte-checkout';
-
-    /**
-     * Plugin version
-     * @var string
-     */
-    private $version = '1.0.45';
-
     /**
      * Settings options name
      * @var string
@@ -64,7 +54,6 @@ class Plugin
     public function setHooks()
     {
         //filters needed
-        add_filter('woocommerce_billing_fields', [$this, 'woocommerceBillingFields'], 10, 1); // GENERAL: Add field to billing address fields
         add_filter('woocommerce_admin_billing_fields', [$this, 'woocommerceAdminBillingFields']); // ADMIN: Add field to order page
         add_filter('woocommerce_customer_meta_fields', [$this, 'woocommerceCustomerMetaFields']); // ADMIN: Add field to user edit page
         add_filter('woocommerce_ajax_get_customer_details', [$this, 'woocommerceAjaxGetCustomerDetails'], 10, 2); // ADMIN:Add field to ajax billing get_customer_details
@@ -81,9 +70,15 @@ class Plugin
         add_action('woocommerce_after_edit_account_address_form', [$this, 'woocommerceAfterEditAccountAddressForm']); // FRONT END: Show VIES information under addresses in my account page
         add_action('wp_footer', [$this, 'wpFooter']); // GENERAL: Draw in footer
 
-        //deprecated stuff
-        //add_filter('woocommerce_email_customer_details_fields', [$this, 'woocommerceEmailCustomerDetailsFields'], 10, 3); //FRONT END: Add vat field to the email template
-        //add_action('woocommerce_order_details_after_customer_details', [$this, 'woocommerceOrderDetailsAfterCustomerDetails']); //FRONT END: Add VAT info to order report
+        //blocks check
+        if (Context::isCheckoutBlockActive()) {
+            add_action('woocommerce_init', [$this, 'woocommerceBlocksLoaded'], 100);
+            add_action('woocommerce_set_additional_field_value', [$this, 'woocommerceSetAdditionalFieldValue'], 10, 4);
+            add_action('woocommerce_blocks_validate_location_address_fields', [$this, 'woocommerceBlocksValidateLocationAddressFields'], 10, 3);
+            add_filter("woocommerce_get_default_value_for_contribuinte-checkout/billing_vat", [$this, 'woocommerceGetDefaultValueFor'], 10, 3);
+        } else {
+            add_filter('woocommerce_billing_fields', [$this, 'woocommerceBillingFields'], 10, 1); // GENERAL: Add field to billing address fields
+        }
     }
 
     /**
@@ -137,59 +132,6 @@ class Plugin
         }
 
         return true;
-    }
-
-    /**
-     * Add field to billing address fields
-     *
-     * @param array $fields
-     * @return array
-     */
-    public function woocommerceBillingFields($fields)
-    {
-        $settings = get_option($this->settingsOptionsName);
-
-        // We should only apply settings if settings are already defined
-        if (is_array($settings)) {
-            $label = empty($settings['text_box_vat_field_label']) ? __('VAT', 'contribuinte-checkout') : $settings['text_box_vat_field_label'];
-            $placeholder = empty($settings['text_box_vat_field_description']) ? __('VAT Number', 'contribuinte-checkout') : $settings['text_box_vat_field_description'];
-            $isRequired = (int)$settings['drop_down_is_required'];
-            $isRequiredOverLimit = (int)$settings['drop_down_required_over_limit_price'];
-            $validateVat = (bool)$settings['drop_down_validate_vat'];
-        } else {
-            $label = __('VAT', 'contribuinte-checkout');
-            $placeholder = __('VAT Number', 'contribuinte-checkout');
-            $isRequired = 0;
-            $isRequiredOverLimit = 0;
-            $validateVat = false;
-        }
-
-        // If hook is called during checkout and is required over limit
-        if ($isRequiredOverLimit > 0 && is_checkout()) {
-            $orderValue = WC()->cart->get_total('hook');
-
-            if ($orderValue > 1000) {
-                $isRequired = 1;
-            }
-        }
-
-        if ($validateVat) {
-            $this->injectValidationInFooter = true;
-        }
-
-        $fields['billing_vat'] = [
-            'type' => 'text',
-            'label' => $label,
-            'placeholder' => $placeholder,
-            'required' => $isRequired,
-            'autocomplete' => 'on',
-            'priority' => 120,
-            'maxlength' => 20,
-            'validate' => false,
-            'class' => []
-        ];
-
-        return $fields;
     }
 
     /**
@@ -547,60 +489,174 @@ class Plugin
         <?php
     }
 
-    //      deprecated      //
+    //      Legacy checkout      //
 
     /**
-     * Add vat field to the email template
+     * Add field to billing address fields
      *
-     * @param $array
-     * @param $sendToAdmin
-     * @param $order
-     *
+     * @param array $fields
      * @return array
      */
-    public function woocommerceEmailCustomerDetailsFields($array, $sendToAdmin, $order)
+    public function woocommerceBillingFields($fields)
     {
-        $vat = $order->get_meta('_billing_vat');
-        $settingsLabel = get_option($this->settingsOptionsName)['text_box_vat_field_label'];
+        list($label, $placeholder, $isRequired, $validateVat) = $this->getPropsForInput();
 
-        if (!empty($vat)) {
-            $array['billing']['billing_vat'] = [
-                'label' => empty($settingsLabel) ? __('VAT', 'contribuinte-checkout') : $settingsLabel,
-                'value' => $vat
-            ];
+        if ($validateVat) {
+            $this->injectValidationInFooter = true;
         }
 
-        return $array;
+        $fields['billing_vat'] = [
+            'type' => 'text',
+            'label' => $label,
+            'placeholder' => $placeholder,
+            'required' => $isRequired,
+            'autocomplete' => 'on',
+            'priority' => 120,
+            'maxlength' => 20,
+            'validate' => false,
+            'class' => []
+        ];
+
+        return $fields;
     }
 
-    /**
-     * Add VAT info to order report (thank you page)
-     *
-     * @param $order
-     *
-     * @return void
-     */
-    public function woocommerceOrderDetailsAfterCustomerDetails($order)
+    //      Blocks checkout      //
+
+    public function woocommerceBlocksLoaded()
     {
-        $settings = get_option($this->settingsOptionsName);
+        list($label, $placeholder, $isRequired) = $this->getPropsForInput();
 
-        $vat = $order->get_meta('_billing_vat');
-        $settingsLabel = $settings['text_box_vat_field_label'];
-        $showVies = (bool)$settings['drop_down_show_vies'];
-
-        if (!empty($vat)) {
-            echo empty($settingsLabel) ? __('VAT', 'contribuinte-checkout') : esc_html($settingsLabel);
-            echo ': ' . esc_html($vat);
+        try {
+            woocommerce_register_additional_checkout_field(
+                [
+                    'id' => 'contribuinte-checkout/billing_vat',
+                    'label' => $label,
+                    'location' => 'address',
+                    'required' => (bool)$isRequired,
+                    "attributes" => [
+                        "title" => $placeholder,
+                    ],
+                    'sanitize_callback' => function ($field_value) {
+                        return trim($field_value);
+                    },
+                ]
+            );
+        } catch (Exception $e) {
+            return;
         }
+    }
 
-        if ($showVies === false || empty($vat)) {
+    public function woocommerceBlocksValidateLocationAddressFields(WP_Error $errors, $fields, $group)
+    {
+        if ($group !== 'billing') {
             return;
         }
 
-        $country = $order->get_billing_country();
-        $vies = new Vies($country, $vat);
-        $result = $vies->checkVat();
+        if (!isset($fields['contribuinte-checkout/billing_vat'])) {
+            return;
+        }
 
-        $vies->getViesForOrderDetailsAfterCustomerDetails($result);
+        $billingCountry = $fields['country'];
+        $billingVAT = $fields['contribuinte-checkout/billing_vat'];
+
+        $this->runFormValidations($billingVAT, $billingCountry, $errors);
+    }
+
+    public function woocommerceSetAdditionalFieldValue($key, $value, $group, $wc_object)
+    {
+        if ('contribuinte-checkout/billing_vat' !== $key) {
+            return;
+        }
+
+        if ($group !== 'billing') {
+            return;
+        }
+
+        $wc_object->update_meta_data('billing_vat', $value, true);
+    }
+
+    public function woocommerce_validate_additional_field(WP_Error $errors, $field_key, $field_value)
+    {
+        var_dump(WC()->session->get_session_data());die;
+    }
+
+    public function woocommerceGetDefaultValueFor($value, $group, $wc_object)
+    {
+        if (empty($value)) {
+            return $wc_object->get_meta("billing_vat");
+        }
+
+        return $value;
+    }
+
+    //      Auxiliary      //
+
+    public function runFormValidations($billingVAT, $billingCountry, $errorObject)
+    {
+        $settings = get_option($this->settingsOptionsName);
+
+        $validateVat = (bool)$settings['drop_down_validate_vat'];
+        $isRequired = (bool)$settings['drop_down_is_required'];
+        $validationFail = (bool)$settings['drop_down_on_validation_fail'];
+
+        if (!$validateVat) {
+            return;
+        }
+
+        if ($billingCountry !== 'PT') {
+            return;
+        }
+
+        if ($billingVAT === '' && $isRequired === false) {
+            return;
+        }
+
+        if ($this->validateVat($billingVAT)) {
+            return;
+        }
+
+        $message = __('You have entered an invalid VAT.', 'contribuinte-checkout');
+
+        if ((int)$validationFail === 1) {
+            wc_add_notice($message, 'notice');
+
+            return;
+        }
+
+        if ($errorObject instanceof WP_Error) {
+            $errorObject->add("invalid_billing_vat", $message);
+        } else {
+            wc_add_notice($message, 'error');
+        }
+    }
+
+    public function getPropsForInput()
+    {
+        $settings = get_option($this->settingsOptionsName);
+
+        if (is_array($settings)) {
+            $label = empty($settings['text_box_vat_field_label']) ? __('VAT', 'contribuinte-checkout') : $settings['text_box_vat_field_label'];
+            $placeholder = empty($settings['text_box_vat_field_description']) ? __('VAT Number', 'contribuinte-checkout') : $settings['text_box_vat_field_description'];
+            $isRequired = (int)$settings['drop_down_is_required'];
+            $isRequiredOverLimit = (int)$settings['drop_down_required_over_limit_price'];
+            $validateVat = (bool)$settings['drop_down_validate_vat'];
+        } else {
+            $label = __('VAT', 'contribuinte-checkout');
+            $placeholder = __('VAT Number', 'contribuinte-checkout');
+            $isRequired = 0;
+            $isRequiredOverLimit = 0;
+            $validateVat = false;
+        }
+
+        // If hook is called during checkout and is required over limit
+        if ($isRequiredOverLimit > 0 && is_checkout()) {
+            $orderValue = WC()->cart->get_total('hook');
+
+            if ($orderValue > 1000) {
+                $isRequired = 1;
+            }
+        }
+
+        return [$label, $placeholder, $isRequired, $validateVat];
     }
 }

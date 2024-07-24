@@ -86,43 +86,6 @@ class Vies
      * Renders VIES information
      * @param $result
      */
-    public function getViesForOrderDetailsAfterCustomerDetails($result)
-    {
-        //got error fetching data
-        if (!isset($result->valid)) {
-            ?>
-            <address>
-                <h4><?= __('VIES information', 'contribuinte-checkout') ?></h4>
-                <?= __('Error fetching VIES  information', 'contribuinte-checkout') . ': ' . esc_html($result) ?>
-                <br>
-            </address>
-            <?php
-
-            return;
-        }
-
-        //the vat is not from a company
-        if ((int)$result->valid !== 1) {
-            return;
-        }
-
-        //show fetched company data
-        ?>
-        <h2><?= __('VIES information', 'contribuinte-checkout') ?></h2>
-        <address>
-            <?= esc_html($result->name) ?>
-            <br>
-            <?= esc_html($result->address) ?>
-            <br>
-            <?= esc_html(strtoupper($result->countryCode)) . esc_html($result->vatNumber) ?>
-        </address>
-        <?php
-    }
-
-    /**
-     * Renders VIES information
-     * @param $result
-     */
     public function getViesForAdminOrderDataAfterBillingAddress($result)
     {
         //got error fetching data
