@@ -195,7 +195,7 @@ class Plugin
     public function woocommerceAjaxGetCustomerDetails($data, $customer)
     {
         if ((isset($data['billing']['country']))) {
-            $data['billing']['vat'] = $customer->get_meta('billing_vat');
+            $data['billing']['vat'] = $customer->get_meta('_billing_vat');
         }
 
         return $data;
@@ -541,13 +541,13 @@ class Plugin
             return;
         }
 
-        $wc_object->update_meta_data('billing_vat', $value, true);
+        $wc_object->update_meta_data('_billing_vat', $value, true);
     }
 
     public function woocommerceGetDefaultValueFor($value, $group, $wc_object)
     {
         if (empty($value)) {
-            return $wc_object->get_meta("billing_vat");
+            return $wc_object->get_meta("_billing_vat");
         }
 
         return $value;
