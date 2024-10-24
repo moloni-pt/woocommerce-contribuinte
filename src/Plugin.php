@@ -53,32 +53,39 @@ class Plugin
      */
     public function setHooks()
     {
-        //filters needed
-        add_filter('woocommerce_admin_billing_fields', [$this, 'woocommerceAdminBillingFields']); // ADMIN: Add field to order page
+        // Common filters needed
         add_filter('woocommerce_customer_meta_fields', [$this, 'woocommerceCustomerMetaFields']); // ADMIN: Add field to user edit page
         add_filter('woocommerce_ajax_get_customer_details', [$this, 'woocommerceAjaxGetCustomerDetails'], 10, 2); // ADMIN:Add field to ajax billing get_customer_details
         add_filter('woocommerce_api_order_response', [$this, 'woocommerceApiOrderResponse'], 11, 2); // ADMIN: Add field to order when requested via API
         add_filter('woocommerce_api_customer_response', [$this, 'woocommerceApiCustomerResponse'], 10, 2); // ADMIN: Add field to customer when requested via API
-        add_filter('woocommerce_order_get_formatted_billing_address', [$this, 'woocommerceOrderGetFormattedBillingAddress'], 10, 3); // Append vat field to billing address
         add_filter('plugin_action_links_' . plugin_basename(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE), [$this, 'addActionLinks']); // Show settings link in plugins list
 
-        //actions needed
+        // Common actions needed
         add_action('before_woocommerce_init', [$this, 'beforeWoocommerceInit']); // CORE: Confirm HPOS compatibility
         add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'woocommerceAdminOrderDataAfterBillingAddress']); // ADMIN: Show  vies information on admin order page under billing address.
         add_action('woocommerce_after_edit_account_address_form', [$this, 'woocommerceAfterEditAccountAddressForm']); // FRONT END: Show VIES information under addresses in my account page
-        add_action('wp_footer', [$this, 'wpFooter']); // GENERAL: Draw in footer
 
-        //blocks check
         if (Context::isCheckoutBlockActive()) {
+            // Block actions needed
             add_action('woocommerce_init', [$this, 'woocommerceBlocksLoaded'], 100);
             add_action('woocommerce_set_additional_field_value', [$this, 'woocommerceSetAdditionalFieldValue'], 10, 4);
             add_action('woocommerce_blocks_validate_location_address_fields', [$this, 'woocommerceBlocksValidateLocationAddressFields'], 10, 3);
+
+            // Block filters needed
             add_filter("woocommerce_get_default_value_for_contribuinte-checkout/billing_vat", [$this, 'woocommerceGetDefaultValueFor'], 10, 3);
-        } else {
-            add_filter('woocommerce_billing_fields', [$this, 'woocommerceBillingFields'], 10, 1); // GENERAL: Add field to billing address fields
-            add_action('woocommerce_after_save_address_validation', [$this, 'woocommerceAfterSaveAddressValidation'], 10, 3); // FRONT END: Verify VAT if set in settings
-            add_action('woocommerce_checkout_process', [$this, 'woocommerceCheckoutProcess']); // FRONT END: Verify VAT if set in settings
+
+            return;
         }
+
+        // Legacy actions needed
+        add_action('woocommerce_after_save_address_validation', [$this, 'woocommerceAfterSaveAddressValidation'], 10, 3); // FRONT END: Verify VAT if set in settings
+        add_action('woocommerce_checkout_process', [$this, 'woocommerceCheckoutProcess']); // FRONT END: Verify VAT if set in settings
+        add_action('wp_footer', [$this, 'wpFooter']); // GENERAL: Draw in footer
+
+        // Legacy filters needed
+        add_filter('woocommerce_admin_billing_fields', [$this, 'woocommerceAdminBillingFields']); // ADMIN: Add field to order page
+        add_filter('woocommerce_order_get_formatted_billing_address', [$this, 'woocommerceOrderGetFormattedBillingAddress'], 10, 3); // Append vat field to billing address
+        add_filter('woocommerce_billing_fields', [$this, 'woocommerceBillingFields'], 10, 1); // GENERAL: Add field to billing address fields
     }
 
     /**
@@ -487,12 +494,14 @@ class Plugin
     public function woocommerceBlocksLoaded()
     {
         list($label, $placeholder, $isRequired) = $this->getPropsForInput();
+
         try {
             woocommerce_register_additional_checkout_field(
                 [
                     'id' => 'contribuinte-checkout/billing_vat',
                     'label' => $label,
                     'location' => 'address',
+                    'type' => 'text',
                     'group' => 'billing',
                     'required' => (bool)$isRequired,
                     "attributes" => [
