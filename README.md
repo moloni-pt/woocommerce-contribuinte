@@ -62,6 +62,9 @@ Via FTP
 Released version 1.0.0.
 
 ## Changelog
+### 2.0.00
+* Added support for the new block based Checkout.
+
 ### 1.0.50
 * Added live VAT validation in checkout and billing address edit.
 * Tested up to version 6.3.0 of Wordpress.
