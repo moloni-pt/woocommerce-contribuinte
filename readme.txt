@@ -2,7 +2,7 @@
 Contribuinte Checkout
 Contributors: Moloni
 Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
-Stable tag: 1.0.50
+Stable tag: 2.0.00
 Tested up to: 6.3.0
 WC tested up to: 8.0.2
 

@@ -2,6 +2,8 @@
 
 namespace Checkout\Contribuinte\Menus;
 
+use Checkout\Contribuinte\Plugin;
+
 class Admin
 {
     /**
@@ -12,7 +14,7 @@ class Admin
 
     /**
      * Admin constructor.
-     * @param $parent
+     * @param Plugin $parent
      */
     public function __construct($parent)
     {
