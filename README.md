@@ -15,7 +15,7 @@
 **Requires PHP:**       5.6  
 **PHP tested up to:**   8.1  
 **Tags:**               Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF  
-**Stable tag:**         1.0.50  
+**Stable tag:**         2.0.00  
 **License:**            GPLv2 or later    
 **License URI:**        [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)  
 
@@ -62,6 +62,9 @@ Via FTP
 Released version 1.0.0.
 
 ## Changelog
+### 2.0.00
+* Added support for the new block based Checkout.
+
 ### 1.0.50
 * Added live VAT validation in checkout and billing address edit.
 * Tested up to version 6.3.0 of Wordpress.
