@@ -2,20 +2,20 @@
 
 [![License: GPL v2](https://img.shields.io/badge/License-GPL_v2-green.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 ![WordPress Plugin: Required PHP Version](https://img.shields.io/badge/php-%3E%3D5.6-blue)
-![WordPress Plugin: Tested PHP Version](https://img.shields.io/badge/php-8.1%20tested-blue)
+![WordPress Plugin: Tested PHP Version](https://img.shields.io/badge/php-8.2%20tested-blue)
 ![WordPress Plugin: Required WP Version](https://img.shields.io/badge/WordPress-%3E%3D%205.0-orange)
-![WordPress Plugin: Tested WP Version](https://img.shields.io/badge/WordPress-6.3%20tested-orange)
+![WordPress Plugin: Tested WP Version](https://img.shields.io/badge/WordPress-6.7.1%20tested-orange)
 ![WooCommerce: Required Version](https://img.shields.io/badge/WooCommerce-%3E%3D%203.0.0-orange)
-![WooCommerce: Tested Version](https://img.shields.io/badge/WooCommerce-8.0.2%20tested-orange)
+![WooCommerce: Tested Version](https://img.shields.io/badge/WooCommerce-9.6.0%20tested-orange)
 
 **Contributors:**       [moloni-pt](https://github.com/moloni-pt)  
-**Tested up to:**       6.3  
-**WC tested up to**     8.0.2  
+**Tested up to:**       6.7.1  
+**WC tested up to**     9.6.0  
 **Requires at least:**  5.0  
 **Requires PHP:**       5.6  
-**PHP tested up to:**   8.1  
+**PHP tested up to:**   8.2  
 **Tags:**               Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF  
-**Stable tag:**         2.0.00  
+**Stable tag:**         2.0.01  
 **License:**            GPLv2 or later    
 **License URI:**        [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)  
 
@@ -62,6 +62,10 @@ Via FTP
 Released version 1.0.0.
 
 ## Changelog
+### 2.0.01
+* Tested up to version 6.7.1 of WordPress.
+* Tested up to version 9.6.0 of WooCommerce.
+
 ### 2.0.00
 * Added support for the new block based Checkout.
 

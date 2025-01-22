@@ -2,9 +2,9 @@
 Contribuinte Checkout
 Contributors: Moloni
 Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
-Stable tag: 2.0.00
-Tested up to: 6.3.0
-WC tested up to: 8.0.2
+Stable tag: 2.0.01
+Tested up to: 6.7.1
+WC tested up to: 9.6.0
 
 Requires PHP: 5.6
 Requires at least: 5.0
@@ -54,6 +54,10 @@ Via FTP
  Released version 1.0.0.
 
 == Changelog ==
+= 2.0.01 =
+* Tested up to version 6.7.1 of WordPress.
+* Tested up to version 9.6.0 of WooCommerce.
+
 = 2.0.00 =
 * Added support for the new block based Checkout.
 
