@@ -295,6 +295,10 @@ class Plugin
      */
     public function woocommerceAdminOrderDataAfterBillingAddress($order)
     {
+        if (!class_exists('SoapClient')) {
+            return;
+        }
+
         $settings = get_option($this->settingsOptionsName);
 
         if (!empty($settings) && isset($settings['drop_down_show_vies'])) {
@@ -321,6 +325,10 @@ class Plugin
      */
     public function woocommerceAfterEditAccountAddressForm()
     {
+        if (!class_exists('SoapClient')) {
+            return;
+        }
+
         $vat = WC()->customer->get_meta('billing_vat');
         $country = WC()->customer->get_billing_country();
         $showVies = (bool)get_option($this->settingsOptionsName)['drop_down_show_vies'];
