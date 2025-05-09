@@ -191,8 +191,8 @@ class Settings
      */
     public function renderPage()
     {
-        //if settings were submitted, save them
-        if (isset($_POST[$this->optionsName])) {
+        // If settings were submitted, save them
+        if ($this->shouldSaveSettings()) {
             add_settings_error($this->optionsName, 'settings_updated', __('Changes saved.', 'contribuinte-checkout'), 'updated');
 
             if (get_option($this->optionsName) === false) {
@@ -202,7 +202,7 @@ class Settings
             }
         }
 
-        //Show success messages
+        // Show success messages
         settings_errors();
 
         ?>
@@ -211,6 +211,7 @@ class Settings
             <h2><?= __('Contribuinte Checkout', 'contribuinte-checkout') ?></h2>
             <form action="" method="post">
                 <?php settings_fields($this->optionsName); ?>
+                <?php echo wp_nonce_field('save_settings', '_settings_form_nonce'); ?>
                 <?php do_settings_sections($this->page); ?>
                 <?php submit_button(); ?>
             </form>
@@ -234,5 +235,21 @@ class Settings
         }
 
         return $inputArray;
+    }
+
+    /**
+     * Check if request is a submission and should save settings
+     *
+     * @return bool
+     */
+    private function shouldSaveSettings()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return false;
+        }
+
+        check_admin_referer('save_settings', '_settings_form_nonce');
+
+        return isset($_POST[$this->optionsName]);
     }
 }
