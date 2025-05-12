@@ -3,7 +3,7 @@
  *
  *   Plugin Name:  Contribuinte Checkout
  *   Description:  Add VAT information to your orders
- *   Version:      2.0.02
+ *   Version:      2.0.03
  *   Tested up to: 6.7.1
  *   WC tested up to: 9.6.0
  *

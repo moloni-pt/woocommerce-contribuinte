@@ -15,7 +15,7 @@
 **Requires PHP:**       5.6  
 **PHP tested up to:**   8.2  
 **Tags:**               Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF  
-**Stable tag:**         2.0.02  
+**Stable tag:**         2.0.03  
 **License:**            GPLv2 or later    
 **License URI:**        [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)  
 
@@ -62,6 +62,9 @@ Via FTP
 Released version 1.0.0.
 
 ## Changelog
+### 2.0.03
+* Security update.
+
 ### 2.0.02
 * Added adicional "SoapClass" verification.
 
