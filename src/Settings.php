@@ -248,7 +248,9 @@ class Settings
             return false;
         }
 
-        check_admin_referer('save_settings', '_settings_form_nonce');
+        if (!check_admin_referer('save_settings', '_settings_form_nonce')) {
+            return false;
+        }
 
         return isset($_POST[$this->optionsName]);
     }
