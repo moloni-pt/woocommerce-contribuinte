@@ -183,7 +183,7 @@ class Settings
             $value = $args['default'];
         }
 
-        echo "<input id='" . $args['id'] . "' name='" . $this->optionsName . "[" . $args['id'] . "]' size='40' type='text' value='" . $value . "' style='min-width: 330px;'/>";
+        echo "<input id='" . $args['id'] . "' name='" . $this->optionsName . "[" . $args['id'] . "]' size='40' type='text' value='" . esc_html($value) . "' style='min-width: 330px;'/>";
     }
 
     /**
