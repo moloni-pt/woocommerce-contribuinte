@@ -177,6 +177,7 @@ class Settings
     public function settingTextBox($args)
     {
         $options = get_option($this->optionsName);
+
         if (!empty($options[$args['id']])) {
             $value = $options[$args['id']];
         } else {
@@ -211,7 +212,6 @@ class Settings
             <h2><?= __('Contribuinte Checkout', 'contribuinte-checkout') ?></h2>
             <form action="" method="post">
                 <?php settings_fields($this->optionsName); ?>
-                <?php echo wp_nonce_field('save_settings', '_settings_form_nonce'); ?>
                 <?php do_settings_sections($this->page); ?>
                 <?php submit_button(); ?>
             </form>
@@ -248,8 +248,8 @@ class Settings
             return false;
         }
 
-        if (!check_admin_referer('save_settings', '_settings_form_nonce')) {
-            return false;
+        if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], "$this->optionsName-options")) {
+            wp_die('Security check failed');
         }
 
         return isset($_POST[$this->optionsName]);
