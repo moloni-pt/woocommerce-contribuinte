@@ -2,7 +2,7 @@
 Contribuinte Checkout
 Contributors: Moloni
 Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
-Stable tag: 2.0.03
+Stable tag: 2.0.04
 Tested up to: 6.7.1
 WC tested up to: 9.6.0
 
@@ -54,6 +54,9 @@ Via FTP
  Released version 1.0.0.
 
 == Changelog ==
+= 2.0.04 =
+* Security update.
+
 = 2.0.03 =
 * Security update.
 
