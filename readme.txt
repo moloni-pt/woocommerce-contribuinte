@@ -15,7 +15,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 With this plugin you can add VAT and VIES support to your WooCommerce store. The VAT field will be saved as '_billing_vat'.
 
-**Important:** this plugin requires WooCommerce 3.0.0 or higher.
+**Important:** this plugin requires WooCommerce 3.0.0 or higher (8.9 or higher for the block-based Checkout).
 **Warning:** to enable and use VIES information you need to have SOAP extension enabled (SoapClient PHP class).
 
 == Features ==

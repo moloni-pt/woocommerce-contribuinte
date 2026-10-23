@@ -10,7 +10,7 @@ class Vies
      * Vies service URL
      * @var string
      */
-    private $url = 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
+    private $url = 'https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
 
     /**
      * Country code
@@ -45,17 +45,34 @@ class Vies
      */
     public function checkVat()
     {
+        // Pages call this on every view, so cache successful lookups
+        $cacheKey = 'contribuinte_checkout_vies_' . md5($this->countryCode . $this->vatNumber);
+        $result = get_transient($cacheKey);
+
+        if ($result !== false) {
+            return $result;
+        }
+
+        // VIES is often slow or down; don't hang the page for PHP's default 60s
+        $previousTimeout = ini_set('default_socket_timeout', 5);
+
         try {
-            $client = new SoapClient($this->url);
+            $client = new SoapClient($this->url, ['connection_timeout' => 5]);
             $result = $client->__soapCall('checkVat', [
                 [
                     'countryCode' => $this->countryCode,
                     'vatNumber' => $this->vatNumber
                 ]
             ]);
+
+            set_transient($cacheKey, $result, DAY_IN_SECONDS);
         } catch (\SoapFault $exception) {
             //error validating VAT
             $result = $exception->getMessage();
+        }
+
+        if ($previousTimeout !== false) {
+            ini_set('default_socket_timeout', $previousTimeout);
         }
 
         return $result;

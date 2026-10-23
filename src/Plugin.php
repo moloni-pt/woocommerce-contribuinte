@@ -5,10 +5,12 @@ namespace Checkout\Contribuinte;
 use Exception;
 use WP_Error;
 use WC_Order;
+use WC_Customer;
 use Checkout\Contribuinte\Vies\Vies;
 use Checkout\Contribuinte\Menus\Admin;
 use Checkout\Contribuinte\Helpers\Context;
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
+use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFieldsSchema\Validation;
 
 class Plugin
 {
@@ -65,7 +67,8 @@ class Plugin
         add_action('woocommerce_admin_order_data_after_billing_address', [$this, 'woocommerceAdminOrderDataAfterBillingAddress']); // ADMIN: Show  vies information on admin order page under billing address.
         add_action('woocommerce_after_edit_account_address_form', [$this, 'woocommerceAfterEditAccountAddressForm']); // FRONT END: Show VIES information under addresses in my account page
 
-        if (Context::isCheckoutBlockActive()) {
+        // The additional checkout fields API only exists since WooCommerce 8.9
+        if (Context::isCheckoutBlockActive() && function_exists('woocommerce_register_additional_checkout_field')) {
             // Block actions needed
             add_action('woocommerce_init', [$this, 'woocommerceBlocksLoaded'], 100);
             add_action('woocommerce_set_additional_field_value', [$this, 'woocommerceSetAdditionalFieldValue'], 10, 4);
@@ -202,7 +205,7 @@ class Plugin
     public function woocommerceAjaxGetCustomerDetails($data, $customer)
     {
         if ((isset($data['billing']['country']))) {
-            $data['billing']['vat'] = $customer->get_meta('_billing_vat');
+            $data['billing']['vat'] = $this->getCustomerVat($customer);
         }
 
         return $data;
@@ -233,7 +236,7 @@ class Plugin
     public function woocommerceApiCustomerResponse($customerData, $customer)
     {
         if (isset($customerData['billing_address'])) {
-            $billingVat = $customer->get_meta('_billing_vat');
+            $billingVat = $this->getCustomerVat($customer);
             $customerData['billing_address']['vat'] = $billingVat;
         }
 
@@ -266,9 +269,9 @@ class Plugin
             }
 
             $address .= '<br>';
-            $address .= $settingsLabel;
+            $address .= esc_html($settingsLabel);
             $address .= ': ';
-            $address .= $vat;
+            $address .= esc_html($vat);
         }
 
         return $address;
@@ -329,9 +332,10 @@ class Plugin
             return;
         }
 
-        $vat = WC()->customer->get_meta('billing_vat');
+        $vat = $this->getCustomerVat(WC()->customer);
         $country = WC()->customer->get_billing_country();
-        $showVies = (bool)get_option($this->settingsOptionsName)['drop_down_show_vies'];
+        $settings = get_option($this->settingsOptionsName, []);
+        $showVies = !empty($settings['drop_down_show_vies']);
 
         if ($showVies === false || empty($vat)) {
             return;
@@ -392,7 +396,7 @@ class Plugin
                         }
 
                         var rest = sum % 11;
-                        var controlDigit = rest === 0 ? 0 : 11 - rest;
+                        var controlDigit = rest < 2 ? 0 : 11 - rest;
 
                         return controlDigit === digits[8];
                     }
@@ -503,23 +507,70 @@ class Plugin
     {
         list($label, $placeholder, $isRequired) = $this->getPropsForInput();
 
-        try {
-            woocommerce_register_additional_checkout_field(
-                [
-                    'id' => 'contribuinte-checkout/billing_vat',
-                    'label' => $label,
-                    'location' => 'address',
-                    'type' => 'text',
-                    'group' => 'billing',
-                    'required' => (bool)$isRequired,
-                    "attributes" => [
-                        "title" => $placeholder,
+        $field = [
+            'id' => 'contribuinte-checkout/billing_vat',
+            'label' => $label,
+            'location' => 'address',
+            'type' => 'text',
+            'required' => (bool)$isRequired,
+            "attributes" => [
+                "title" => $placeholder,
+            ],
+            'sanitize_callback' => function ($field_value) {
+                return sanitize_text_field($field_value);
+            },
+        ];
+
+        // JSON Schema rules, evaluated by WooCommerce both in the browser and in the Store API
+        if (class_exists(Validation::class)) {
+            // "address" fields render in both address forms: hide the shipping copy when it differs from the billing address
+            $differsFromBilling = [];
+
+            foreach (['country', 'first_name', 'last_name', 'address_1', 'city', 'postcode'] as $key) {
+                $differsFromBilling[] = [
+                    'properties' => [
+                        $key => ['not' => ['const' => ['$data' => '/customer/billing_address/' . $key]]],
                     ],
-                    'sanitize_callback' => function ($field_value) {
-                        return trim($field_value);
-                    },
-                ]
-            );
+                ];
+            }
+
+            $field['hidden'] = [
+                'type' => 'object',
+                'properties' => [
+                    'customer' => [
+                        'properties' => [
+                            'address' => ['anyOf' => $differsFromBilling],
+                        ],
+                    ],
+                ],
+            ];
+
+            $settings = get_option($this->settingsOptionsName, []);
+
+            if ($isRequired) {
+                // A rule instead of `true`, so WooCommerce stops requiring the copy that "hidden" hides
+                $field['required'] = ['type' => 'object'];
+            } elseif (!empty($settings['drop_down_required_over_limit_price'])) {
+                // total_price is in cents
+                $field['required'] = [
+                    'type' => 'object',
+                    'properties' => [
+                        'cart' => [
+                            'properties' => [
+                                'totals' => [
+                                    'properties' => [
+                                        'total_price' => ['minimum' => 100000],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ];
+            }
+        }
+
+        try {
+            woocommerce_register_additional_checkout_field($field);
         } catch (Exception $e) {
             return;
         }
@@ -558,13 +609,13 @@ class Plugin
             return;
         }
 
-        $wc_object->update_meta_data('_billing_vat', $value, true);
+        $wc_object->update_meta_data($wc_object instanceof WC_Customer ? 'billing_vat' : '_billing_vat', $value);
     }
 
     public function woocommerceGetDefaultValueFor($value, $group, $wc_object)
     {
-        if (empty($value)) {
-            return $wc_object->get_meta("_billing_vat");
+        if (empty($value) && $group === 'billing') {
+            return $wc_object instanceof WC_Customer ? $this->getCustomerVat($wc_object) : $wc_object->get_meta('_billing_vat');
         }
 
         return $value;
@@ -574,12 +625,12 @@ class Plugin
 
     public function runFormValidations($billingVAT, $billingCountry, $errorObject = null)
     {
-        $settings = get_option($this->settingsOptionsName);
+        $settings = get_option($this->settingsOptionsName, []);
 
-        $validateVat = (bool)$settings['drop_down_validate_vat'];
-        $isRequired = (bool)$settings['drop_down_is_required'];
-        $isRequiredOverLimit = (bool)$settings['drop_down_required_over_limit_price'];
-        $validationFail = (bool)$settings['drop_down_on_validation_fail'];
+        $validateVat = !empty($settings['drop_down_validate_vat']);
+        $isRequired = !empty($settings['drop_down_is_required']);
+        $isRequiredOverLimit = !empty($settings['drop_down_required_over_limit_price']);
+        $validationFail = !empty($settings['drop_down_on_validation_fail']);
 
         if ($isRequiredOverLimit && is_checkout() && !empty(WC()->cart)) {
             $orderValue = WC()->cart->get_total('hook');
@@ -590,7 +641,8 @@ class Plugin
         }
 
         if (empty($billingVAT)) {
-            if ($isRequired) {
+            // Block fields (WP_Error given): WooCommerce already enforces "required" itself
+            if ($isRequired && !($errorObject instanceof WP_Error)) {
                 $message = __('A vat number is required.', 'contribuinte-checkout');
 
                 $this->addFormError($message, "missing_billing_vat", $errorObject);
@@ -613,7 +665,7 @@ class Plugin
 
         $message = __('You have entered an invalid VAT.', 'contribuinte-checkout');
 
-        if ((int)$validationFail === 1) {
+        if ($validationFail) {
             wc_add_notice($message, 'notice');
 
             return;
@@ -629,6 +681,24 @@ class Plugin
         } else {
             wc_add_notice($message, 'error');
         }
+    }
+
+    /**
+     * Customer VAT: the classic checkout and the user profile use "billing_vat", older block checkouts wrote "_billing_vat"
+     *
+     * @param WC_Customer $customer
+     *
+     * @return string
+     */
+    public function getCustomerVat($customer)
+    {
+        if (empty($customer)) {
+            return '';
+        }
+
+        $vat = $customer->get_meta('billing_vat');
+
+        return empty($vat) ? $customer->get_meta('_billing_vat') : $vat;
     }
 
     public function getPropsForInput()

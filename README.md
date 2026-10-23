@@ -23,7 +23,7 @@
 
 With this plugin you can add VAT and VIES support to your WooCommerce store. The VAT field will be saved as `_billing_vat`.
 
-**Important:** this plugin requires WooCommerce 3.0.0 or higher.  
+**Important:** this plugin requires WooCommerce 3.0.0 or higher (8.9 or higher for the block-based Checkout).  
 **Warning:** to enable and use VIES information you need to have SOAP extension enabled (SoapClient PHP class).
 
 ## Features
@@ -50,6 +50,18 @@ This plugin can be installed via FTP or using the Wordpress plugin installer.
 Via FTP
 1. Upload the plugin files to the `/wp-content/plugins/woocommerce-contribuinte` directory
 2. Activate the plugin through the `Plugins` option visible in WordPress
+
+## Local development
+A Docker stack with WordPress + WooCommerce and this plugin mounted lives in `docker/`:
+
+```bash
+docker compose -f docker/compose.yml up -d --build
+docker compose -f docker/compose.yml run --rm setup           # install WordPress + WooCommerce (admin / admin)
+docker compose -f docker/compose.yml run --rm setup classic   # checkout page uses the classic shortcode
+docker compose -f docker/compose.yml run --rm setup blocks    # checkout page uses the Checkout block
+```
+
+The store runs at http://localhost:8080 (`WP_PORT` to change it). Set `WC_VERSION` before the first `setup` to test another WooCommerce version.
 
 ## Screenshots
 1. Settings where you can change VAT field behaviour.
