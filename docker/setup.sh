@@ -5,6 +5,11 @@
 #   docker compose -f docker/compose.yml run --rm setup classic    # checkout page uses [woocommerce_checkout]
 set -e
 
+if [ ! -f wp-content/plugins/contribuinte-checkout/vendor/autoload.php ]; then
+  echo "Run 'composer install' in the plugin folder first." >&2
+  exit 1
+fi
+
 until [ -f wp-config.php ]; do sleep 2; done
 until wp db check >/dev/null 2>&1; do sleep 2; done
 

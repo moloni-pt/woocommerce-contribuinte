@@ -609,7 +609,12 @@ class Plugin
             return;
         }
 
-        $wc_object->update_meta_data($wc_object instanceof WC_Customer ? 'billing_vat' : '_billing_vat', $value);
+        $wc_object->update_meta_data('_billing_vat', $value);
+
+        // Customers also get the key the classic checkout and the user profile use
+        if ($wc_object instanceof WC_Customer) {
+            $wc_object->update_meta_data('billing_vat', $value);
+        }
     }
 
     public function woocommerceGetDefaultValueFor($value, $group, $wc_object)

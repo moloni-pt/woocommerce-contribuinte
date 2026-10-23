@@ -64,7 +64,7 @@ class Vies
         }
 
         // VIES is often slow or down; don't hang the page for PHP's default 60s
-        $previousTimeout = ini_set('default_socket_timeout', 5);
+        $previousTimeout = function_exists('ini_set') ? ini_set('default_socket_timeout', 5) : false;
 
         try {
             $client = new SoapClient($this->url, ['connection_timeout' => 5]);

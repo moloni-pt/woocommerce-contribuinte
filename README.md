@@ -55,6 +55,7 @@ Via FTP
 A Docker stack with WordPress + WooCommerce and this plugin mounted lives in `docker/`:
 
 ```bash
+composer install                                              # builds vendor/ (not committed)
 docker compose -f docker/compose.yml up -d --build
 docker compose -f docker/compose.yml run --rm setup           # install WordPress + WooCommerce (admin / admin)
 docker compose -f docker/compose.yml run --rm setup classic   # checkout page uses the classic shortcode
