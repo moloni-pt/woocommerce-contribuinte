@@ -13,6 +13,16 @@ class Vies
     private $url = 'https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
 
     /**
+     * EU member states as VIES knows them (Greece is "EL", not "GR")
+     *
+     * @var string[]
+     */
+    private static $countries = [
+        'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'EL', 'ES', 'FI', 'FR', 'HR', 'HU',
+        'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'
+    ];
+
+    /**
      * Country code
      *
      * @var string
@@ -33,7 +43,7 @@ class Vies
      */
     public function __construct($countryCode, $vatNumber)
     {
-        $this->countryCode = $countryCode;
+        $this->countryCode = self::toViesCountry($countryCode);
         $this->vatNumber = $vatNumber;
 
         $this->validateVat();
@@ -78,7 +88,33 @@ class Vies
         return $result;
     }
 
+    /**
+     * VIES only knows EU VAT numbers
+     *
+     * @param string $countryCode WooCommerce country code
+     *
+     * @return bool
+     */
+    public static function isSupportedCountry($countryCode)
+    {
+        return in_array(self::toViesCountry($countryCode), self::$countries, true);
+    }
+
     //        Privates        //
+
+    /**
+     * WooCommerce uses ISO codes, VIES uses "EL" for Greece
+     *
+     * @param string $countryCode
+     *
+     * @return string
+     */
+    private static function toViesCountry($countryCode)
+    {
+        $countryCode = strtoupper((string)$countryCode);
+
+        return $countryCode === 'GR' ? 'EL' : $countryCode;
+    }
 
     /**
      * Removes unneeded prefix from VAT

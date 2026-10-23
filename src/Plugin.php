@@ -313,7 +313,7 @@ class Plugin
         $vat = $order->get_meta('_billing_vat');
         $country = $order->get_billing_country();
 
-        if ($showVies === false || empty($vat)) {
+        if ($showVies === false || empty($vat) || !Vies::isSupportedCountry($country)) {
             return;
         }
 
@@ -337,7 +337,7 @@ class Plugin
         $settings = get_option($this->settingsOptionsName, []);
         $showVies = !empty($settings['drop_down_show_vies']);
 
-        if ($showVies === false || empty($vat)) {
+        if ($showVies === false || empty($vat) || !Vies::isSupportedCountry($country)) {
             return;
         }
 

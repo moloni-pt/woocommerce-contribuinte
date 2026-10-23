@@ -2,9 +2,9 @@
 Contribuinte Checkout
 Contributors: Moloni
 Tags: Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF
-Stable tag: 2.0.04
-Tested up to: 6.7.1
-WC tested up to: 9.6.0
+Stable tag: 2.0.05
+Tested up to: 7.1.2
+WC tested up to: 11.2.1
 
 Requires PHP: 5.6
 Requires at least: 5.0
@@ -54,6 +54,18 @@ Via FTP
  Released version 1.0.0.
 
 == Changelog ==
+= 2.0.05 =
+* Block Checkout: VAT field is asked only once (no longer duplicated and required in the shipping address).
+* Block Checkout: "VAT required on orders over 1000€" setting is now applied.
+* Block Checkout: no fatal error on WooCommerce versions older than 8.9.
+* Block Checkout: VAT value is sanitized.
+* VAT is now found for customers saved by the classic checkout (admin "Load billing address", API, VIES, Block Checkout prefill).
+* Fixed live validation rejecting valid Portuguese VAT numbers.
+* VIES is only queried for EU countries, over HTTPS, with a timeout and cache; fixed Greek VAT lookups.
+* Fixed PHP warnings before settings are saved.
+* Tested up to version 7.1.2 of WordPress.
+* Tested up to version 11.2.1 of WooCommerce.
+
 = 2.0.04 =
 * Security update.
 
