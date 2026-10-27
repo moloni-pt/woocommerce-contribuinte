@@ -10,7 +10,6 @@ use Checkout\Contribuinte\Vies\Vies;
 use Checkout\Contribuinte\Menus\Admin;
 use Checkout\Contribuinte\Helpers\Context;
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
-use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFieldsSchema\Validation;
 
 class Plugin
 {
@@ -521,8 +520,11 @@ class Plugin
             },
         ];
 
-        // JSON Schema rules, evaluated by WooCommerce both in the browser and in the Store API
-        if (class_exists(Validation::class)) {
+        $wcVersion = defined('WC_VERSION') ? WC_VERSION : '0';
+        $settings = get_option($this->settingsOptionsName, []);
+
+        // "$data" references in rules need WooCommerce 11.2+ (older versions compare them literally)
+        if (version_compare($wcVersion, '11.2', '>=')) {
             // "address" fields render in both address forms: hide the shipping copy when it differs from the billing address
             $differsFromBilling = [];
 
@@ -545,28 +547,29 @@ class Plugin
                 ],
             ];
 
-            $settings = get_option($this->settingsOptionsName, []);
-
             if ($isRequired) {
                 // A rule instead of `true`, so WooCommerce stops requiring the copy that "hidden" hides
                 $field['required'] = ['type' => 'object'];
-            } elseif (!empty($settings['drop_down_required_over_limit_price'])) {
-                // total_price is in cents
-                $field['required'] = [
-                    'type' => 'object',
-                    'properties' => [
-                        'cart' => [
-                            'properties' => [
-                                'totals' => [
-                                    'properties' => [
-                                        'total_price' => ['minimum' => 100000],
-                                    ],
+            }
+        }
+
+        // Rules in "required" need WooCommerce 9.9+ (9.8 treats any non-empty "required" as always required)
+        if (!$isRequired && !empty($settings['drop_down_required_over_limit_price']) && version_compare($wcVersion, '9.9', '>=')) {
+            // total_price is in cents
+            $field['required'] = [
+                'type' => 'object',
+                'properties' => [
+                    'cart' => [
+                        'properties' => [
+                            'totals' => [
+                                'properties' => [
+                                    'total_price' => ['minimum' => 100000],
                                 ],
                             ],
                         ],
                     ],
-                ];
-            }
+                ],
+            ];
         }
 
         try {

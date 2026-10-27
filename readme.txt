@@ -55,8 +55,8 @@ Via FTP
 
 == Changelog ==
 = 2.0.05 =
-* Block Checkout: VAT field is asked only once (no longer duplicated and required in the shipping address).
-* Block Checkout: "VAT required on orders over 1000€" setting is now applied.
+* Block Checkout: VAT field is asked only once (no longer duplicated and required in the shipping address), with WooCommerce 11.2 or higher.
+* Block Checkout: "VAT required on orders over 1000€" setting is now applied, with WooCommerce 10.3 or higher.
 * Block Checkout: no fatal error on WooCommerce versions older than 8.9.
 * Block Checkout: VAT value is sanitized.
 * VAT is now found for customers saved by the classic checkout (admin "Load billing address", API, VIES, Block Checkout prefill).
