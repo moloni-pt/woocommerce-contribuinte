@@ -11,7 +11,7 @@ class Install
     {
         //WooCommerce is required, so it checks for it´s class when installing
         if (!class_exists('WooCommerce')) {
-            deactivate_plugins(plugin_basename(__FILE__));
+            deactivate_plugins(plugin_basename(CONTRIBUINTE_CHECKOUT_PLUGIN_FILE));
             wp_die(esc_html__('Requires WooCommerce 3.0.0 or above.', 'contribuinte-checkout'));
         }
     }

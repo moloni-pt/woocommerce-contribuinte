@@ -4,18 +4,18 @@
 ![WordPress Plugin: Required PHP Version](https://img.shields.io/badge/php-%3E%3D5.6-blue)
 ![WordPress Plugin: Tested PHP Version](https://img.shields.io/badge/php-8.2%20tested-blue)
 ![WordPress Plugin: Required WP Version](https://img.shields.io/badge/WordPress-%3E%3D%205.0-orange)
-![WordPress Plugin: Tested WP Version](https://img.shields.io/badge/WordPress-6.7.1%20tested-orange)
+![WordPress Plugin: Tested WP Version](https://img.shields.io/badge/WordPress-7.1.2%20tested-orange)
 ![WooCommerce: Required Version](https://img.shields.io/badge/WooCommerce-%3E%3D%203.0.0-orange)
-![WooCommerce: Tested Version](https://img.shields.io/badge/WooCommerce-9.6.0%20tested-orange)
+![WooCommerce: Tested Version](https://img.shields.io/badge/WooCommerce-11.2.1%20tested-orange)
 
 **Contributors:**       [moloni-pt](https://github.com/moloni-pt)  
-**Tested up to:**       6.7.1  
-**WC tested up to**     9.6.0  
+**Tested up to:**       7.1.2  
+**WC tested up to**     11.2.1  
 **Requires at least:**  5.0  
 **Requires PHP:**       5.6  
 **PHP tested up to:**   8.2  
 **Tags:**               Invoicing, Orders, Customers, VAT, WooCommerce, IVA, Contribuinte, NIF  
-**Stable tag:**         2.0.04  
+**Stable tag:**         2.0.05  
 **License:**            GPLv2 or later    
 **License URI:**        [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)  
 
@@ -23,7 +23,7 @@
 
 With this plugin you can add VAT and VIES support to your WooCommerce store. The VAT field will be saved as `_billing_vat`.
 
-**Important:** this plugin requires WooCommerce 3.0.0 or higher.  
+**Important:** this plugin requires WooCommerce 3.0.0 or higher (8.9 or higher for the block-based Checkout).  
 **Warning:** to enable and use VIES information you need to have SOAP extension enabled (SoapClient PHP class).
 
 ## Features
@@ -51,6 +51,19 @@ Via FTP
 1. Upload the plugin files to the `/wp-content/plugins/woocommerce-contribuinte` directory
 2. Activate the plugin through the `Plugins` option visible in WordPress
 
+## Local development
+A Docker stack with WordPress + WooCommerce and this plugin mounted lives in `docker/`:
+
+```bash
+composer install                                              # builds vendor/ (not committed)
+docker compose -f docker/compose.yml up -d --build
+docker compose -f docker/compose.yml run --rm setup           # install WordPress + WooCommerce (admin / admin)
+docker compose -f docker/compose.yml run --rm setup classic   # checkout page uses the classic shortcode
+docker compose -f docker/compose.yml run --rm setup blocks    # checkout page uses the Checkout block
+```
+
+The store runs at http://localhost:8080 (`WP_PORT` to change it). Set `WC_VERSION` before the first `setup` to test another WooCommerce version.
+
 ## Screenshots
 1. Settings where you can change VAT field behaviour.
 2. Customers can add their VAT to their billing information.
@@ -62,6 +75,17 @@ Via FTP
 Released version 1.0.0.
 
 ## Changelog
+### 2.0.05
+* Block Checkout: VAT field is asked only once (no longer duplicated and required in the shipping address), with WooCommerce 11.2 or higher.
+* Block Checkout: no fatal error on WooCommerce versions older than 8.9.
+* Block Checkout: VAT value is sanitized.
+* VAT is now found for customers saved by the classic checkout (admin "Load billing address", API, VIES, Block Checkout prefill).
+* Fixed live validation rejecting valid Portuguese VAT numbers.
+* VIES is only queried for EU countries, over HTTPS, with a timeout and cache; fixed Greek VAT lookups.
+* Fixed PHP warnings before settings are saved.
+* Tested up to version 7.1.2 of WordPress.
+* Tested up to version 11.2.1 of WooCommerce.
+
 ### 2.0.04
 * Security update.
 

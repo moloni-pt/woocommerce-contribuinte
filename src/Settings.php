@@ -158,12 +158,13 @@ class Settings
      */
     public function settingDropdownRender($args)
     {
-        $options = get_option($this->optionsName);
+        $options = get_option($this->optionsName, []);
+        $current = isset($options[$args['id']]) ? (int)$options[$args['id']] : 0;
 
         echo "<select id='" . $args['id'] . "' name='" . $this->optionsName . "[" . $args['id'] . "]' style='min-width: 330px;'>";
 
         foreach ($args['items'] as $key => $value) {
-            $selected = ($options[$args['id']] === $key) ? 'selected="selected"' : '';
+            $selected = ($current === (int)$key) ? 'selected="selected"' : '';
             echo "<option value='$key' $selected> $value </option>";
         }
 
@@ -176,7 +177,7 @@ class Settings
      */
     public function settingTextBox($args)
     {
-        $options = get_option($this->optionsName);
+        $options = get_option($this->optionsName, []);
 
         if (!empty($options[$args['id']])) {
             $value = $options[$args['id']];
