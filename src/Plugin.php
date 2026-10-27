@@ -600,7 +600,8 @@ class Plugin
 
     public function woocommerceGetDefaultValueFor($value, $group, $wc_object)
     {
-        if (empty($value) && $group === 'billing') {
+        // Both address forms: with "use same address" the visible copy is the shipping one
+        if (empty($value)) {
             return $wc_object instanceof WC_Customer ? $this->getCustomerVat($wc_object) : $wc_object->get_meta('_billing_vat');
         }
 
