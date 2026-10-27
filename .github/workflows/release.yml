@@ -7,7 +7,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      # vendor/ is not committed: build the autoloader that ships in the release
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
       - name: WordPress Plugin Deploy
         id: deploy

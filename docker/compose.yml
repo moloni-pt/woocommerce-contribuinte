@@ -1,0 +1,62 @@
+# Local test stack: WordPress + WooCommerce with this plugin mounted.
+#   docker compose -f docker/compose.yml up -d --build
+#   docker compose -f docker/compose.yml run --rm setup
+#   http://localhost:8080  (admin / admin)
+name: contribuinte-checkout
+
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: wordpress
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      retries: 20
+
+  wordpress:
+    build: .
+    ports:
+      - "${WP_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: 1
+    volumes:
+      - wp:/var/www/html
+      - ..:/var/www/html/wp-content/plugins/contribuinte-checkout
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # One-shot: installs WordPress + WooCommerce and activates the plugin (idempotent).
+  setup:
+    image: wordpress:cli-php8.2
+    profiles: ["tools"]
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WP_URL: http://localhost:${WP_PORT:-8080}
+      WC_VERSION: ${WC_VERSION:-}
+      HOME: /tmp
+    volumes:
+      - wp:/var/www/html
+      - ..:/var/www/html/wp-content/plugins/contribuinte-checkout
+      - ./setup.sh:/setup.sh:ro
+    entrypoint: ["sh", "/setup.sh"]
+    depends_on:
+      - wordpress
+
+volumes:
+  db:
+  wp:

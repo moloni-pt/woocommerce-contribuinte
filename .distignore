@@ -1,0 +1,11 @@
+/.git
+/.github
+/.wordpress-org
+/.claude
+/docker
+/.distignore
+/.gitignore
+/.editorconfig
+/.nvmrc
+/AGENTS.md
+/CLAUDE.md

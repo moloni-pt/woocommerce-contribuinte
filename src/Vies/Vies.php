@@ -10,7 +10,17 @@ class Vies
      * Vies service URL
      * @var string
      */
-    private $url = 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
+    private $url = 'https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
+
+    /**
+     * EU member states as VIES knows them (Greece is "EL", not "GR")
+     *
+     * @var string[]
+     */
+    private static $countries = [
+        'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'EL', 'ES', 'FI', 'FR', 'HR', 'HU',
+        'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'
+    ];
 
     /**
      * Country code
@@ -33,7 +43,7 @@ class Vies
      */
     public function __construct($countryCode, $vatNumber)
     {
-        $this->countryCode = $countryCode;
+        $this->countryCode = self::toViesCountry($countryCode);
         $this->vatNumber = $vatNumber;
 
         $this->validateVat();
@@ -45,23 +55,66 @@ class Vies
      */
     public function checkVat()
     {
+        // Pages call this on every view, so cache successful lookups
+        $cacheKey = 'contribuinte_checkout_vies_' . md5($this->countryCode . $this->vatNumber);
+        $result = get_transient($cacheKey);
+
+        if ($result !== false) {
+            return $result;
+        }
+
+        // VIES is often slow or down; don't hang the page for PHP's default 60s
+        $previousTimeout = function_exists('ini_set') ? ini_set('default_socket_timeout', 5) : false;
+
         try {
-            $client = new SoapClient($this->url);
+            $client = new SoapClient($this->url, ['connection_timeout' => 5]);
             $result = $client->__soapCall('checkVat', [
                 [
                     'countryCode' => $this->countryCode,
                     'vatNumber' => $this->vatNumber
                 ]
             ]);
+
+            set_transient($cacheKey, $result, DAY_IN_SECONDS);
         } catch (\SoapFault $exception) {
             //error validating VAT
             $result = $exception->getMessage();
         }
 
+        if ($previousTimeout !== false) {
+            ini_set('default_socket_timeout', $previousTimeout);
+        }
+
         return $result;
     }
 
+    /**
+     * VIES only knows EU VAT numbers
+     *
+     * @param string $countryCode WooCommerce country code
+     *
+     * @return bool
+     */
+    public static function isSupportedCountry($countryCode)
+    {
+        return in_array(self::toViesCountry($countryCode), self::$countries, true);
+    }
+
     //        Privates        //
+
+    /**
+     * WooCommerce uses ISO codes, VIES uses "EL" for Greece
+     *
+     * @param string $countryCode
+     *
+     * @return string
+     */
+    private static function toViesCountry($countryCode)
+    {
+        $countryCode = strtoupper((string)$countryCode);
+
+        return $countryCode === 'GR' ? 'EL' : $countryCode;
+    }
 
     /**
      * Removes unneeded prefix from VAT
