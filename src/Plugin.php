@@ -520,11 +520,8 @@ class Plugin
             },
         ];
 
-        $wcVersion = defined('WC_VERSION') ? WC_VERSION : '0';
-        $settings = get_option($this->settingsOptionsName, []);
-
         // "$data" references in rules need WooCommerce 11.2+ (older versions compare them literally)
-        if (version_compare($wcVersion, '11.2', '>=')) {
+        if (defined('WC_VERSION') && version_compare(WC_VERSION, '11.2', '>=')) {
             // "address" fields render in both address forms: hide the shipping copy when it differs from the billing address
             $differsFromBilling = [];
 
@@ -551,25 +548,6 @@ class Plugin
                 // A rule instead of `true`, so WooCommerce stops requiring the copy that "hidden" hides
                 $field['required'] = ['type' => 'object'];
             }
-        }
-
-        // Rules in "required" need WooCommerce 9.9+ (9.8 treats any non-empty "required" as always required)
-        if (!$isRequired && !empty($settings['drop_down_required_over_limit_price']) && version_compare($wcVersion, '9.9', '>=')) {
-            // total_price is in cents
-            $field['required'] = [
-                'type' => 'object',
-                'properties' => [
-                    'cart' => [
-                        'properties' => [
-                            'totals' => [
-                                'properties' => [
-                                    'total_price' => ['minimum' => 100000],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ];
         }
 
         try {
