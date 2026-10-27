@@ -713,9 +713,9 @@ class Plugin
         if (is_array($settings)) {
             $label = empty($settings['text_box_vat_field_label']) ? __('VAT', 'contribuinte-checkout') : $settings['text_box_vat_field_label'];
             $placeholder = empty($settings['text_box_vat_field_description']) ? __('VAT Number', 'contribuinte-checkout') : $settings['text_box_vat_field_description'];
-            $isRequired = (int)$settings['drop_down_is_required'];
-            $isRequiredOverLimit = (int)$settings['drop_down_required_over_limit_price'];
-            $validateVat = (bool)$settings['drop_down_validate_vat'];
+            $isRequired = empty($settings['drop_down_is_required']) ? 0 : (int)$settings['drop_down_is_required'];
+            $isRequiredOverLimit = empty($settings['drop_down_required_over_limit_price']) ? 0 : (int)$settings['drop_down_required_over_limit_price'];
+            $validateVat = !empty($settings['drop_down_validate_vat']);
         } else {
             $label = __('VAT', 'contribuinte-checkout');
             $placeholder = __('VAT Number', 'contribuinte-checkout');
